@@ -1,0 +1,57 @@
+---
+---
+<section class="faq section" id="faq">
+  <div class="container">
+    <div class="text-center animate-on-scroll">
+      <span class="text-label text-gradient">FAQ</span>
+      <h2 class="text-h2" style="margin-top:0.5rem">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">What is an ATS (Applicant Tracking System)?</summary>
+        <div class="faq-answer"><p>An ATS is software used by employers to scan, sort, and rank resumes automatically. Over 90% of large companies use ATS to filter candidates before a human ever sees their resume. If your resume doesn't contain the right keywords, it gets filtered out — even if you're qualified.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">How does ResumeRadar work?</summary>
+        <div class="faq-answer"><p>ResumeRadar compares the keywords in your resume against the job description you're targeting. It uses smart matching (including synonyms and abbreviations) to identify which keywords you have, which are missing, and which are partial matches. Everything runs 100% in your browser — your data never leaves your device.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">Is my resume data safe?</summary>
+        <div class="faq-answer"><p>Absolutely. ResumeRadar processes everything locally in your browser using client-side JavaScript. No data is ever uploaded, stored, or transmitted to any server. When you close the page, everything is gone.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">Is this tool really free?</summary>
+        <div class="faq-answer"><p>Yes, 100% free with no limits. No premium tiers, no credits, no account signup. We're supported by non-intrusive display ads. You can scan as many resumes as you want, forever.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">What score do I need to pass ATS?</summary>
+        <div class="faq-answer"><p>Generally, aim for a score of 70% or above. A score above 80% means you're highly competitive. Below 50% means your resume has significant keyword gaps that will likely cause it to be filtered out by most ATS systems.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">How is this different from Jobscan or Resume Worded?</summary>
+        <div class="faq-answer"><p>Unlike those platforms, ResumeRadar is completely free with no usage limits, no account required, and no paywall. Your data never touches a server. It's a single-page tool that gives you instant results — no signup friction, no locked features.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is an ATS (Applicant Tracking System)?", "acceptedAnswer": { "@type": "Answer", "text": "An ATS is software used by employers to scan, sort, and rank resumes automatically. Over 90% of large companies use ATS to filter candidates before a human ever sees their resume." }},
+    { "@type": "Question", "name": "How does ResumeRadar work?", "acceptedAnswer": { "@type": "Answer", "text": "ResumeRadar compares the keywords in your resume against the job description using smart matching including synonyms. Everything runs 100% in your browser." }},
+    { "@type": "Question", "name": "Is my resume data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. ResumeRadar processes everything locally in your browser. No data is ever uploaded, stored, or transmitted to any server." }},
+    { "@type": "Question", "name": "Is this tool really free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no limits. No premium tiers, no credits, no account signup." }},
+    { "@type": "Question", "name": "What score do I need to pass ATS?", "acceptedAnswer": { "@type": "Answer", "text": "Generally, aim for 70% or above. Above 80% means you're highly competitive." }},
+    { "@type": "Question", "name": "How is this different from Jobscan?", "acceptedAnswer": { "@type": "Answer", "text": "ResumeRadar is completely free, no signup required, and your data never touches a server." }}
+  ]
+})} />
+<style>
+  .faq-list{max-width:800px;margin:2.5rem auto 0;display:flex;flex-direction:column;gap:0.75rem}
+  .faq-item{padding:0;overflow:hidden;cursor:pointer}
+  .faq-question{padding:1.25rem 1.5rem;font-weight:600;font-size:1rem;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+  .faq-question::-webkit-details-marker{display:none}
+  .faq-question::after{content:'＋';color:var(--color-primary-light);font-size:1.25rem;transition:transform 0.3s}
+  details[open] .faq-question::after{content:'−';transform:rotate(180deg)}
+  .faq-answer{padding:0 1.5rem 1.25rem;color:var(--color-text-secondary);line-height:1.7;font-size:0.9375rem}
+</style>

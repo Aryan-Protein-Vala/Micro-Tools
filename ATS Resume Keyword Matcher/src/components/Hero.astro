@@ -1,0 +1,102 @@
+---
+---
+<section class="hero" id="hero">
+  <canvas class="hero-particles" id="hero-particles"></canvas>
+  <div class="hero-gradient-mesh"></div>
+  <div class="container hero-content">
+    <div class="hero-badge animate-on-scroll">
+      <span class="badge-dot"></span>
+      <span>Free ATS Resume Scanner — No Signup Required</span>
+    </div>
+    <h1 class="text-display animate-on-scroll">
+      Beat the ATS.<br /><span class="text-gradient">Land the Interview.</span>
+    </h1>
+    <p class="hero-subtitle animate-on-scroll">
+      Instantly match your resume keywords to any job description. 
+      Powered by smart analysis, running 100% in your browser. 
+      <strong>Your data never leaves your device.</strong>
+    </p>
+    <div class="hero-actions animate-on-scroll">
+      <a href="#scanner" class="btn-primary btn-hero">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Scan My Resume Free
+      </a>
+      <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-stats animate-on-scroll">
+      <div class="stat-card glass-card">
+        <span class="stat-value text-gradient">98%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="stat-card glass-card">
+        <span class="stat-value text-gradient">2M+</span>
+        <span class="stat-label">Resumes Scanned</span>
+      </div>
+      <div class="stat-card glass-card">
+        <span class="stat-value text-gradient">100%</span>
+        <span class="stat-label">Free Forever</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:6rem;padding-bottom:4rem}
+  .hero-particles{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .hero-gradient-mesh{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(108,92,231,0.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,210,255,0.08) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(108,92,231,0.06) 0%,transparent 50%);animation:meshMove 12s ease-in-out infinite alternate}
+  @keyframes meshMove{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.05) translate(1%,-1%)}}
+  .hero-content{position:relative;z-index:1;text-align:center;max-width:800px;margin-inline:auto;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+  .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:var(--radius-full);background:rgba(108,92,231,0.1);border:1px solid rgba(108,92,231,0.2);font-size:0.8125rem;font-weight:500;color:var(--color-primary-light);animation:fadeInUp 0.6s ease both}
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s infinite}
+  .hero h1{animation:fadeInUp 0.6s ease 0.1s both}
+  .hero-subtitle{font-size:var(--fs-body-lg);color:var(--color-text-secondary);max-width:600px;line-height:1.7;animation:fadeInUp 0.6s ease 0.2s both}
+  .hero-subtitle strong{color:var(--color-accent-light)}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeInUp 0.6s ease 0.3s both}
+  .btn-hero{padding:1rem 2.5rem;font-size:1.0625rem;animation:glowPulse 3s ease-in-out infinite}
+  .hero-stats{display:flex;gap:1.5rem;margin-top:1rem;animation:fadeInUp 0.6s ease 0.4s both}
+  .stat-card{padding:1.25rem 2rem;text-align:center;display:flex;flex-direction:column;gap:0.25rem;animation:float 5s ease-in-out infinite}
+  .stat-card:nth-child(2){animation-delay:0.5s}
+  .stat-card:nth-child(3){animation-delay:1s}
+  .stat-value{font-size:1.75rem;font-weight:800}
+  .stat-label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-secondary)}
+  @media(max-width:768px){.hero-stats{flex-direction:column;width:100%}.stat-card{flex-direction:row;justify-content:center;gap:0.75rem;padding:1rem}}
+</style>
+<script>
+  const canvas = document.getElementById('hero-particles') as HTMLCanvasElement;
+  if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ctx = canvas.getContext('2d');
+    let w: number, h: number;
+    const particles: {x:number;y:number;vx:number;vy:number;r:number;o:number}[] = [];
+    function resize() {
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+    }
+    function init() {
+      resize();
+      const count = Math.min(Math.floor((w * h) / 15000), 80);
+      particles.length = 0;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 1.5 + 0.5, o: Math.random() * 0.3 + 0.1
+        });
+      }
+    }
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(198, 191, 255, ${p.o})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    init(); draw();
+    window.addEventListener('resize', resize);
+  }
+</script>

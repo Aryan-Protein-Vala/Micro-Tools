@@ -1,0 +1,52 @@
+---
+---
+<nav class="navbar" id="navbar">
+  <div class="container navbar-inner">
+    <a href="/" class="navbar-logo" aria-label="ResumeRadar Home">
+      <span class="logo-icon">◉</span>
+      <span class="text-gradient">ResumeRadar</span>
+    </a>
+    <div class="navbar-links" id="navbar-links">
+      <a href="#how-it-works">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#scanner" class="btn-primary btn-sm navbar-cta">Scan Free</a>
+    <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<style>
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 0;transition:background 0.3s,backdrop-filter 0.3s}
+  .navbar.scrolled{background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)}
+  .navbar-inner{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+  .navbar-logo{display:flex;align-items:center;gap:0.5rem;font-size:1.25rem;font-weight:800;text-decoration:none}
+  .logo-icon{font-size:1.5rem;color:var(--color-primary)}
+  .navbar-links{display:flex;gap:2rem}
+  .navbar-links a{color:var(--color-text-secondary);font-size:0.875rem;font-weight:500;transition:color 0.2s}
+  .navbar-links a:hover{color:var(--color-text-primary)}
+  .navbar-cta{font-size:0.8125rem;padding:0.5rem 1.25rem}
+  .navbar-toggle{display:none;flex-direction:column;gap:5px;padding:4px}
+  .navbar-toggle span{display:block;width:22px;height:2px;background:var(--color-text-primary);border-radius:2px;transition:0.3s}
+  @media(max-width:768px){
+    .navbar-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);padding:1.5rem;gap:1rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .navbar-links.open{display:flex}
+    .navbar-toggle{display:flex}
+    .navbar-cta{display:none}
+  }
+</style>
+<script>
+  const navbar = document.getElementById('navbar');
+  const toggle = document.getElementById('navbar-toggle');
+  const links = document.getElementById('navbar-links');
+  window.addEventListener('scroll', () => {
+    navbar?.classList.toggle('scrolled', window.scrollY > 50);
+  });
+  toggle?.addEventListener('click', () => {
+    links?.classList.toggle('open');
+  });
+  links?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => links?.classList.remove('open'));
+  });
+</script>
