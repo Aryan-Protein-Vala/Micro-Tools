@@ -1,0 +1,54 @@
+---
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo"><span class="logo-icon">◉</span><span class="text-gradient">DataSanitize</span></a>
+        <p class="text-secondary">The privacy-first, client-side CSV data cleaner and deduplicator for B2B professionals.</p>
+        <div class="trust-badges">
+          <span class="trust-badge">🔒 100% Client-Side</span>
+          <span class="trust-badge">🚀 Zero Signup</span>
+          <span class="trust-badge">💯 Always Free</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Tool</h4>
+        <a href="#scanner">ATS Scanner</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="/about">About ATS</a>
+        <a href="#">ATS Keywords Guide</a>
+        <a href="#">Resume Tips 2026</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="text-secondary">&copy; {new Date().getFullYear()} ResumeRadar. All rights reserved. Built with ❤️ for job seekers everywhere.</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .footer{padding:4rem 0 2rem;border-top:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.01)}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+  .footer-logo{display:flex;align-items:center;gap:0.5rem;font-size:1.125rem;font-weight:800;text-decoration:none;margin-bottom:0.75rem}
+  .logo-icon{color:var(--color-primary);font-size:1.25rem}
+  .footer-brand p{font-size:0.875rem;line-height:1.6;margin-bottom:1rem}
+  .trust-badges{display:flex;flex-wrap:wrap;gap:0.5rem}
+  .trust-badge{font-size:0.75rem;padding:0.25rem 0.625rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-full);color:var(--color-text-secondary)}
+  .footer-col{display:flex;flex-direction:column;gap:0.625rem}
+  .footer-col h4{font-size:0.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-primary);margin-bottom:0.25rem}
+  .footer-col a{font-size:0.875rem;color:var(--color-text-secondary);transition:color 0.2s}
+  .footer-col a:hover{color:var(--color-accent)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,0.05);padding-top:1.5rem;text-align:center}
+  .footer-bottom p{font-size:0.8125rem}
+  @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:2rem}.footer-brand{grid-column:1/-1}}
+</style>

@@ -1,0 +1,57 @@
+---
+---
+<section class="faq section" id="faq">
+  <div class="container">
+    <div class="text-center animate-on-scroll">
+      <span class="text-label text-gradient">FAQ</span>
+      <h2 class="text-h2" style="margin-top:0.5rem">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">What is DataSanitize?</summary>
+        <div class="faq-answer"><p>DataSanitize is a free, browser-based tool that cleans, formats, and deduplicates messy CSV files (like CRM exports or B2B lead lists) before you upload them into your CRM or email platform.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">Is my B2B data safe?</summary>
+        <div class="faq-answer"><p>Absolutely. Your CSV file is processed entirely in your browser using client-side JavaScript. No data is ever uploaded, stored, or transmitted to any server. When you close the page, everything is gone.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">What CRMs is this compatible with?</summary>
+        <div class="faq-answer"><p>The cleaned CSV output is compatible with any CRM or dialer that accepts standard CSV imports, including Salesforce, HubSpot, Pipedrive, Apollo, Seamless.ai, and Outreach.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">Is this tool really free?</summary>
+        <div class="faq-answer"><p>Yes, 100% free with no limits. No premium tiers, no credits, no account signup. We're supported by non-intrusive display ads. You can clean as many CSVs as you want, forever.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">What formatting rules are applied?</summary>
+        <div class="faq-answer"><p>You can choose to trim leading/trailing whitespace, remove completely empty rows, format Names/Titles to Title Case, convert Emails to lowercase, and remove duplicate rows based on any exact column match.</p></div>
+      </details>
+      <details class="faq-item glass-card animate-on-scroll">
+        <summary class="faq-question">Is there a file size limit?</summary>
+        <div class="faq-answer"><p>Because it runs in your browser, the only limit is your computer's RAM. Most modern computers can easily parse and clean CSVs with hundreds of thousands of rows in just a few seconds.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is DataSanitize?", "acceptedAnswer": { "@type": "Answer", "text": "DataSanitize is a free, browser-based tool that cleans, formats, and deduplicates messy CSV files." }},
+    { "@type": "Question", "name": "Is my B2B data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your CSV file is processed entirely in your browser. No data is ever uploaded or stored on any server." }},
+    { "@type": "Question", "name": "What CRMs is this compatible with?", "acceptedAnswer": { "@type": "Answer", "text": "The cleaned CSV output is compatible with any CRM like Salesforce, HubSpot, Pipedrive, Apollo, and Outreach." }},
+    { "@type": "Question", "name": "Is this tool really free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no limits. No premium tiers, no credits, no account signup." }},
+    { "@type": "Question", "name": "What formatting rules are applied?", "acceptedAnswer": { "@type": "Answer", "text": "Trim whitespace, remove empty rows, Title Case names, lowercase emails, and deduplicate based on columns." }},
+    { "@type": "Question", "name": "Is there a file size limit?", "acceptedAnswer": { "@type": "Answer", "text": "Because it runs in your browser, the only limit is your computer's RAM, easily handling hundreds of thousands of rows." }}
+  ]
+})} />
+<style>
+  .faq-list{max-width:800px;margin:2.5rem auto 0;display:flex;flex-direction:column;gap:0.75rem}
+  .faq-item{padding:0;overflow:hidden;cursor:pointer}
+  .faq-question{padding:1.25rem 1.5rem;font-weight:600;font-size:1rem;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+  .faq-question::-webkit-details-marker{display:none}
+  .faq-question::after{content:'＋';color:var(--color-primary-light);font-size:1.25rem;transition:transform 0.3s}
+  details[open] .faq-question::after{content:'−';transform:rotate(180deg)}
+  .faq-answer{padding:0 1.5rem 1.25rem;color:var(--color-text-secondary);line-height:1.7;font-size:0.9375rem}
+</style>

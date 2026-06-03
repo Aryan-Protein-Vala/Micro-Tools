@@ -1,0 +1,178 @@
+---
+---
+<section class="cleaner section" id="cleaner">
+  <div class="container">
+    <div class="cleaner-container glass-card">
+      <div class="cleaner-header">
+        <h2 class="text-h2">CSV Data Sanitizer</h2>
+        <p class="text-secondary">Drop your messy export below. Processing runs entirely in your browser.</p>
+      </div>
+
+      <div class="dropzone" id="csv-dropzone">
+        <div class="dropzone-content">
+          <div class="dropzone-icon">📁</div>
+          <h3 class="text-h3">Drag & Drop your CSV file</h3>
+          <p class="text-secondary">or click to browse from your computer</p>
+          <input type="file" id="csv-file-input" accept=".csv" class="hidden-input" />
+        </div>
+      </div>
+
+      <div id="cleaner-workspace" class="workspace hidden">
+        <div class="workspace-grid">
+          <!-- Settings Panel -->
+          <div class="settings-panel">
+            <h3 class="panel-title">Cleaning Rules</h3>
+            <div class="settings-list">
+              <label class="setting-item">
+                <input type="checkbox" id="rule-trim" checked />
+                <span class="checkbox-custom"></span>
+                <div>
+                  <div class="setting-name">Trim Whitespace</div>
+                  <div class="setting-desc">Remove leading/trailing spaces from all cells</div>
+                </div>
+              </label>
+              
+              <label class="setting-item">
+                <input type="checkbox" id="rule-empty" checked />
+                <span class="checkbox-custom"></span>
+                <div>
+                  <div class="setting-name">Drop Empty Rows</div>
+                  <div class="setting-desc">Remove rows where every column is empty</div>
+                </div>
+              </label>
+              
+              <label class="setting-item">
+                <input type="checkbox" id="rule-titlecase" checked />
+                <span class="checkbox-custom"></span>
+                <div>
+                  <div class="setting-name">Title Case Names</div>
+                  <div class="setting-desc">Format "name" columns (e.g., jOhn -> John)</div>
+                </div>
+              </label>
+              
+              <label class="setting-item">
+                <input type="checkbox" id="rule-lowercase-email" checked />
+                <span class="checkbox-custom"></span>
+                <div>
+                  <div class="setting-name">Lowercase Emails</div>
+                  <div class="setting-desc">Format "email" columns (e.g., JD@abc.com -> jd@abc.com)</div>
+                </div>
+              </label>
+              
+              <label class="setting-item">
+                <input type="checkbox" id="rule-dedupe" checked />
+                <span class="checkbox-custom"></span>
+                <div>
+                  <div class="setting-name">Remove Duplicates</div>
+                  <div class="setting-desc">Deduplicate based on a selected column</div>
+                </div>
+              </label>
+
+              <div class="dedupe-selector-wrapper" id="dedupe-selector-wrapper">
+                <label for="dedupe-column" class="setting-desc">Deduplicate by Column:</label>
+                <select id="dedupe-column" class="select-input">
+                  <option value="">Select a column...</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="workspace-actions">
+              <button id="btn-process" class="btn-primary w-full">Apply Rules</button>
+              <button id="btn-download" class="btn-success w-full hidden">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Clean CSV
+              </button>
+              <button id="btn-reset" class="btn-secondary w-full" style="margin-top:0.5rem">Start Over</button>
+            </div>
+          </div>
+
+          <!-- Preview Panel -->
+          <div class="preview-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Data Preview</h3>
+              <div class="stats-badges hidden" id="processing-stats">
+                <span class="badge" id="stat-rows">Rows: 0</span>
+                <span class="badge" id="stat-removed" style="color:var(--color-error)">Removed: 0</span>
+              </div>
+            </div>
+            
+            <div class="table-container" id="table-container">
+              <div class="empty-state" id="table-empty-state">
+                File loaded. Click "Apply Rules" to preview data.
+              </div>
+              <table id="preview-table" class="hidden">
+                <thead id="preview-thead"></thead>
+                <tbody id="preview-tbody"></tbody>
+              </table>
+            </div>
+            <div class="table-footer hidden" id="table-footer">
+              Showing first 10 rows. Download to see all data.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/cleaner-engine.js';
+</script>
+
+<style>
+  .cleaner-container{padding:2.5rem;display:flex;flex-direction:column;gap:2rem}
+  .cleaner-header{text-align:center}
+  
+  .dropzone{border:2px dashed rgba(198,191,255,0.2);border-radius:var(--radius-lg);padding:4rem 2rem;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(10,10,15,0.3)}
+  .dropzone:hover,.dropzone.dragover{border-color:var(--color-primary);background:rgba(108,92,231,0.05)}
+  .dropzone-icon{font-size:3rem;margin-bottom:1rem;opacity:0.8}
+  .hidden-input{display:none}
+
+  .workspace{animation:fadeIn 0.4s ease}
+  .workspace-grid{display:grid;grid-template-columns:300px 1fr;gap:2rem}
+  
+  .settings-panel{display:flex;flex-direction:column;gap:1.5rem;background:rgba(255,255,255,0.02);padding:1.5rem;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.05)}
+  .panel-title{font-size:1.125rem;font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;justify-content:space-between}
+  
+  .settings-list{display:flex;flex-direction:column;gap:1rem}
+  .setting-item{display:flex;align-items:flex-start;gap:0.75rem;cursor:pointer;user-select:none}
+  .setting-item input{display:none}
+  .checkbox-custom{width:20px;height:20px;border-radius:4px;border:1px solid rgba(255,255,255,0.2);display:inline-flex;align-items:center;justify-content:center;transition:0.2s;flex-shrink:0;margin-top:2px}
+  .setting-item input:checked + .checkbox-custom{background:var(--color-primary);border-color:var(--color-primary)}
+  .setting-item input:checked + .checkbox-custom::after{content:'';width:10px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg);margin-top:-2px}
+  .setting-name{font-size:0.9375rem;font-weight:500;color:var(--color-text-primary)}
+  .setting-desc{font-size:0.8125rem;color:var(--color-text-secondary);line-height:1.4;margin-top:2px}
+  
+  .dedupe-selector-wrapper{padding-left:2rem;margin-top:-0.5rem;display:none}
+  .setting-item input#rule-dedupe:checked ~ * .dedupe-selector-wrapper{display:block} /* Handle toggle logic in JS instead */
+  
+  .select-input{width:100%;margin-top:0.5rem;padding:0.5rem;border-radius:var(--radius-sm);background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);color:var(--color-text-primary);font-family:inherit;font-size:0.875rem}
+  .select-input option{background:var(--color-bg)}
+
+  .workspace-actions{display:flex;flex-direction:column;gap:0.75rem;margin-top:1rem}
+  .w-full{width:100%;justify-content:center}
+  
+  .btn-success{background:var(--color-success);color:#000;display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 1.5rem;border-radius:var(--radius-full);font-weight:600;transition:all 0.3s}
+  .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,210,150,0.3)}
+
+  .preview-panel{display:flex;flex-direction:column;gap:1rem;min-width:0}
+  .panel-header{display:flex;align-items:center;justify-content:space-between}
+  .stats-badges{display:flex;gap:0.75rem}
+  .badge{font-size:0.8125rem;font-weight:600;padding:0.25rem 0.75rem;border-radius:1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)}
+  
+  .table-container{flex:1;background:rgba(0,0,0,0.2);border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.05);overflow-x:auto;min-height:300px;display:flex;flex-direction:column}
+  .empty-state{flex:1;display:flex;align-items:center;justify-content:center;color:var(--color-text-secondary);font-size:0.9375rem;padding:2rem;text-align:center}
+  
+  table{width:100%;border-collapse:collapse;font-size:0.875rem;white-space:nowrap}
+  th,td{padding:0.75rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+  th{background:rgba(255,255,255,0.03);font-weight:600;color:var(--color-text-primary);position:sticky;top:0}
+  td{color:var(--color-text-secondary)}
+  tbody tr:hover td{background:rgba(255,255,255,0.02);color:var(--color-text-primary)}
+  
+  .table-footer{font-size:0.8125rem;color:var(--color-text-secondary);text-align:center;padding:0.5rem 0}
+
+  @media(max-width:1024px){
+    .workspace-grid{grid-template-columns:1fr}
+    .cleaner-container{padding:1.5rem}
+  }
+</style>
