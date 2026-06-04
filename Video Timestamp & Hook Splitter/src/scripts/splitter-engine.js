@@ -81,11 +81,8 @@ export function initSplitter() {
       // We'll extract a title from the first sentence of the paragraph.
       if (duration > 15 || currentTime > 45 * timestampsList.length) {
         const firstSentence = p.split(/(?<=[.?!])\s+/)[0];
-        // Clean up the chapter title (truncate if too long)
+        // Clean up the chapter title
         let title = firstSentence.replace(/^[^a-zA-Z0-9]+/, '').trim();
-        if (title.length > 40) {
-          title = title.substring(0, 40) + "...";
-        }
         
         // Add timestamp if we haven't just added one very close to this time
         const formattedTime = formatTime(currentTime);
