@@ -31,6 +31,7 @@ export function initVisualizer() {
   const tableHeadRow = document.getElementById('table-head-row');
   const tableBody = document.getElementById('table-body');
   const btnExportCsv = document.getElementById('btn-export-csv');
+  const rowCountEl = document.getElementById('row-count');
 
   let currentData = [];
 
@@ -41,29 +42,39 @@ export function initVisualizer() {
       return;
     }
 
-    try {
-      const parsed = JSON.parse(rawVal);
-      
-      // Ensure it's an array for table rendering
-      const dataArray = Array.isArray(parsed) ? parsed : [parsed];
-      
-      if (dataArray.length === 0) {
-        showError("The JSON array is empty.");
-        return;
-      }
+    const originalText = btnVisualize.textContent;
+    btnVisualize.textContent = "Processing...";
+    btnVisualize.disabled = true;
 
-      // Flatten each object in the array
-      currentData = dataArray.map(obj => flattenObject(obj));
-      
-      renderTable(currentData);
-      hideError();
-      tableContainer.classList.remove('hidden');
-      tableContainer.classList.add('flex');
-    } catch (e) {
-      showError("Invalid JSON: " + e.message);
-      tableContainer.classList.add('hidden');
-      tableContainer.classList.remove('flex');
-    }
+    // Use a small timeout to allow the browser to paint the "Processing..." text
+    setTimeout(() => {
+      try {
+        const parsed = JSON.parse(rawVal);
+        
+        // Ensure it's an array for table rendering
+        const dataArray = Array.isArray(parsed) ? parsed : [parsed];
+        
+        if (dataArray.length === 0) {
+          showError("The JSON array is empty.");
+          return;
+        }
+
+        // Flatten each object in the array
+        currentData = dataArray.map(obj => flattenObject(obj));
+        
+        renderTable(currentData);
+        hideError();
+        tableContainer.classList.remove('hidden');
+        tableContainer.classList.add('flex');
+      } catch (e) {
+        showError("Invalid JSON: " + e.message);
+        tableContainer.classList.add('hidden');
+        tableContainer.classList.remove('flex');
+      } finally {
+        btnVisualize.textContent = originalText;
+        btnVisualize.disabled = false;
+      }
+    }, 50);
   });
 
   btnExportCsv.addEventListener('click', () => {
@@ -112,6 +123,12 @@ export function initVisualizer() {
     // Render Body (limit to 100 rows for browser performance)
     tableBody.innerHTML = '';
     const renderLimit = Math.min(data.length, 100);
+    
+    if (data.length > renderLimit) {
+      rowCountEl.textContent = `Showing ${renderLimit} of ${data.length} rows (Export CSV for all data)`;
+    } else {
+      rowCountEl.textContent = `Showing ${data.length} ${data.length === 1 ? 'row' : 'rows'}`;
+    }
     
     for (let i = 0; i < renderLimit; i++) {
       const row = data[i];

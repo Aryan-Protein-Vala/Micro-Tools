@@ -34,7 +34,10 @@
   <!-- Output Table Container -->
   <div id="table-container" class="hidden flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-ink">Flattened Data</h3>
+      <div class="flex items-center gap-3">
+        <h3 class="text-lg font-semibold text-ink">Flattened Data</h3>
+        <span id="row-count" class="text-sm font-medium text-mute hidden md:block"></span>
+      </div>
       <div class="flex gap-2">
         <button id="btn-export-csv" class="bg-canvas text-ink border border-hairline text-sm font-medium px-4 py-2 rounded-md hover:bg-canvas-soft transition-colors shadow-level-1 flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
