@@ -34,6 +34,14 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
         </label>
 
         <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-suffix" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Strip Co. Suffixes</div>
+            <div class="text-xs text-muted-foreground">Remove Inc, LLC, etc.</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 cursor-pointer group">
           <input type="checkbox" id="rule-lowercase-email" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
           <div>
             <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Lowercase Emails</div>

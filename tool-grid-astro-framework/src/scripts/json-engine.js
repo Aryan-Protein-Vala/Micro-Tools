@@ -3,20 +3,18 @@ import Papa from 'papaparse';
 /**
  * Flattens a nested JSON object into a single-depth object with dot-notated keys.
  */
-function flattenObject(ob) {
-  const result = {};
+function flattenObject(ob, result = {}, prefix = '', depth = 0) {
+  if (depth > 50) return result; // Maximum call stack protection
   
   for (const i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
     
+    const newKey = prefix ? `${prefix}.${i}` : i;
+    
     if (typeof ob[i] === 'object' && ob[i] !== null && !Array.isArray(ob[i])) {
-      const flatObject = flattenObject(ob[i]);
-      for (const x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) continue;
-        result[i + '.' + x] = flatObject[x];
-      }
+      flattenObject(ob[i], result, newKey, depth + 1);
     } else {
-      result[i] = ob[i];
+      result[newKey] = ob[i];
     }
   }
   return result;

@@ -134,6 +134,7 @@ function applyRules() {
     trim: document.getElementById('rule-trim')?.checked,
     empty: document.getElementById('rule-empty')?.checked,
     titlecase: document.getElementById('rule-titlecase')?.checked,
+    suffix: document.getElementById('rule-suffix')?.checked,
     lowercaseEmail: document.getElementById('rule-lowercase-email')?.checked,
     dedupe: document.getElementById('rule-dedupe')?.checked,
     dedupeCol: document.getElementById('dedupe-column')?.value
@@ -155,12 +156,13 @@ function applyRules() {
       });
     }
 
-    // Identify Name and Email columns
+    // Identify Name, Email, and Company columns
     const nameCols = cleanedHeaders.filter(h => {
       const lower = h.toLowerCase();
       return lower.includes('name') || lower === 'first' || lower === 'last';
     });
     const emailCols = cleanedHeaders.filter(h => h.toLowerCase().includes('email'));
+    const companyCols = cleanedHeaders.filter(h => h.toLowerCase().includes('company') || h.toLowerCase().includes('organization'));
 
     // Row-level transformations
     processed = processed.map(row => {
@@ -182,6 +184,13 @@ function applyRules() {
         // Rule: Title Case Names
         if (rules.titlecase && nameCols.includes(key)) {
           val = toTitleCase(val);
+        }
+        
+        // Rule: Strip Company Suffixes safely with word boundaries
+        if (rules.suffix && companyCols.includes(key)) {
+          val = val.replace(/\\b(LLC|Inc\\.?|Incorporated|GmbH|Corp\\.?|Ltd\\.?)\\b/gi, '').trim();
+          // Remove trailing commas if left over
+          val = val.replace(/,\\s*$/, '');
         }
         
         // Rule: Lowercase Emails

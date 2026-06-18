@@ -1,4 +1,4 @@
-import imglyRemoveBackground from '@imgly/background-removal';
+import { removeBackground } from '@imgly/background-removal';
 
 export function setupUI() {
   const dropzone = document.getElementById('image-dropzone');
@@ -70,7 +70,7 @@ export function setupUI() {
 
     try {
       // Configuration to use public paths if necessary, but defaults work in modern bundlers
-      const blob = await imglyRemoveBackground(currentFile, {
+      const blob = await removeBackground(currentFile, {
         progress: (key, current, total) => {
           if (statusText) statusText.textContent = `Downloading AI models: ${key} (${Math.round((current/total)*100)}%)`;
         }
