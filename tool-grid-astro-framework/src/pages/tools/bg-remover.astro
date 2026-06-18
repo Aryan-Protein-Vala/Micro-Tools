@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Free HD Image Background Remover - ToolGrid">
+  <ToolWorkspace title="Background Remover" toolName="bg-remover" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <p class="text-sm text-muted-foreground">Select an image and our on-device AI will automatically detect the subject and remove the background.</p>
+
+        <div class="pt-4 space-y-2 border-t border-border">
+          <button id="btn-remove-bg" disabled class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed">
+            Remove Background
+          </button>
+          
+          <a id="btn-download" class="w-full px-4 py-2 bg-green-500 text-background text-sm font-medium rounded-md hover:bg-green-600 transition-smooth hidden items-center justify-center gap-2 cursor-pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Transparent PNG
+          </a>
+          
+          <button id="btn-reset" class="w-full px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+            Start Over
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">HD Background Remover</h2>
+        <p class="text-muted-foreground text-sm">Instantly remove backgrounds securely in your browser. Zero uploads.</p>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-4">
+        <!-- Dropzone -->
+        <div id="image-dropzone" class="flex-1 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-smooth bg-black/20 min-h-[300px]">
+          <div class="text-4xl mb-4 opacity-80">🖼️</div>
+          <h3 class="text-xl font-bold mb-2">Drop your JPG/PNG file</h3>
+          <p class="text-sm text-muted-foreground">High resolution supported</p>
+          <input type="file" id="image-file-input" accept="image/*" class="hidden" />
+        </div>
+
+        <!-- Preview & Progress -->
+        <div id="preview-container" class="hidden flex-1 flex flex-col gap-4">
+          <p id="bg-status" class="hidden text-sm font-mono text-center mb-4 text-muted-foreground"></p>
+          <div class="grid grid-cols-2 gap-4 h-full min-h-[400px]">
+            <div class="bg-black/40 border border-border rounded-lg overflow-hidden flex flex-col relative bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzIyMiIvPgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMzMzMiLz4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMzMzMiLz4KPC9zdmc+')]">
+              <span class="absolute top-2 left-2 bg-black/80 px-2 py-1 rounded text-xs text-white z-10">Original</span>
+              <img id="original-preview" class="w-full h-full object-contain" />
+            </div>
+            <div class="bg-black/40 border border-border rounded-lg overflow-hidden flex flex-col relative bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzIyMiIvPgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMzMzMiLz4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMzMzMiLz4KPC9zdmc+')]">
+              <span class="absolute top-2 left-2 bg-black/80 px-2 py-1 rounded text-xs text-white z-10">Result</span>
+              <img id="result-preview" class="w-full h-full object-contain" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/bg-engine.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    setupUI();
+  });
+</script>

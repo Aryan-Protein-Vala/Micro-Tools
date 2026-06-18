@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Free Custom Ad-Blocker Generator - ToolGrid">
+  <ToolWorkspace title="Ad-Blocker Generator" toolName="ad-blocker" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <p class="text-sm text-muted-foreground">Generate a custom Manifest V3 Chrome extension compiled directly in your browser.</p>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Extension Name</label>
+          <input type="text" id="name-input" value="My Custom Ad-Blocker" class="w-full p-2 bg-black/40 border border-border rounded text-sm text-foreground focus:outline-none focus:border-accent" />
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Protection Level</label>
+          <select id="level-select" class="w-full p-2 bg-black/40 border border-border rounded text-sm text-foreground focus:outline-none focus:border-accent">
+            <option value="standard">Standard (Ads Only)</option>
+            <option value="aggressive">Aggressive (Ads + Trackers)</option>
+            <option value="paranoid">Paranoid (Ads, Trackers, Social Widgets)</option>
+          </select>
+        </div>
+
+        <div class="pt-4 border-t border-border">
+          <button id="btn-generate" class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth flex items-center justify-center gap-2 cursor-pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Extension .ZIP
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">Build Your Own Ad-Blocker</h2>
+        <p class="text-muted-foreground text-sm">Don't trust third-party ad blockers? Generate your own zero-trust extension.</p>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-6 items-center justify-center border border-border rounded-xl bg-black/20 p-8">
+        <div class="text-center max-w-md">
+          <div class="text-5xl mb-6">🛡️</div>
+          <h3 class="text-xl font-bold mb-4">How to install</h3>
+          <ol class="text-left text-sm text-muted-foreground space-y-3 list-decimal pl-5">
+            <li>Choose your protection level and click <strong>Download Extension</strong>.</li>
+            <li>Unzip the downloaded folder on your computer.</li>
+            <li>Open Chrome and navigate to <code class="bg-black/50 px-2 py-1 rounded">chrome://extensions</code></li>
+            <li>Enable <strong>"Developer mode"</strong> in the top right corner.</li>
+            <li>Click <strong>"Load unpacked"</strong> and select your unzipped folder.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/adblock-engine.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    setupUI();
+  });
+</script>

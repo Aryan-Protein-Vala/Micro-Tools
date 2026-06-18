@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="CSV Data Sanitizer - ToolGrid">
+  <ToolWorkspace title="CSV Data Sanitizer" toolName="csv-cleaner" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-trim" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Trim Whitespace</div>
+            <div class="text-xs text-muted-foreground">Remove leading/trailing spaces</div>
+          </div>
+        </label>
+        
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-empty" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Drop Empty Rows</div>
+            <div class="text-xs text-muted-foreground">Remove rows with no data</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-titlecase" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Title Case Names</div>
+            <div class="text-xs text-muted-foreground">Format "name" columns</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-lowercase-email" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Lowercase Emails</div>
+            <div class="text-xs text-muted-foreground">Format "email" columns</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="rule-dedupe" checked class="mt-1 bg-black/40 border-border rounded text-accent focus:ring-accent" />
+          <div>
+            <div class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Remove Duplicates</div>
+            <div class="text-xs text-muted-foreground">Deduplicate based on a column</div>
+          </div>
+        </label>
+
+        <div class="dedupe-selector-wrapper pl-7 hidden" id="dedupe-selector-wrapper">
+          <label for="dedupe-column" class="text-xs text-muted-foreground block mb-1">Deduplicate by Column:</label>
+          <select id="dedupe-column" class="w-full bg-black/40 border border-border rounded-md text-sm p-2 text-foreground focus:border-accent focus:ring-1 focus:ring-accent outline-none">
+            <option value="">Select a column...</option>
+          </select>
+        </div>
+
+        <div class="pt-4 space-y-2 border-t border-border">
+          <button id="btn-process" class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth">
+            Apply Rules
+          </button>
+          <button id="btn-download" class="w-full px-4 py-2 bg-green-500 text-background text-sm font-medium rounded-md hover:bg-green-600 transition-smooth hidden flex items-center justify-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Clean CSV
+          </button>
+          <button id="btn-reset" class="w-full px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+            Start Over
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">CSV Data Sanitizer</h2>
+        <p class="text-muted-foreground">Drop your messy export below. Processing runs entirely in your browser.</p>
+      </div>
+
+      <div class="flex-1 min-h-[300px]">
+        <div id="csv-dropzone" class="h-full border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-smooth bg-black/20">
+          <div class="text-4xl mb-4 opacity-80">📁</div>
+          <h3 class="text-xl font-bold mb-2">Drag & Drop your CSV file</h3>
+          <p class="text-sm text-muted-foreground">or click to browse from your computer</p>
+          <input type="file" id="csv-file-input" accept=".csv" class="hidden" />
+        </div>
+
+        <div id="cleaner-workspace" class="hidden h-full flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-lg">Data Preview</h3>
+            <div id="processing-stats" class="hidden flex gap-2">
+              <span id="stat-rows" class="text-xs px-3 py-1 bg-muted/20 rounded-full font-medium">Rows: 0</span>
+              <span id="stat-removed" class="text-xs px-3 py-1 bg-red-500/20 text-red-400 rounded-full font-medium">Removed: 0</span>
+            </div>
+          </div>
+          
+          <div class="flex-1 bg-black/40 border border-border rounded-lg overflow-auto border-collapse">
+            <div id="table-empty-state" class="flex h-full items-center justify-center text-muted-foreground text-sm p-8 text-center">
+              File loaded. Click "Apply Rules" to preview data.
+            </div>
+            <table id="preview-table" class="hidden w-full text-sm text-left">
+              <thead id="preview-thead" class="text-xs uppercase bg-muted/20 text-muted-foreground sticky top-0"></thead>
+              <tbody id="preview-tbody" class="divide-y divide-border"></tbody>
+            </table>
+          </div>
+          <div id="table-footer" class="hidden text-xs text-muted-foreground text-center mt-3">
+            Showing first 10 rows. Download to see all data.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  // Import the engine
+  import '../../scripts/cleaner-engine.js';
+</script>

@@ -1,0 +1,43 @@
+---
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<ToolWorkspace title="Design Canvas" toolName="design-canvas">
+  <div class="space-y-6">
+    <!-- Canvas Area -->
+    <div class="w-full h-[500px] border border-border rounded-lg bg-muted/5 flex items-center justify-center">
+      <div class="text-center">
+        <svg class="w-12 h-12 mx-auto mb-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+        </svg>
+        <h3 class="text-lg font-semibold mb-2">Start Creating</h3>
+        <p class="text-sm text-muted-foreground">Select a shape or text tool to begin</p>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div>
+      <h3 class="text-sm font-semibold mb-3">Tools</h3>
+      <div class="grid grid-cols-4 gap-2">
+        <button class="px-3 py-2 bg-accent text-background rounded-md text-xs font-medium transition-smooth">
+          ✎
+        </button>
+        <button class="px-3 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-xs font-medium rounded-md transition-smooth">
+          ⬜
+        </button>
+        <button class="px-3 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-xs font-medium rounded-md transition-smooth">
+          ⭕
+        </button>
+        <button class="px-3 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-xs font-medium rounded-md transition-smooth">
+          T
+        </button>
+      </div>
+    </div>
+
+    <!-- Layers Panel -->
+    <div class="p-4 bg-muted/10 rounded-lg border border-border">
+      <h3 class="text-sm font-semibold mb-3">Layers</h3>
+      <p class="text-xs text-muted-foreground">No layers yet. Start creating to add elements.</p>
+    </div>
+  </div>
+</ToolWorkspace>

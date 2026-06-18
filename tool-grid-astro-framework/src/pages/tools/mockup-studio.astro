@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Free Device Mockup Studio - ToolGrid">
+  <ToolWorkspace title="Mockup Studio" toolName="mockup-studio" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <p class="text-sm text-muted-foreground">Wrap your app screenshots in beautiful device frames instantly.</p>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Device Frame</label>
+          <select id="device-select" class="w-full p-2 bg-black/40 border border-border rounded text-sm text-foreground focus:outline-none focus:border-accent">
+            <option value="laptop">MacBook Pro Style</option>
+            <option value="phone">iPhone Style</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Background</label>
+          <select id="bg-select" class="w-full p-2 bg-black/40 border border-border rounded text-sm text-foreground focus:outline-none focus:border-accent">
+            <option value="gradient">Vibrant Gradient</option>
+            <option value="solid">Solid Gray</option>
+            <option value="transparent">Transparent PNG</option>
+          </select>
+        </div>
+
+        <div class="pt-4 space-y-2 border-t border-border">
+          <button id="btn-export" disabled class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Mockup
+          </button>
+          
+          <button id="btn-reset" class="w-full px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+            Start Over
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">Device Mockup Studio</h2>
+        <p class="text-muted-foreground text-sm">Generate high-res 4K device mockups for your portfolio or landing page.</p>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-4">
+        <!-- Dropzone -->
+        <div id="image-dropzone" class="flex-1 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-smooth bg-black/20 min-h-[300px]">
+          <div class="text-4xl mb-4 opacity-80">💻</div>
+          <h3 class="text-xl font-bold mb-2">Drop your App Screenshot</h3>
+          <p class="text-sm text-muted-foreground">We'll automatically frame it perfectly.</p>
+          <input type="file" id="image-file-input" accept="image/*" class="hidden" />
+        </div>
+
+        <!-- Preview -->
+        <div id="preview-container" class="hidden flex-1 flex flex-col gap-4">
+          <div class="bg-black/40 border border-border rounded-lg overflow-hidden flex-1 flex items-center justify-center relative min-h-[500px]">
+            <!-- Render target canvas for the mockup engine -->
+            <canvas id="mockup-canvas" class="max-w-full max-h-full object-contain" style="width: 100%; height: 100%;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/mockup-engine.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    setupUI();
+  });
+</script>

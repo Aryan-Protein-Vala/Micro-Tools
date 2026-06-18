@@ -1,0 +1,40 @@
+---
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<ToolWorkspace title="Code Editor" toolName="code-editor">
+  <div class="space-y-4">
+    <!-- Language/File Selector -->
+    <div class="flex gap-2 pb-4 border-b border-border">
+      <select class="px-3 py-2 bg-muted/20 text-foreground text-sm rounded-md border border-border/50">
+        <option>JavaScript</option>
+        <option>TypeScript</option>
+        <option>Python</option>
+        <option>HTML</option>
+        <option>CSS</option>
+      </select>
+      <button class="px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth ml-auto">
+        Run
+      </button>
+    </div>
+
+    <!-- Editor Area -->
+    <div class="space-y-2">
+      <div class="text-xs text-muted-foreground mb-2">editor.js</div>
+      <pre class="h-[400px] bg-muted/5 rounded-lg p-4 overflow-auto text-sm font-mono text-foreground border border-border/50"><code>{`// Start typing your code here
+function hello() {
+  console.log('Welcome to ToolGrid');
+}
+
+hello();`}</code></pre>
+    </div>
+
+    <!-- Output Panel -->
+    <div>
+      <h3 class="text-sm font-semibold mb-2">Output</h3>
+      <div class="bg-black/60 rounded-lg p-4 h-24 overflow-auto border border-border">
+        <p class="text-xs text-green-400 font-mono">Welcome to ToolGrid</p>
+      </div>
+    </div>
+  </div>
+</ToolWorkspace>

@@ -1,0 +1,169 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="ATS Resume Keyword Matcher - ToolGrid">
+  <ToolWorkspace title="ATS Resume Matcher" toolName="ats-matcher" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-3">
+        <button id="scan-again-btn-side" class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth">
+          Reset / New Scan
+        </button>
+        <button class="w-full px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+          Export Report
+        </button>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="flex flex-col gap-6 h-full">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">Analyze Your Resume in Seconds</h2>
+        <p class="text-muted-foreground text-sm">Paste your resume and the job description below. We'll find exact keyword matches and missing terms.</p>
+      </div>
+
+      <div id="scanner-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+        <div class="flex flex-col gap-2 h-full">
+          <div class="flex items-center justify-between">
+            <label for="resume-input" class="font-bold text-sm">Your Resume</label>
+            <span class="text-xs text-muted-foreground" id="resume-count">0 words</span>
+          </div>
+          <textarea id="resume-input" class="flex-1 w-full p-4 bg-black/40 border border-border rounded-lg text-sm text-foreground focus:border-accent focus:ring-1 focus:ring-accent outline-none resize-none min-h-[300px]" placeholder="Paste your entire resume text here..."></textarea>
+        </div>
+
+        <div class="flex flex-col gap-2 h-full">
+          <div class="flex items-center justify-between">
+            <label for="job-input" class="font-bold text-sm">Job Description</label>
+            <span class="text-xs text-muted-foreground" id="job-count">0 words</span>
+          </div>
+          <textarea id="job-input" class="flex-1 w-full p-4 bg-black/40 border border-border rounded-lg text-sm text-foreground focus:border-accent focus:ring-1 focus:ring-accent outline-none resize-none min-h-[300px]" placeholder="Paste the job description here..."></textarea>
+        </div>
+      </div>
+
+      <div id="scanner-actions" class="text-center pt-4 border-t border-border">
+        <button id="analyze-btn" disabled class="px-8 py-3 bg-accent text-background font-bold rounded-full hover:bg-accent/90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/></svg>
+          <span id="analyze-text">Analyze Match</span>
+        </button>
+      </div>
+
+      <!-- Results Container -->
+      <div id="results-container" class="hidden flex-col gap-8 mt-4"></div>
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<style is:global>
+  .score-ring-wrapper{position:relative;width:150px;height:150px;margin:0 auto}
+  .score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .score-ring-bg{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:8}
+  .score-ring-fill{fill:none;stroke:var(--color-accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)}
+  .score-value{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.5rem;font-weight:800;color:var(--color-foreground)}
+</style>
+
+<script>
+  import { analyzeMatch } from '../../scripts/scanner-engine.js';
+  const resumeInput = document.getElementById('resume-input') as HTMLTextAreaElement;
+  const jobInput = document.getElementById('job-input') as HTMLTextAreaElement;
+  const analyzeBtn = document.getElementById('analyze-btn') as HTMLButtonElement;
+  const analyzeText = document.getElementById('analyze-text') as HTMLSpanElement;
+  const resumeCount = document.getElementById('resume-count')!;
+  const jobCount = document.getElementById('job-count')!;
+  const resultsContainer = document.getElementById('results-container')!;
+  const scannerInputs = document.getElementById('scanner-inputs')!;
+  const scannerActions = document.getElementById('scanner-actions')!;
+  const scanAgainBtnSide = document.getElementById('scan-again-btn-side')!;
+
+  function wordCount(text: string) {
+    return text.trim() ? text.trim().split(/\s+/).length : 0;
+  }
+
+  function updateCounts() {
+    resumeCount.textContent = `${wordCount(resumeInput.value)} words`;
+    jobCount.textContent = `${wordCount(jobInput.value)} words`;
+    analyzeBtn.disabled = !(resumeInput.value.trim().length > 20 && jobInput.value.trim().length > 20);
+  }
+
+  resumeInput.addEventListener('input', updateCounts);
+  jobInput.addEventListener('input', updateCounts);
+
+  function resetScanner() {
+    resumeInput.value = '';
+    jobInput.value = '';
+    resultsContainer.style.display = 'none';
+    resultsContainer.innerHTML = '';
+    scannerInputs.style.display = 'grid';
+    scannerActions.style.display = 'block';
+    updateCounts();
+  }
+
+  scanAgainBtnSide.addEventListener('click', resetScanner);
+
+  function renderResults(result: any) {
+    scannerInputs.style.display = 'none';
+    scannerActions.style.display = 'none';
+    
+    const circumference = 2 * Math.PI * 65; // r=65 for 150px wrapper with 8px stroke
+    const offset = circumference - (result.score / 100) * circumference;
+
+    resultsContainer.innerHTML = `
+      <div class="text-center">
+        <div class="score-ring-wrapper mb-4">
+          <div class="score-ring">
+            <svg viewBox="0 0 150 150">
+              <circle class="score-ring-bg" cx="75" cy="75" r="65"/>
+              <circle class="score-ring-fill" cx="75" cy="75" r="65" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" style="--target:${offset}"/>
+            </svg>
+          </div>
+          <div class="score-value">${result.score}%</div>
+        </div>
+        <h3 class="text-xl font-bold">Match Score</h3>
+        <p class="text-muted-foreground text-sm mt-2">Analyzed ${result.totalKeywords} keywords</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-black/40 border border-border rounded-lg p-6">
+          <h4 class="font-bold mb-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Matched Keywords</h4>
+          <div class="flex flex-wrap gap-2">
+            ${result.matched.map((k:any) => `<span class="px-2 py-1 bg-green-500/10 text-green-400 text-xs rounded-full border border-green-500/20">${k.keyword}</span>`).join('') || '<span class="text-muted-foreground text-sm">No exact matches</span>'}
+          </div>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-6">
+          <h4 class="font-bold mb-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> Missing Keywords</h4>
+          <div class="flex flex-wrap gap-2">
+            ${result.missing.map((k:any) => `<span class="px-2 py-1 bg-red-500/10 text-red-400 text-xs rounded-full border border-red-500/20">${k.keyword}</span>`).join('') || '<span class="text-muted-foreground text-sm">No missing keywords!</span>'}
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center pt-4">
+        <button id="scan-again-btn-main" class="px-6 py-2 bg-muted/20 hover:bg-muted/30 text-foreground font-medium rounded-full transition-smooth">
+          Scan Another Resume
+        </button>
+      </div>
+    `;
+    
+    resultsContainer.style.display = 'flex';
+    
+    requestAnimationFrame(() => {
+      const ring = resultsContainer.querySelector('.score-ring-fill') as SVGCircleElement;
+      if (ring) ring.style.strokeDashoffset = `${offset}`;
+    });
+
+    document.getElementById('scan-again-btn-main')?.addEventListener('click', resetScanner);
+  }
+
+  analyzeBtn.addEventListener('click', () => {
+    analyzeText.textContent = 'Analyzing...';
+    analyzeBtn.disabled = true;
+    setTimeout(() => {
+      const result = analyzeMatch(resumeInput.value, jobInput.value);
+      if (result) renderResults(result);
+      analyzeText.textContent = 'Analyze Match';
+      analyzeBtn.disabled = false;
+    }, 800);
+  });
+</script>

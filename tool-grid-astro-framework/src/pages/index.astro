@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import BentoGrid from '../components/BentoGrid.astro';
+import ToolCard from '../components/ToolCard.astro';
+
+const tools = [
+  {
+    title: 'ATS Resume Matcher',
+    description: 'Bypass applicant tracking systems. Analyze your resume against job descriptions to extract missing skills instantly.',
+    href: '/tools/ats-matcher',
+    size: 'lg' as const,
+    featured: true,
+  },
+  {
+    title: 'CSV Data Sanitizer',
+    description: 'Clean, format, and deduplicate messy B2B lead lists or CRM exports directly in your browser. Zero data leaves your device.',
+    href: '/tools/csv-cleaner',
+    size: 'md' as const,
+  },
+  {
+    title: 'JSON to Table Visualizer',
+    description: 'Instantly transform dense, nested API payloads into highly readable, tabular formats with CSV export.',
+    href: '/tools/json-visualizer',
+    size: 'sm' as const,
+  },
+  {
+    title: 'HD Background Remover',
+    description: 'Use on-device AI to instantly remove backgrounds securely in your browser. Zero uploads.',
+    href: '/tools/bg-remover',
+    size: 'md' as const,
+  },
+  {
+    title: 'Free Video Compressor',
+    description: 'Compress high-bitrate video assets locally to bypass transmission restrictions. No watermarks, unlimited size.',
+    href: '/tools/video-compressor',
+    size: 'md' as const,
+  },
+  {
+    title: 'Image-to-Text OCR',
+    description: 'Securely extract text from photos, scans, and screenshots using WASM-powered OCR.',
+    href: '/tools/ocr-converter',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Device Mockup Studio',
+    description: 'Wrap your app screenshots in beautiful 4K device frames instantly.',
+    href: '/tools/mockup-studio',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Image Vectorizer',
+    description: 'Convert raster images (PNG/JPG) to scalable vector graphics (SVG) locally.',
+    href: '/tools/image-vectorizer',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Audio Converter',
+    description: 'Convert WAV, OGG, or Video tracks directly to MP3 without server uploads.',
+    href: '/tools/audio-converter',
+    size: 'md' as const,
+  },
+  {
+    title: 'Ad-Blocker Generator',
+    description: 'Generate a customized Manifest V3 zero-trust ad blocker extension on the fly.',
+    href: '/tools/ad-blocker',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Database Manager',
+    description: 'Manage and visualize your databases effortlessly.',
+    href: '/tools/db-manager',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Analytics Hub',
+    description: 'Monitor, analyze, and optimize your projects.',
+    href: '/tools/analytics',
+    size: 'md' as const,
+  },
+];
+---
+
+<Layout title="ToolGrid - Premium Multi-Tool Platform">
+  <Hero
+    title="Powerful Tools, Premium Experience"
+    subtitle="Creative Suite"
+    description="Discover a curated collection of professional-grade tools designed for modern creators, developers, and designers."
+  />
+
+  <!-- Tools Grid -->
+  <section id="tools" class="py-20 px-4">
+    <div class="container mx-auto max-w-7xl">
+      <div class="mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-balance">
+          Explore Our Tools
+        </h2>
+        <p class="text-lg text-muted-foreground">
+          Each tool is crafted with precision and attention to detail.
+        </p>
+      </div>
+
+      <BentoGrid>
+        {tools.map((tool) => (
+          <ToolCard
+            title={tool.title}
+            description={tool.description}
+            href={tool.href}
+            size={tool.size}
+          />
+        ))}
+      </BentoGrid>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="about" class="py-20 px-4 bg-gradient-to-b from-muted/5 to-transparent">
+    <div class="container mx-auto max-w-7xl">
+      <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+        Why Choose ToolGrid?
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="border border-border rounded-lg p-8 bg-black/40 hover:border-accent transition-smooth">
+          <div class="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Lightning Fast</h3>
+          <p class="text-sm text-muted-foreground">
+            Optimized performance for seamless workflows.
+          </p>
+        </div>
+
+        <div class="border border-border rounded-lg p-8 bg-black/40 hover:border-accent transition-smooth">
+          <div class="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Always Secure</h3>
+          <p class="text-sm text-muted-foreground">
+            Enterprise-grade security for your peace of mind.
+          </p>
+        </div>
+
+        <div class="border border-border rounded-lg p-8 bg-black/40 hover:border-accent transition-smooth">
+          <div class="w-12 h-12 bg-muted/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Fully Customizable</h3>
+          <p class="text-sm text-muted-foreground">
+            Tailor every tool to your specific needs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

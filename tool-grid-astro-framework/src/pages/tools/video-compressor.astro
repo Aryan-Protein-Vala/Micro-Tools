@@ -1,0 +1,88 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Free Large Video Compressor - ToolGrid">
+  <ToolWorkspace title="Video Compressor" toolName="video-compressor" hasContextPanel={true}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-sm">
+            <label class="font-medium text-foreground">Compression Target</label>
+            <span id="engine-status" class="text-xs text-yellow-500 font-mono">Initializing...</span>
+          </div>
+          
+          <!-- Slider: CRF 18 (High Q) to 35 (Low Q, High Compression) -->
+          <input type="range" id="quality-slider" min="18" max="35" value="28" class="w-full accent-accent" />
+          <p id="quality-value" class="text-xs text-muted-foreground text-center">Balanced Compression</p>
+        </div>
+
+        <div class="pt-4 space-y-2 border-t border-border">
+          <button id="btn-compress" disabled class="w-full px-4 py-2 bg-accent text-background text-sm font-medium rounded-md hover:bg-accent/90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed">
+            Compress Video
+          </button>
+          
+          <a id="btn-download" class="w-full px-4 py-2 bg-green-500 text-background text-sm font-medium rounded-md hover:bg-green-600 transition-smooth hidden items-center justify-center gap-2 cursor-pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save File
+          </a>
+          
+          <button id="btn-reset" class="w-full px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+            Start Over
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">Compress Videos Offline</h2>
+        <p class="text-muted-foreground text-sm">Reduce large video files directly in your browser. No server uploads, no watermarks, unlimited use.</p>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-4">
+        <!-- Dropzone -->
+        <div id="video-dropzone" class="flex-1 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-smooth bg-black/20 min-h-[300px]">
+          <div class="text-4xl mb-4 opacity-80">🎥</div>
+          <h3 class="text-xl font-bold mb-2">Drop your MP4/MOV file</h3>
+          <p class="text-sm text-muted-foreground">Up to 2GB supported natively in-browser</p>
+          <input type="file" id="video-file-input" accept="video/*" class="hidden" />
+        </div>
+
+        <!-- Preview & Progress -->
+        <div id="preview-container" class="hidden flex-1 flex flex-col gap-4">
+          <div class="bg-black/40 border border-border rounded-lg overflow-hidden flex-1 flex items-center justify-center">
+            <video id="video-preview" controls class="max-h-[400px] w-auto max-w-full"></video>
+          </div>
+          
+          <div id="progress-container" class="hidden bg-black/40 border border-border rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-bold" id="compression-progress">Preparing...</span>
+            </div>
+            <div class="w-full bg-muted/20 rounded-full h-2 overflow-hidden">
+              <div id="progress-bar-fill" class="bg-accent h-2 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div id="ffmpeg-logs-container" class="hidden">
+            <p class="text-xs font-bold text-muted-foreground mb-1">Engine Logs:</p>
+            <div id="ffmpeg-logs" class="bg-black/60 border border-border rounded-lg p-3 h-32 overflow-y-auto text-xs font-mono text-muted-foreground whitespace-pre-wrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/video-engine.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    setupUI();
+  });
+</script>

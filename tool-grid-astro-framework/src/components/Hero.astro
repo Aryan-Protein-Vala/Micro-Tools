@@ -1,0 +1,50 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  cta?: string;
+}
+
+const {
+  title = 'Welcome to ToolGrid',
+  subtitle = 'Premium Tools for Creators',
+  description = 'A carefully curated collection of powerful tools designed for modern creators and developers.',
+  cta = 'Explore Tools',
+} = Astro.props;
+---
+
+<section class="relative py-20 md:py-32 px-4 overflow-hidden">
+  <!-- Subtle gradient background -->
+  <div class="absolute inset-0 bg-gradient-to-b from-muted/5 to-transparent pointer-events-none"></div>
+
+  <div class="relative container mx-auto max-w-7xl">
+    <div class="text-center max-w-3xl mx-auto">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-border bg-black/40 backdrop-blur-sm">
+        <span class="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+        <span class="text-xs font-medium text-muted-foreground">{subtitle}</span>
+      </div>
+
+      <!-- Main title -->
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-balance">
+        {title}
+      </h1>
+
+      <!-- Description -->
+      <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto text-balance">
+        {description}
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button class="px-8 py-3 bg-accent text-background rounded-lg font-semibold hover:bg-muted-foreground transition-smooth hover:scale-105">
+          {cta}
+        </button>
+        <button class="px-8 py-3 border border-border text-foreground rounded-lg font-semibold hover:border-accent hover:bg-accent/5 transition-smooth">
+          Learn More
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

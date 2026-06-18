@@ -1,0 +1,46 @@
+---
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const title = 'Image Studio';
+const toolName = 'image-studio';
+---
+
+<ToolWorkspace title={title} toolName={toolName}>
+  <div class="space-y-6">
+    <!-- Upload Area -->
+    <div class="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-accent transition-colors cursor-pointer">
+      <svg class="w-12 h-12 mx-auto mb-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      <h3 class="text-lg font-semibold mb-1">Drop your image here</h3>
+      <p class="text-sm text-muted-foreground mb-4">or click to browse</p>
+      <p class="text-xs text-muted-foreground">PNG, JPG, WebP up to 50MB</p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div>
+      <h3 class="text-sm font-semibold mb-3">Quick Actions</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+          Resize
+        </button>
+        <button class="px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+          Crop
+        </button>
+        <button class="px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+          Enhance
+        </button>
+        <button class="px-4 py-2 bg-muted/20 hover:bg-muted/30 text-foreground text-sm rounded-md transition-smooth">
+          Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="p-4 bg-muted/10 rounded-lg border border-border">
+      <p class="text-xs text-muted-foreground">
+        Use this powerful image editor to resize, crop, enhance, and apply filters to your images. All processing is done locally for maximum privacy.
+      </p>
+    </div>
+  </div>
+</ToolWorkspace>

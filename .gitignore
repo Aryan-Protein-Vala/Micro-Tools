@@ -1,7 +1,23 @@
+# Ignore all markdown and pdf files as requested
+*.md
+*.pdf
+
+# Exception for README
+!README.md
+
+# Node
 node_modules/
-dist/
-.astro/
+.npm/
+
+# OS Files
 .DS_Store
-*.log
+.AppleDouble
+.LSOverride
+
+# Astro/Framework
+dist/
+.vercel/
+.netlify/
 .env
 .env.*
+!.env.example
