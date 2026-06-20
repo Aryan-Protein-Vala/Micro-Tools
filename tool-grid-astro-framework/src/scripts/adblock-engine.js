@@ -1,4 +1,4 @@
-import JSZip from 'jszip';
+// JSZip is lazy-loaded inside the click handler to prevent bundle bloat
 
 export function setupUI() {
   const btnGenerate = document.getElementById('btn-generate');
@@ -13,6 +13,7 @@ export function setupUI() {
     const extName = (nameInput?.value || 'Custom Ad-Blocker').trim();
 
     try {
+      const { default: JSZip } = await import('jszip');
       const zip = new JSZip();
 
       // 1. Generate Manifest V3

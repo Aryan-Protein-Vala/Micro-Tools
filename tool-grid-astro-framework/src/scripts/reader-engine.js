@@ -20,7 +20,11 @@ export function setupUI() {
       'error': 'text-red-400',
       'success': 'text-green-400'
     };
-    statusBox.innerHTML = `<span class="${colors[type]} font-medium">${msg}</span>`;
+    statusBox.textContent = '';
+    const span = document.createElement('span');
+    span.className = `${colors[type]} font-medium`;
+    span.textContent = msg;
+    statusBox.appendChild(span);
   };
 
   const getProxiedUrl = (url) => {

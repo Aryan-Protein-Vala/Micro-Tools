@@ -1,4 +1,4 @@
-import lamejs from 'lamejs';
+// lamejs is lazy-loaded inside the click handler to prevent bundle bloat
 
 export function setupUI() {
   const dropzone = document.getElementById('audio-dropzone');
@@ -73,6 +73,9 @@ export function setupUI() {
       if (statusText) statusText.textContent = "Encoding to MP3...";
 
       const bitrate = parseInt(bitrateSelect?.value || '128');
+      
+      // Lazy-load lamejs only when the user clicks Convert
+      const lamejs = (await import('lamejs')).default;
       
       // We encode using LameJS. LameJS expects 16-bit PCM.
       const channels = audioBuffer.numberOfChannels;

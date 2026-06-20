@@ -63,9 +63,14 @@ export function setupUI() {
     try {
       const { default: ImageTracer } = await import('imagetracerjs');
       ImageTracer.imageToSVG(originalPreview.src, (svgStr) => {
-        currentSvgString = svgStr;
+        // Sanitize: strip any script tags or event handlers from SVG output
+        let safeSvg = svgStr
+          .replace(/<script[\s\S]*?<\/script>/gi, '')
+          .replace(/\bon\w+\s*=\s*["'][^"']*["']/gi, '');
+        
+        currentSvgString = safeSvg;
         if (svgPreviewContainer) {
-          svgPreviewContainer.innerHTML = svgStr;
+          svgPreviewContainer.innerHTML = safeSvg;
           const svgEl = svgPreviewContainer.querySelector('svg');
           if (svgEl) {
             svgEl.style.width = '100%';
