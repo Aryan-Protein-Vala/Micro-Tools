@@ -35,6 +35,13 @@ export function setupUI() {
         },
         "host_permissions": [
           "<all_urls>"
+        ],
+        "content_scripts": [
+          {
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["youtube-skipper.js"],
+            "run_at": "document_end"
+          }
         ]
       };
 
@@ -52,7 +59,7 @@ export function setupUI() {
       };
 
       // Standard ad domains
-      const standardDomains = ['doubleclick.net', 'googleadservices.com', 'adnxs.com', 'criteo.com', 'taboola.com', 'outbrain.com', 'adsrvr.org'];
+      const standardDomains = ['doubleclick.net', 'googleadservices.com', 'googlesyndication.com', 'amazon-adsystem.com', 'adnxs.com', 'criteo.com', 'taboola.com', 'outbrain.com', 'adsrvr.org'];
       // Aggressive domains (trackers)
       const aggressiveDomains = ['google-analytics.com', 'hotjar.com', 'facebook.net', 'pixel.facebook.com'];
       
@@ -68,6 +75,43 @@ export function setupUI() {
 
       zip.file('manifest.json', JSON.stringify(manifest, null, 2));
       zip.file('rules.json', JSON.stringify(rules, null, 2));
+
+      // 3. Generate YouTube Skipper
+      const youtubeSkipperJS = `// youtube-skipper.js
+
+const removeYouTubeAds = () => {
+  // 1. Target the video player
+  const video = document.querySelector('video');
+  const adOverlay = document.querySelector('.ad-showing');
+
+  if (video && adOverlay) {
+    // Mute the ad to prevent audio spikes
+    video.muted = true;
+    
+    // Jump to the end of the ad instantly
+    if (video.duration) {
+      video.currentTime = video.duration;
+    }
+    
+    // Click the skip button if it exists in the DOM
+    const skipButton = document.querySelector('.ytp-ad-skip-button, .ytp-skip-ad-button');
+    if (skipButton) {
+      skipButton.click();
+    }
+  }
+
+  // 2. Remove static companion banners next to the video
+  const companionAds = document.querySelectorAll('#companion, #panels, .ytd-companion-slot-renderer');
+  companionAds.forEach(ad => ad.remove());
+};
+
+// Set up a high-performance observer to watch for DOM changes
+const observer = new MutationObserver(removeYouTubeAds);
+
+// Start observing the entire YouTube body for changes
+observer.observe(document.body, { childList: true, subtree: true });
+`;
+      zip.file('youtube-skipper.js', youtubeSkipperJS);
 
       // 3. Generate extension icon via Canvas
       const canvas = document.createElement('canvas');

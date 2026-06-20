@@ -1,16 +1,15 @@
 export function setupUI() {
+  let currentImage = null;
   const dropzone = document.getElementById('image-dropzone');
   const fileInput = document.getElementById('image-file-input');
   const previewContainer = document.getElementById('preview-container');
   const canvas = document.getElementById('mockup-canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas?.getContext('2d');
   
   const deviceSelect = document.getElementById('device-select');
   const bgSelect = document.getElementById('bg-select');
   const btnExport = document.getElementById('btn-export');
   const btnReset = document.getElementById('btn-reset');
-
-  let currentImage = null;
 
   dropzone?.addEventListener('click', () => fileInput?.click());
   dropzone?.addEventListener('dragover', (e) => {

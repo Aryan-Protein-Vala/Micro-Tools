@@ -1,5 +1,4 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile } from '@ffmpeg/util';
+// Lazy load ffmpeg to prevent bundle bloat
 
 let ffmpeg = null;
 let isLoaded = false;
@@ -7,6 +6,7 @@ let currentFile = null;
 
 export async function initFFmpeg() {
   if (isLoaded) return;
+  const { FFmpeg } = await import('@ffmpeg/ffmpeg');
   ffmpeg = new FFmpeg();
 
   // Listen to progress
@@ -131,6 +131,7 @@ export function setupUI() {
 
     try {
       // Write file to WASM memory
+      const { fetchFile } = await import('@ffmpeg/util');
       await ffmpeg.writeFile('input.mp4', await fetchFile(currentFile));
       
       // Execute compression

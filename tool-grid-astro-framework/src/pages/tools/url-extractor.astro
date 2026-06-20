@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Bulk URL Extractor | ToolGrid" description="Extract, clean, and batch-open URLs from messy text or CSVs securely in your browser.">
+  <ToolWorkspace
+    title="Bulk URL Extractor"
+    description="Extract, clean, and batch-open URLs from messy text blocks securely in your browser."
+    icon="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Input Column -->
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Paste Text containing URLs</label>
+          <textarea
+            id="url-input"
+            rows="10"
+            class="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all font-mono text-sm resize-none"
+            placeholder="Paste raw CSV, an article, or messy text here..."
+          ></textarea>
+        </div>
+
+        <div class="flex items-center gap-3 bg-white/5 border border-white/10 p-4 rounded-xl">
+          <input type="checkbox" id="strip-utm" class="w-5 h-5 rounded border-white/20 bg-black/50 text-white cursor-pointer" checked />
+          <label for="strip-utm" class="text-sm font-medium text-white cursor-pointer select-none">
+            Strip UTM Tracking Parameters
+            <p class="text-xs text-white/50 font-normal mt-0.5">Removes ?utm_source=... for cleaner, more private links.</p>
+          </label>
+        </div>
+
+        <button
+          id="btn-extract"
+          class="w-full py-4 px-6 bg-white text-black font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2 group"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:translate-y-[2px] transition-transform"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Extract URLs
+        </button>
+      </div>
+
+      <!-- Output Column -->
+      <div class="relative bg-black/50 rounded-2xl border border-white/10 flex flex-col p-6 overflow-hidden min-h-[400px]">
+        
+        <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 transition-opacity duration-300">
+          <div class="w-24 h-24 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-white/20"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <p class="text-sm text-white/40 max-w-[200px] mx-auto">Extracted URLs will appear here</p>
+        </div>
+
+        <div id="results-view" class="hidden flex-col h-full opacity-0 transition-opacity duration-300 z-10">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-white">Extracted Links <span id="url-count" class="text-xs font-normal bg-white/10 px-2 py-0.5 rounded-full ml-2">0</span></h3>
+            <div class="flex gap-2">
+              <button id="btn-copy-all" class="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="Copy All">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[300px] custom-scrollbar" id="url-list">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <button
+              id="btn-open-all"
+              class="w-full py-3 px-6 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all flex items-center justify-center gap-2 border border-white/10"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Batch Open in New Tabs
+            </button>
+            <p class="text-[10px] text-white/30 text-center mt-2">Note: Your browser may block popups. You might need to allow popups for this site.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+</style>
+
+<script>
+  import { setupUI } from '../../scripts/url-engine.js';
+  
+  document.addEventListener('astro:page-load', setupUI);
+  document.addEventListener('DOMContentLoaded', setupUI);
+</script>

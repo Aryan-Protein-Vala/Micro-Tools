@@ -1,4 +1,4 @@
-import ImageTracer from 'imagetracerjs';
+// Lazy load imagetracerjs inside the process function to prevent bundle bloat
 
 export function setupUI() {
   const dropzone = document.getElementById('image-dropzone');
@@ -52,7 +52,7 @@ export function setupUI() {
     }
   }
 
-  btnProcess?.addEventListener('click', () => {
+  btnProcess?.addEventListener('click', async () => {
     if (!currentFile || !originalPreview.src) return;
     
     btnProcess.disabled = true;
@@ -61,6 +61,7 @@ export function setupUI() {
     const preset = presetSelect?.value || 'default';
     
     try {
+      const { default: ImageTracer } = await import('imagetracerjs');
       ImageTracer.imageToSVG(originalPreview.src, (svgStr) => {
         currentSvgString = svgStr;
         if (svgPreviewContainer) {

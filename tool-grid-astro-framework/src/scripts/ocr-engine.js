@@ -1,4 +1,4 @@
-import Tesseract from 'tesseract.js';
+// Lazy load tesseract.js inside the process function to prevent bundle bloat
 
 export function setupUI() {
   const dropzone = document.getElementById('image-dropzone');
@@ -67,6 +67,7 @@ export function setupUI() {
     if (originalPreview) originalPreview.classList.add('opacity-50');
 
     try {
+      const { default: Tesseract } = await import('tesseract.js');
       const result = await Tesseract.recognize(
         currentFile,
         'eng',

@@ -78,18 +78,17 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
 </Layout>
 
 <script>
-  import { initVisualizer } from '../../scripts/json-engine.js';
+  import { setupUI } from '../../scripts/json-engine.js';
   
-  document.addEventListener('DOMContentLoaded', () => {
-    initVisualizer();
-
-    // Hook up side controls
-    const exportBtnSide = document.getElementById('btn-export-csv-side');
-    const exportBtnMain = document.getElementById('btn-export-csv');
+  function initVisualizer() {
+    setupUI();
+    
     const resetBtn = document.getElementById('btn-reset');
     const inputSection = document.getElementById('input-section');
     const tableContainer = document.getElementById('table-container');
     const jsonInput = document.getElementById('json-input') as HTMLTextAreaElement;
+    const exportBtnSide = document.getElementById('btn-export-csv-side');
+    const exportBtnMain = document.getElementById('btn-export-csv');
     
     // Show side export button when main table container is visible
     const observer = new MutationObserver(() => {
@@ -115,5 +114,8 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
       const errorContainer = document.getElementById('error-container');
       if (errorContainer) errorContainer.classList.add('hidden');
     });
-  });
+  }
+
+  document.addEventListener('astro:page-load', initVisualizer);
+  document.addEventListener('DOMContentLoaded', initVisualizer);
 </script>

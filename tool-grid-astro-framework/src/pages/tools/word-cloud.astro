@@ -1,0 +1,127 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Word Cloud Analyzer | ToolGrid" description="Generate beautiful word clouds and analyze keyword density directly in your browser.">
+  <ToolWorkspace
+    title="Word Cloud Analyzer"
+    description="Analyze keyword density and generate stunning high-res word clouds directly in your browser."
+    icon="M3 15C3 17.8 5.2 20 8 20H17C19.2 20 21 18.2 21 16C21 13.9 19.3 12.1 17.2 12C16.8 9.2 14.4 7 11.5 7C9.3 7 7.4 8.4 6.6 10.3C4.6 10.6 3 12.3 3 15Z"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Input Column -->
+      <div class="lg:col-span-4 space-y-6 flex flex-col">
+        <div class="flex-1 flex flex-col">
+          <label class="block text-sm font-medium text-white/70 mb-2">Source Text</label>
+          <textarea
+            id="text-input"
+            class="flex-1 w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all text-sm resize-none min-h-[250px]"
+            placeholder="Paste your article, resume, or text here to generate a word cloud..."
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Color Theme</label>
+          <select id="theme-select" class="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/30 transition-all text-sm appearance-none">
+            <option value="cyberpunk">Cyberpunk Red</option>
+            <option value="matrix">Matrix Green</option>
+            <option value="ocean">Neon Ocean</option>
+            <option value="monochrome">Dark Monochrome</option>
+            <option value="random-light">Random Vibrant</option>
+          </select>
+        </div>
+
+        <button
+          id="btn-generate"
+          class="w-full py-4 px-6 bg-white text-black font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2 group"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:scale-110 transition-transform"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Render Word Cloud
+        </button>
+      </div>
+
+      <!-- Preview Column -->
+      <div class="lg:col-span-8 flex flex-col gap-4">
+        
+        <div class="relative bg-black/50 rounded-2xl border border-white/10 flex items-center justify-center p-2 overflow-hidden flex-1 min-h-[400px]">
+          
+          <!-- Empty State -->
+          <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 transition-opacity duration-300">
+            <div class="w-24 h-24 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-white/20"><path d="M3 15C3 17.8 5.2 20 8 20H17C19.2 20 21 18.2 21 16C21 13.9 19.3 12.1 17.2 12C16.8 9.2 14.4 7 11.5 7C9.3 7 7.4 8.4 6.6 10.3C4.6 10.6 3 12.3 3 15Z"/></svg>
+            </div>
+            <p class="text-sm text-white/40 max-w-[200px] mx-auto">Rendered cloud will appear here</p>
+          </div>
+
+          <!-- Canvas Wrapper -->
+          <div id="canvas-wrapper" class="w-full h-full flex items-center justify-center opacity-0 transition-opacity duration-500 hidden">
+            <!-- We will inject a responsive canvas inside JS to prevent scaling blurriness -->
+            <div id="cloud-container" class="w-full h-full relative"></div>
+          </div>
+        </div>
+
+        <div id="actions-bar" class="hidden flex justify-end gap-3 opacity-0 transition-opacity duration-300">
+          <button id="btn-show-table" class="py-2 px-4 bg-white/5 text-white/70 hover:text-white rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-sm font-medium">
+            View Frequency Data
+          </button>
+          <button id="btn-download" class="py-2 px-6 bg-white/10 text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-all text-sm flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PNG
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </ToolWorkspace>
+
+  <!-- Modal for Frequency Data -->
+  <div id="data-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-[#111] border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[80vh] shadow-2xl scale-95 transition-transform duration-300" id="data-modal-content">
+      <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+        <h3 class="text-lg font-bold text-white">Keyword Frequency</h3>
+        <button id="btn-close-modal" class="text-white/50 hover:text-white transition-colors">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="p-0 overflow-y-auto flex-1 custom-scrollbar">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-black/50 text-white/50 text-xs uppercase tracking-wider sticky top-0 backdrop-blur-md">
+              <th class="py-3 px-6 font-medium">Keyword</th>
+              <th class="py-3 px-6 font-medium text-right">Count</th>
+            </tr>
+          </thead>
+          <tbody id="frequency-table-body" class="divide-y divide-white/5">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</Layout>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+<script>
+  import { setupUI } from '../../scripts/wordcloud-engine.js';
+  
+  document.addEventListener('astro:page-load', setupUI);
+  document.addEventListener('DOMContentLoaded', setupUI);
+</script>

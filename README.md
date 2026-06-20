@@ -18,6 +18,12 @@ ToolGrid is a high-performance, single-domain platform built with **Astro** and 
 2. **CSV Data Sanitizer:** Cleans, formats, and deduplicates messy CRM lists.
 3. **JSON Visualizer:** Transforms dense payloads into exportable tables.
 
+### Group 2: Growth & Utility Tools
+1. **Zero-Trust QR Studio:** 100% private QR generator and webcam scanner.
+2. **Bulk URL Extractor:** RegEx-powered URL parsing and mass tab opener.
+3. **Word Cloud Analyzer:** Keyword density mapping with premium visual themes.
+4. **Clean Reader Extractor:** Extracts distraction-free Markdown from messy URLs.
+
 ## 🛠️ Architecture
 - **Framework:** Astro (Static Site Generation)
 - **Styling:** Tailwind CSS (Premium Dark/Glassmorphism theme)

@@ -20,7 +20,9 @@
 
 @layer components {
   .transition-all {
-    @apply transition-all duration-300;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 
   .transition-smooth {

@@ -1,4 +1,6 @@
-import Papa from 'papaparse';
+// Lazy load papaparse to prevent bundle bloat
+
+export function setupUI() {
 
 // UI Elements
 const dropzone = document.getElementById('csv-dropzone');
@@ -64,7 +66,7 @@ if (ruleDedupeCheckbox && dedupeSelectorWrapper) {
   dedupeSelectorWrapper.style.display = ruleDedupeCheckbox.checked ? 'block' : 'none';
 }
 
-function handleFile(file) {
+async function handleFile(file) {
   if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
     alert('Please upload a valid CSV file.');
     return;
@@ -72,6 +74,7 @@ function handleFile(file) {
   
   currentFile = file;
   
+  const { default: Papa } = await import('papaparse');
   Papa.parse(file, {
     header: true,
     skipEmptyLines: false, // We will handle empty lines manually based on rules
@@ -293,9 +296,10 @@ function renderTablePreview(data, headers) {
 
 // Download
 if (btnDownload) {
-  btnDownload.addEventListener('click', () => {
+  btnDownload.addEventListener('click', async () => {
     if (!cleanedData.length) return;
     
+    const { default: Papa } = await import('papaparse');
     const csv = Papa.unparse({
       fields: cleanedHeaders,
       data: cleanedData
@@ -326,4 +330,6 @@ if (btnReset) {
     workspace.classList.add('hidden');
     dropzone.classList.remove('hidden');
   });
+}
+
 }

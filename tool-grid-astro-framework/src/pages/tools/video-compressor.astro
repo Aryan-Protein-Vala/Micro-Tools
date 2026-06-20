@@ -82,7 +82,6 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
 <script>
   import { setupUI } from '../../scripts/video-engine.js';
   
-  document.addEventListener('DOMContentLoaded', () => {
-    setupUI();
-  });
+  document.addEventListener('astro:page-load', setupUI);
+  document.addEventListener('DOMContentLoaded', setupUI);
 </script>

@@ -1,4 +1,4 @@
-import { removeBackground } from '@imgly/background-removal';
+// Lazy load @imgly/background-removal inside the process function to prevent bundle bloat
 
 export function setupUI() {
   const dropzone = document.getElementById('image-dropzone');
@@ -69,6 +69,9 @@ export function setupUI() {
     }
 
     try {
+      // Lazy load background removal engine
+      const { removeBackground } = await import('@imgly/background-removal');
+      
       // Configuration to use public paths if necessary, but defaults work in modern bundlers
       const blob = await removeBackground(currentFile, {
         progress: (key, current, total) => {

@@ -123,6 +123,7 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
 </Layout>
 
 <script>
-  // Import the engine
-  import '../../scripts/cleaner-engine.js';
+  import { setupUI } from '../../scripts/cleaner-engine.js';
+  document.addEventListener('astro:page-load', setupUI);
+  document.addEventListener('DOMContentLoaded', setupUI);
 </script>

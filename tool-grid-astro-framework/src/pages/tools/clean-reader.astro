@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout title="Clean Reader Markdown Extractor | ToolGrid" description="Extract clean markdown from messy websites instantly. Bypass ads, popups, and banners to get the pure article text.">
+  <ToolWorkspace
+    title="Clean Reader Extractor"
+    description="Paste any article URL to instantly extract the core text as clean Markdown, bypassing popups and ads."
+    icon="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20M8 7h8M8 11h8"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Input Column -->
+      <div class="lg:col-span-4 flex flex-col gap-6">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Article URL</label>
+          <input
+            type="url"
+            id="url-input"
+            class="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all font-mono text-sm"
+            placeholder="https://example.com/article"
+          />
+        </div>
+
+        <button
+          id="btn-fetch"
+          class="w-full py-4 px-6 bg-white text-black font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2 group"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:translate-y-[-2px] transition-transform"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Extract Article
+        </button>
+
+        <div id="status-box" class="hidden rounded-xl p-4 bg-white/5 border border-white/10 text-sm">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Preview Column -->
+      <div class="lg:col-span-8 flex flex-col gap-4">
+        
+        <div class="relative bg-[#0d0d0d] rounded-2xl border border-white/10 flex flex-col p-6 overflow-hidden flex-1 min-h-[500px]">
+          
+          <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 transition-opacity duration-300">
+            <div class="w-24 h-24 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-white/20"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            </div>
+            <p class="text-sm text-white/40 max-w-[200px] mx-auto">Extracted Markdown will appear here</p>
+          </div>
+
+          <div id="editor-view" class="hidden flex-col h-full opacity-0 transition-opacity duration-300 z-10">
+            <div class="flex items-center justify-between mb-4">
+              <h3 id="article-title" class="text-lg font-semibold text-white truncate max-w-[60%]">Document</h3>
+              <div class="flex gap-2">
+                <button id="btn-copy" class="py-2 px-4 bg-white/5 text-white/70 hover:text-white rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-sm font-medium flex items-center gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copy
+                </button>
+                <button id="btn-download" class="py-2 px-4 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-all text-sm flex items-center gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Save .md
+                </button>
+              </div>
+            </div>
+            
+            <textarea
+              id="markdown-output"
+              class="flex-1 w-full p-4 bg-black/30 border border-white/5 rounded-xl text-white/80 font-mono text-sm resize-none focus:outline-none custom-scrollbar"
+              spellcheck="false"
+            ></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+<script>
+  import { setupUI } from '../../scripts/reader-engine.js';
+  
+  document.addEventListener('astro:page-load', setupUI);
+  document.addEventListener('DOMContentLoaded', setupUI);
+</script>

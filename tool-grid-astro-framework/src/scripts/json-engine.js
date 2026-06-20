@@ -1,4 +1,4 @@
-import Papa from 'papaparse';
+// Lazy load papaparse to prevent bundle bloat
 
 /**
  * Flattens a nested JSON object into a single-depth object with dot-notated keys.
@@ -21,6 +21,12 @@ function flattenObject(ob, result = {}, prefix = '', depth = 0) {
 }
 
 export function initVisualizer() {
+  setupUI();
+}
+
+export function setupUI() {
+  const dropzone = document.getElementById('json-dropzone');
+  const fileInput = document.getElementById('json-file-input');
   const btnVisualize = document.getElementById('btn-visualize');
   const inputEl = document.getElementById('json-input');
   const errorContainer = document.getElementById('error-container');
@@ -75,9 +81,10 @@ export function initVisualizer() {
     }, 50);
   });
 
-  btnExportCsv.addEventListener('click', () => {
+  btnExportCsv.addEventListener('click', async () => {
     if (!currentData || currentData.length === 0) return;
     
+    const { default: Papa } = await import('papaparse');
     const csv = Papa.unparse(currentData);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
