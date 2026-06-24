@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Frequently Asked Questions | ToolGrid" description="Find answers to common questions about ToolGrid.">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-20">
+    <div class="prose prose-invert prose-lg max-w-none">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8">Frequently Asked Questions</h1>
+      
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Are the tools really free?</h3>
+          <p class="text-muted-foreground">Yes. ToolGrid is 100% free to use. There are no subscriptions, paywalls, or hidden fees.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Is my data uploaded to your servers?</h3>
+          <p class="text-muted-foreground">No. We utilize a zero-trust architecture. All processing (including video compression, image manipulation, and PDF parsing) happens entirely within your local browser using WebAssembly (WASM). Your files never leave your device.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Do I need to create an account?</h3>
+          <p class="text-muted-foreground">No account is required. You can start using all the tools immediately without handing over your email or personal information.</p>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</Layout>
