@@ -1,8 +1,10 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  integrations: [tailwind()],
+  site: 'https://tool-grid-astro-framework.pages.dev',
+  integrations: [tailwind(), sitemap()],
   output: 'static',
   vite: {
     server: {

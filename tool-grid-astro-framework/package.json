@@ -9,12 +9,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@imgly/background-removal": "^1.7.0",
     "@mozilla/readability": "^0.6.0",
     "@vercel/analytics": "1.6.1",
-    "astro": "^4.14.0",
+    "astro": "^7.0.2",
     "html5-qrcode": "^2.3.8",
     "imagetracerjs": "^1.2.6",
     "jszip": "^3.10.1",

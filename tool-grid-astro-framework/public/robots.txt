@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tool-grid-astro-framework.pages.dev/sitemap-index.xml

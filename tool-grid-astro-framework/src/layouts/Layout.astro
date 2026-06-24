@@ -6,9 +6,24 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title?: string;
   description?: string;
+  canonicalUrl?: string;
 }
 
-const { title = 'ToolGrid', description = 'A premium multi-tool platform' } = Astro.props;
+const { 
+  title = 'ToolGrid - Premium Web Tools', 
+  description = 'A curated collection of highly secure, WASM-powered browser tools for creative professionals and developers. Completely free, no tracking.',
+  canonicalUrl = Astro.url.pathname === '/' ? 'https://tool-grid-astro-framework.pages.dev' : `https://tool-grid-astro-framework.pages.dev${Astro.url.pathname}`
+} = Astro.props;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonicalUrl,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
 ---
 
 <!doctype html>
@@ -18,12 +33,17 @@ const { title = 'ToolGrid', description = 'A premium multi-tool platform' } = As
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="ToolGrid" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
