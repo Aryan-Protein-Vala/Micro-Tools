@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BentoGrid from '../../components/BentoGrid.astro';
+
+const tools = [
+  {
+    title: 'ATS Resume Matcher',
+    description: 'Bypass applicant tracking systems. Analyze your resume against job descriptions to extract missing skills instantly.',
+    href: '/tools/ats-matcher',
+    size: 'lg' as const,
+    featured: true,
+  },
+  {
+    title: 'CSV Data Sanitizer',
+    description: 'Clean, format, and deduplicate messy B2B lead lists or CRM exports directly in your browser. Zero data leaves your device.',
+    href: '/tools/csv-cleaner',
+    size: 'md' as const,
+  },
+  {
+    title: 'JSON to Table Visualizer',
+    description: 'Instantly transform dense, nested API payloads into highly readable, tabular formats with CSV export.',
+    href: '/tools/json-visualizer',
+    size: 'sm' as const,
+  },
+  {
+    title: 'HD Background Remover',
+    description: 'Use on-device AI to instantly remove backgrounds securely in your browser. Zero uploads.',
+    href: '/tools/bg-remover',
+    size: 'md' as const,
+  },
+  {
+    title: 'Free Video Compressor',
+    description: 'Compress high-bitrate video assets locally to bypass transmission restrictions. No watermarks, unlimited size.',
+    href: '/tools/video-compressor',
+    size: 'md' as const,
+  },
+  {
+    title: 'Image-to-Text OCR',
+    description: 'Securely extract text from photos, scans, and screenshots using WASM-powered OCR.',
+    href: '/tools/ocr-converter',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Device Mockup Studio',
+    description: 'Wrap your app screenshots in beautiful 4K device frames instantly.',
+    href: '/tools/mockup-studio',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Image Vectorizer',
+    description: 'Convert raster images (PNG/JPG) to scalable vector graphics (SVG) locally.',
+    href: '/tools/image-vectorizer',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Audio Converter',
+    description: 'Convert WAV, OGG, or Video tracks directly to MP3 without server uploads.',
+    href: '/tools/audio-converter',
+    size: 'sm' as const,
+  },
+  {
+    title: 'Bulk URL Extractor',
+    description: 'Extract, clean, and deduplicate hundreds of URLs from messy text blocks.',
+    href: '/tools/url-extractor',
+    size: 'md' as const,
+  },
+  {
+    title: 'QR Code Studio',
+    description: 'Generate static, permanent QR codes with zero tracking or expiration dates.',
+    href: '/tools/qr-studio',
+    size: 'md' as const,
+  },
+  {
+    title: 'AdBlock Generator',
+    description: 'Generate a custom Manifest V3 Chrome Extension to block ads and trackers zero-trust.',
+    href: '/tools/ad-blocker',
+    size: 'lg' as const,
+  },
+  {
+    title: 'Clean Reader',
+    description: 'Extract text from messy articles into a distraction-free, beautiful typography view.',
+    href: '/tools/clean-reader',
+    size: 'md' as const,
+  },
+  {
+    title: 'Word Cloud Generator',
+    description: 'Generate beautiful word clouds from text data to visualize frequency instantly.',
+    href: '/tools/word-cloud',
+    size: 'md' as const,
+  },
+  {
+    title: 'In-Browser IDE',
+    description: 'Write, preview, and test HTML/JS snippets in a lightweight browser code editor.',
+    href: '/tools/code-editor',
+    size: 'lg' as const,
+  },
+  {
+    title: 'Design Canvas',
+    description: 'Quickly draw wireframes or conceptual diagrams on an infinite canvas.',
+    href: '/tools/design-canvas',
+    size: 'md' as const,
+  },
+  {
+    title: 'Image Studio',
+    description: 'Crop, filter, and optimize multiple images entirely within your browser.',
+    href: '/tools/image-studio',
+    size: 'md' as const,
+  }
+];
+---
+
+<Layout title="All Tools | ToolGrid" description="Browse all 17 premium, local-first web tools designed for creators and developers.">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-20">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">All Tools</h1>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">Explore our complete collection of 100% free, zero-trust utilities that run entirely in your browser.</p>
+    </div>
+    
+    <BentoGrid items={tools} />
+  </div>
+</Layout>

@@ -2,23 +2,45 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Frequently Asked Questions | ToolGrid" description="Find answers to common questions about ToolGrid.">
+<Layout title="Frequently Asked Questions | ToolGrid" description="Find detailed answers to common questions about ToolGrid's capabilities.">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-20">
     <div class="prose prose-invert prose-lg max-w-none">
       <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8">Frequently Asked Questions</h1>
       
-      <div class="space-y-8">
-        <div>
-          <h3 class="text-xl font-semibold mb-2">Are the tools really free?</h3>
-          <p class="text-muted-foreground">Yes. ToolGrid is 100% free to use. There are no subscriptions, paywalls, or hidden fees.</p>
+      <div class="space-y-8 mt-12">
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">Are the tools really free?</h3>
+          <p class="text-muted-foreground">Yes. ToolGrid is 100% free to use. There are no subscriptions, paywalls, watermarks, or hidden fees. We believe utility software should be universally accessible.</p>
         </div>
-        <div>
-          <h3 class="text-xl font-semibold mb-2">Is my data uploaded to your servers?</h3>
-          <p class="text-muted-foreground">No. We utilize a zero-trust architecture. All processing (including video compression, image manipulation, and PDF parsing) happens entirely within your local browser using WebAssembly (WASM). Your files never leave your device.</p>
+        
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">Is my data uploaded to your servers?</h3>
+          <p class="text-muted-foreground">No. We utilize a zero-trust architecture. All processing (including video compression, AI background removal, and PDF parsing) happens entirely within your local browser using WebAssembly. Your files never leave your device.</p>
         </div>
-        <div>
-          <h3 class="text-xl font-semibold mb-2">Do I need to create an account?</h3>
+
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">What is the maximum file size I can upload?</h3>
+          <p class="text-muted-foreground">Because you aren't actually "uploading" anything to a server, there are no artificial file size limits. The only limitation is the RAM and processing power of your own computer or smartphone.</p>
+        </div>
+
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">Can I use these tools offline?</h3>
+          <p class="text-muted-foreground">Yes! Once the webpage and its associated WASM scripts are loaded into your browser cache, you can disconnect from the internet and the tools will continue to function perfectly.</p>
+        </div>
+
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">Can I use generated assets for commercial projects?</h3>
+          <p class="text-muted-foreground">Absolutely. Any vectors, images, cleaned data, or compressed videos you generate using our tools are 100% yours. We claim no copyright or ownership over your processed assets.</p>
+        </div>
+
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">Do I need to create an account?</h3>
           <p class="text-muted-foreground">No account is required. You can start using all the tools immediately without handing over your email or personal information.</p>
+        </div>
+
+        <div class="p-6 rounded-lg border border-border bg-card/30">
+          <h3 class="text-xl font-semibold mb-3 text-white">How does the Image Vectorizer work without a server?</h3>
+          <p class="text-muted-foreground">We ported the powerful ImageTracer algorithm into JavaScript and WASM. When you drag in an image, your browser's CPU runs the tracing algorithms locally to plot the SVG paths in real-time.</p>
         </div>
       </div>
     
