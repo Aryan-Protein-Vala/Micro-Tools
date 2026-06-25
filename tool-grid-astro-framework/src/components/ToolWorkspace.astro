@@ -23,7 +23,7 @@ const {
         <p class="text-xs text-muted-foreground mb-1">Tool</p>
         <h1 class="text-2xl font-bold text-foreground">{title}</h1>
       </div>
-      <button class="px-4 py-2 bg-accent text-background rounded-md text-sm font-medium hover:bg-muted-foreground transition-smooth">
+      <button id="share-btn" class="px-4 py-2 bg-accent text-background rounded-md text-sm font-medium hover:bg-muted-foreground transition-smooth cursor-pointer">
         Share
       </button>
     </div>
@@ -110,3 +110,21 @@ const {
     <RelatedTools currentTool={toolName} />
   </div>
 </div>
+
+<script is:inline>
+  const shareBtn = document.getElementById('share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const originalText = shareBtn.innerText;
+        shareBtn.innerText = 'Copied!';
+        setTimeout(() => {
+          shareBtn.innerText = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy!', err);
+      }
+    });
+  }
+</script>
