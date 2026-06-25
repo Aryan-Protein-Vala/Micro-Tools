@@ -18,8 +18,13 @@ const qualities = ['Maj', 'Min', '7th', 'Maj7', 'Min7', 'Dim', 'Aug'];
 
       <div class="flex items-center justify-between mb-6 relative z-10">
         <h3 class="text-sm font-semibold tracking-wider text-white/70 uppercase">Chord Matrix</h3>
-        <div id="init-btn" class="cursor-pointer text-[10px] font-bold tracking-widest uppercase px-4 py-1.5 border border-[#27272a] rounded hover:bg-white/5 transition-colors text-white/50">
-          Awaiting Init
+        <div class="flex items-center gap-2">
+          <button id="btn-expand-matrix" class="cursor-pointer text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 border border-[#27272a] rounded hover:bg-white/5 transition-colors text-white/70 focus:outline-none">
+            Fit to Screen
+          </button>
+          <div id="init-btn" class="cursor-pointer text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 border border-[#27272a] rounded hover:bg-white/5 transition-colors text-white/50">
+            Awaiting Init
+          </div>
         </div>
       </div>
 
@@ -132,3 +137,23 @@ const qualities = ['Maj', 'Min', '7th', 'Maj7', 'Min7', 'Dim', 'Aug'];
     box-shadow: 0 0 10px rgba(255,255,255,0.2);
   }
 </style>
+
+<script>
+  const expandBtn = document.getElementById('btn-expand-matrix');
+  const matrixContainer = document.getElementById('chord-matrix');
+  
+  if (expandBtn && matrixContainer) {
+    let isExpanded = true;
+    
+    expandBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      if (isExpanded) {
+        matrixContainer.classList.add('min-w-[700px]');
+        expandBtn.textContent = 'Fit to Screen';
+      } else {
+        matrixContainer.classList.remove('min-w-[700px]');
+        expandBtn.textContent = 'Expand Matrix';
+      }
+    });
+  }
+</script>

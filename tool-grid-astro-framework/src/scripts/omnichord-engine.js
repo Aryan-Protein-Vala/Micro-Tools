@@ -44,7 +44,7 @@ async function initEngine() {
     await Tone.start();
 
     // 1. Synthesizer Setup (Warm, perfect pitch, romantic woody tone)
-    masterFilter = new Tone.Filter(2000, "lowpass");
+    masterFilter = new Tone.Filter(1000, "lowpass");
     masterReverb = new Tone.Reverb({ decay: 3, preDelay: 0.05, wet: 0.3 });
     
     synth = new Tone.PolySynth(Tone.Synth, {
@@ -52,15 +52,19 @@ async function initEngine() {
       envelope: { attack: 0.02, decay: 0.5, sustain: 0.1, release: 1.5 }
     });
     
-    // Pad Synth for Infinite Drone - Natural Organic Tone
+    // Pad Synth for Infinite Drone - Exact Match to omnichord-main
     padSynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "triangle8", count: 3, spread: 20 }, // Warm, natural ensemble
-      envelope: { attack: 0.8, decay: 0.5, sustain: 0.7, release: 2 }
+      oscillator: { type: "sawtooth16" },
+      envelope: { attack: 0.1, attackCurve: "exponential", decay: 0.3, sustain: 0.6, release: 1 }
     });
-    const padChorus = new Tone.Chorus(4, 2.5, 0.5).start();
-    padSynth.connect(padChorus);
-    padChorus.connect(masterFilter);
-    padSynth.volume.value = -12; // Keep the drone ambient
+    
+    // Exact Filter/Reverb stack from reference for the pad
+    const padFilterHigh = new Tone.Filter(100, "highpass");
+    const padFilterLow = new Tone.Filter(2000, "lowpass");
+    const padReverb = new Tone.Reverb({ decay: 1.4, preDelay: 0.1, wet: 0.5 });
+    
+    padSynth.chain(padReverb, padFilterHigh, padFilterLow, Tone.Destination);
+    padSynth.volume.value = -14; // Match Gain(0.2) from reference
 
     synth.chain(masterFilter, masterReverb, Tone.Destination);
 
@@ -171,13 +175,13 @@ function selectChord(chordId, btnEl) {
     return NOTE_NAMES.indexOf(a.slice(0, -1)) - NOTE_NAMES.indexOf(b.slice(0, -1));
   });
 
-  // Play Infinite Drone (Maddham / Middle Octave 4 with Bass root in Octave 3)
+  // Play Infinite Drone (Exact match to reference: Octave 2 for bass, Octave 3 for chord notes)
   const rootOffset = ROOT_OFFSETS[root];
   const intervals = QUALITY_INTERVALS[quality];
-  let droneNotes = [`${NOTE_NAMES[rootOffset]}3`]; // Bass note in Octave 3
+  let droneNotes = [`${NOTE_NAMES[rootOffset]}2`]; // Bass note in Octave 2
 
   intervals.forEach(interval => {
-    const midi = 5 * 12 + rootOffset + interval; // Base Octave 4
+    const midi = 4 * 12 + rootOffset + interval; // Base Octave 3
     const noteName = NOTE_NAMES[midi % 12];
     const noteOctave = Math.floor(midi / 12) - 1;
     droneNotes.push(`${noteName}${noteOctave}`);
