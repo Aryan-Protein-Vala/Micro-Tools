@@ -1,0 +1,117 @@
+---
+// MidiWorkspace.astro
+---
+<div class="h-full flex flex-col lg:flex-row gap-6 pb-20">
+  
+  <!-- Left Panel: Main Stage (Keyboard) -->
+  <div class="flex-1 bg-[#0a0a0a] border border-white/10 rounded-xl flex flex-col overflow-hidden shadow-2xl">
+    
+    <!-- Top Control Bar -->
+    <div class="h-14 border-b border-white/10 flex items-center justify-between px-6 bg-[#0f0f0f]">
+      <div class="flex items-center gap-4">
+        <label for="synth-type" class="text-xs font-semibold tracking-wider text-white/70 uppercase">Oscillator</label>
+        <select id="synth-type" class="bg-transparent border border-white/20 rounded px-3 py-1 text-sm text-white focus:outline-none focus:border-white/50 transition-colors">
+          <option value="sine" class="bg-[#111]">Sine (Electric Piano)</option>
+          <option value="triangle" class="bg-[#111]">Triangle (Flute)</option>
+          <option value="square" class="bg-[#111]">Square (Classic Synth)</option>
+          <option value="sawtooth" class="bg-[#111]">Sawtooth (Brass/Lead)</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="init-btn" class="cursor-pointer text-xs font-semibold px-4 py-1.5 border border-white/20 rounded hover:bg-white/5 transition-colors text-white">
+          Click to Start Audio
+        </div>
+      </div>
+    </div>
+
+    <!-- Keyboard Stage -->
+    <div class="flex-1 flex items-center justify-center p-8 overflow-x-auto">
+      <div id="keyboard-container" class="relative flex h-48 sm:h-64 rounded-b border-t-8 border-[#1a1a1a] shadow-inner select-none">
+        <!-- White Keys (Generated via JS) -->
+      </div>
+    </div>
+    
+    <!-- Instruction Footer -->
+    <div class="h-10 border-t border-white/5 flex items-center justify-center bg-[#0a0a0a]">
+      <span class="text-xs text-white/40">Use your computer keyboard (A, W, S, E, D, F...) or connect a USB MIDI Controller.</span>
+    </div>
+
+  </div>
+
+  <!-- Right Panel: Context & Effects -->
+  <div class="w-full lg:w-80 flex flex-col gap-6">
+    
+    <!-- Connection Status -->
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+      <h3 class="text-sm font-semibold tracking-wider text-white/70 uppercase mb-4">Hardware Status</h3>
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-white/90">MIDI Controller</span>
+        <div class="flex items-center gap-2">
+          <span id="midi-status-indicator" class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
+          <span id="midi-status-text" class="text-xs font-mono text-white/50">Disconnected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Effects Panel -->
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 flex-1">
+      <h3 class="text-sm font-semibold tracking-wider text-white/70 uppercase mb-6">Envelope & Effects</h3>
+      
+      <div class="space-y-6">
+        <!-- Master Volume -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Master Volume</label>
+            <span id="val-vol" class="text-xs font-mono text-white/40">-10 dB</span>
+          </div>
+          <input type="range" id="master-vol" min="-40" max="0" value="-10" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+        </div>
+
+        <div class="h-px w-full bg-white/5 my-4"></div>
+
+        <!-- Reverb Mix -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Reverb Mix</label>
+            <span id="val-rev" class="text-xs font-mono text-white/40">30%</span>
+          </div>
+          <input type="range" id="reverb-mix" min="0" max="1" step="0.01" value="0.3" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+        </div>
+        
+        <div class="h-px w-full bg-white/5 my-4"></div>
+
+        <!-- Release Time -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Release Time</label>
+            <span id="val-rel" class="text-xs font-mono text-white/40">1.5s</span>
+          </div>
+          <input type="range" id="env-release" min="0.1" max="5" step="0.1" value="1.5" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- AdSlot -->
+    <div class="bg-[#0a0a0a] border border-white/5 rounded-xl h-48 flex flex-col items-center justify-center text-center p-4 shadow-sm relative overflow-hidden group">
+      <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <span class="text-xs tracking-widest text-white/20 uppercase mb-2">Advertisement</span>
+      <p class="text-sm text-white/40">Support free tools by whitelisting us.</p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Base reset for sliders to match aesthetic */
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+  }
+</style>

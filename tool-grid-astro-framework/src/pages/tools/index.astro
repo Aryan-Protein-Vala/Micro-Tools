@@ -4,11 +4,17 @@ import BentoGrid from '../../components/BentoGrid.astro';
 
 const tools = [
   {
+    title: 'Zero-Latency Web Synth Studio',
+    description: 'Play and synthesize music directly in your browser with zero latency. Connect a MIDI keyboard and start playing instantly.',
+    href: '/tools/midi-studio',
+    size: 'lg' as const,
+    featured: true,
+  },
+  {
     title: 'ATS Resume Matcher',
     description: 'Bypass applicant tracking systems. Analyze your resume against job descriptions to extract missing skills instantly.',
     href: '/tools/ats-matcher',
-    size: 'lg' as const,
-    featured: true,
+    size: 'md' as const,
   },
   {
     title: 'CSV Data Sanitizer',
