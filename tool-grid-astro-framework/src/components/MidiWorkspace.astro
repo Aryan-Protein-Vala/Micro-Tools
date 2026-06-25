@@ -11,10 +11,12 @@
       <div class="flex items-center gap-4">
         <label for="synth-type" class="text-xs font-semibold tracking-wider text-white/70 uppercase">Oscillator</label>
         <select id="synth-type" class="bg-transparent border border-white/20 rounded px-3 py-1 text-sm text-white focus:outline-none focus:border-white/50 transition-colors">
-          <option value="sine" class="bg-[#111]">Sine (Electric Piano)</option>
-          <option value="triangle" class="bg-[#111]">Triangle (Flute)</option>
-          <option value="square" class="bg-[#111]">Square (Classic Synth)</option>
-          <option value="sawtooth" class="bg-[#111]">Sawtooth (Brass/Lead)</option>
+          <option value="sine" class="bg-[#111]">Electric Piano</option>
+          <option value="harmonium" class="bg-[#111]">Harmonium</option>
+          <option value="guitar" class="bg-[#111]">Guitar (Pluck)</option>
+          <option value="triangle" class="bg-[#111]">Flute</option>
+          <option value="square" class="bg-[#111]">Classic Synth</option>
+          <option value="sawtooth" class="bg-[#111]">Brass/Lead</option>
         </select>
       </div>
 
@@ -34,7 +36,7 @@
     
     <!-- Instruction Footer -->
     <div class="h-10 border-t border-white/5 flex items-center justify-center bg-[#0a0a0a]">
-      <span class="text-xs text-white/40">Use your computer keyboard (A, W, S, E, D, F...) or connect a USB MIDI Controller.</span>
+      <span class="text-xs text-white/40">Use QWERTY keyboard matching the layout, or connect a USB MIDI Controller.</span>
     </div>
 
   </div>
@@ -54,42 +56,52 @@
       </div>
     </div>
 
-    <!-- Effects Panel -->
-    <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 flex-1">
-      <h3 class="text-sm font-semibold tracking-wider text-white/70 uppercase mb-6">Envelope & Effects</h3>
+    <!-- Modulation Modules -->
+    <div class="flex-1 flex flex-col gap-4">
       
-      <div class="space-y-6">
-        <!-- Master Volume -->
-        <div>
-          <div class="flex justify-between mb-2">
-            <label class="text-xs text-white/60">Master Volume</label>
-            <span id="val-vol" class="text-xs font-mono text-white/40">-10 dB</span>
-          </div>
-          <input type="range" id="master-vol" min="-40" max="0" value="-10" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+      <!-- Transpose -->
+      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
+          Transpose - <span id="val-transpose">0</span>
         </div>
-
-        <div class="h-px w-full bg-white/5 my-4"></div>
-
-        <!-- Reverb Mix -->
-        <div>
-          <div class="flex justify-between mb-2">
-            <label class="text-xs text-white/60">Reverb Mix</label>
-            <span id="val-rev" class="text-xs font-mono text-white/40">30%</span>
-          </div>
-          <input type="range" id="reverb-mix" min="0" max="1" step="0.01" value="0.3" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+        <div class="flex items-center justify-between p-3 bg-gray-50">
+          <button id="btn-trans-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
+          <span id="lbl-transpose" class="font-mono text-gray-800 font-semibold">0</span>
+          <button id="btn-trans-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
         </div>
-        
-        <div class="h-px w-full bg-white/5 my-4"></div>
+      </div>
 
-        <!-- Release Time -->
-        <div>
-          <div class="flex justify-between mb-2">
-            <label class="text-xs text-white/60">Release Time</label>
-            <span id="val-rel" class="text-xs font-mono text-white/40">1.5s</span>
-          </div>
-          <input type="range" id="env-release" min="0.1" max="5" step="0.1" value="1.5" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+      <!-- Current Octave -->
+      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
+          Current Octave
         </div>
+        <div class="flex items-center justify-between p-3 bg-gray-50">
+          <button id="btn-oct-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
+          <span id="lbl-octave" class="font-mono text-gray-800 font-semibold">3</span>
+          <button id="btn-oct-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
+        </div>
+      </div>
 
+      <!-- Additional Reeds -->
+      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
+          Additional Reeds
+        </div>
+        <div class="flex items-center justify-between p-3 bg-gray-50">
+          <button id="btn-reed-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
+          <span id="lbl-reed" class="font-mono text-gray-800 font-semibold">0</span>
+          <button id="btn-reed-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
+        </div>
+      </div>
+
+      <!-- Master Volume -->
+      <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 mt-2">
+        <div class="flex justify-between mb-2">
+          <label class="text-xs text-white/60 uppercase font-semibold">Master Vol</label>
+          <span id="val-vol" class="text-xs font-mono text-white/40">-10 dB</span>
+        </div>
+        <input type="range" id="master-vol" min="-40" max="0" value="-10" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
       </div>
     </div>
 
