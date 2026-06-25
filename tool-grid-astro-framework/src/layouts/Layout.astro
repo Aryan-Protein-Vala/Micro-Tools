@@ -7,12 +7,14 @@ interface Props {
   title?: string;
   description?: string;
   canonicalUrl?: string;
+  keywords?: string;
 }
 
 const { 
   title = 'ToolGrid - Premium Web Tools', 
   description = 'A curated collection of highly secure, WASM-powered browser tools for creative professionals and developers. Completely free, no tracking.',
-  canonicalUrl = Astro.url.pathname === '/' ? 'https://tool-grid-astro-framework.pages.dev' : `https://tool-grid-astro-framework.pages.dev${Astro.url.pathname}`
+  canonicalUrl = Astro.url.pathname === '/' ? 'https://tool-grid-astro-framework.pages.dev' : `https://tool-grid-astro-framework.pages.dev${Astro.url.pathname}`,
+  keywords = 'free web tools, browser tools, privacy tools, developer tools'
 } = Astro.props;
 
 const schemaData = {
@@ -33,6 +35,7 @@ const schemaData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
