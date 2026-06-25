@@ -8,7 +8,7 @@ interface Props {
 const { className = '', variant = 'global' } = Astro.props;
 
 const globalClasses = "bg-card border border-border rounded-xl h-32 md:h-48 flex flex-col items-center justify-center text-center p-4 shadow-sm relative overflow-hidden group hover:border-border/80 transition-colors";
-const synthClasses = "bg-[#0a0a0a] border border-white/5 rounded-xl h-48 flex flex-col items-center justify-center text-center p-4 shadow-sm relative overflow-hidden group";
+const synthClasses = "bg-[#0a0a0a] border border-white/5 rounded-xl flex-1 min-h-[250px] flex flex-col items-center justify-center text-center p-4 shadow-sm relative overflow-hidden group";
 
 const containerClasses = variant === 'synth' ? synthClasses : globalClasses;
 const titleClasses = variant === 'synth' ? "text-white/20" : "text-muted-foreground/50";
