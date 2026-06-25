@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import OmnichordWorkspace from '../../components/OmnichordWorkspace.astro';
+---
+
+<Layout 
+  title="Digital Omnichord & Strum Plate | ToolGrid" 
+  description="A premium, zero-latency web-based Omnichord. Build chords and strum dynamic harp-like arpeggios directly in your browser."
+>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 h-[calc(100vh-4rem)]">
+    
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Digital Omnichord Studio</h1>
+      <p class="text-muted-foreground">Select a chord from the matrix and swipe across the Strum Plate. Processed entirely locally via Web Audio.</p>
+    </div>
+
+    <OmnichordWorkspace />
+
+  </div>
+</Layout>
+
+<script>
+  // Ensure we dynamically load the engine script
+  import('../../scripts/omnichord-engine.js');
+</script>
