@@ -1,33 +1,60 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const posts = [
+  {
+    category: "Music Tools",
+    date: "June 2026",
+    title: "How to Play Harmonium Online for Free in 2026",
+    description: "Whether you're a beginner learning sa re ga ma or a seasoned musician, you can now play a realistic wooden harmonium directly in your browser — zero downloads, zero latency.",
+    href: "/blog/play-harmonium-online-free"
+  },
+  {
+    category: "Productivity",
+    date: "June 2026",
+    title: "Best Free QR Code Generators in 2026",
+    description: "Most free QR generators slap watermarks or require signups. Here's our roundup of the best truly free options — including one that runs 100% in your browser.",
+    href: "/blog/best-free-qr-code-generators"
+  },
+  {
+    category: "Design",
+    date: "June 2026",
+    title: "How to Remove Image Backgrounds Without Photoshop",
+    description: "Photoshop costs $23/month. But you can remove image backgrounds instantly and for free with browser-based AI. No downloads, no signups, no watermarks.",
+    href: "/blog/remove-background-without-photoshop"
+  },
+  {
+    category: "Productivity",
+    date: "June 2026",
+    title: "Free Online OCR: Convert Any Image to Text Instantly",
+    description: "Need to extract text from a screenshot, scanned PDF, or handwritten note? OCR technology can do it in seconds — and you don't need to install any software.",
+    href: "/blog/free-online-ocr-image-to-text"
+  },
+  {
+    category: "Audio",
+    date: "June 2026",
+    title: "5 Best Free Online Audio Converters in 2026",
+    description: "Convert WAV to MP3, extract audio from video, and batch-convert OGG files. Here are the best free online audio converters that actually work.",
+    href: "/blog/best-free-audio-converters"
+  },
+];
 ---
 
-<Layout title="Blog & Engineering | ToolGrid" description="Technical deep dives into WebAssembly, browser architecture, and modern web development.">
+<Layout title="Blog — Free Web Tools Tips, Guides & Tutorials | ToolGrid" description="Guides, tutorials, and tips on using free web tools. Learn how to play harmonium online, remove image backgrounds, generate QR codes, convert audio files, and more." keywords="web tools blog, free online tools guide, how to use web tools, harmonium online tutorial, qr code guide, background remover guide, ocr tutorial, audio converter tips">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-20">
     <div class="prose prose-invert prose-lg max-w-none">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8">Blog & Engineering</h1>
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Blog & Guides</h1>
+      <p class="text-muted-foreground text-lg mb-12">Tips, tutorials, and deep dives into making the most of free web tools.</p>
       
       <div class="grid gap-8 mt-12">
-        <article class="p-6 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors">
-          <p class="text-sm text-accent font-medium mb-2">Engineering • June 2026</p>
-          <h2 class="text-2xl font-bold text-white mb-3 hover:text-accent transition-colors cursor-pointer">The Death of Cloud Processing: Why Local WASM is the Future</h2>
-          <p class="text-muted-foreground mb-4">SaaS companies have spent a decade convincing us that we need to upload everything to the cloud. We explore why WebAssembly is bringing the compute back to the client, slashing server costs to zero.</p>
-          <a href="#" class="text-sm font-semibold text-accent hover:underline">Read Full Article →</a>
-        </article>
-
-        <article class="p-6 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors">
-          <p class="text-sm text-accent font-medium mb-2">Career • May 2026</p>
-          <h2 class="text-2xl font-bold text-white mb-3 hover:text-accent transition-colors cursor-pointer">How to Optimize Your Resume for ATS Scanners in 2026</h2>
-          <p class="text-muted-foreground mb-4">A deep dive into how Applicant Tracking Systems actually parse your PDF resume, and why our free ATS Matcher tool uses localized TF-IDF algorithms to beat them.</p>
-          <a href="#" class="text-sm font-semibold text-accent hover:underline">Read Full Article →</a>
-        </article>
-
-        <article class="p-6 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors">
-          <p class="text-sm text-accent font-medium mb-2">Privacy • April 2026</p>
-          <h2 class="text-2xl font-bold text-white mb-3 hover:text-accent transition-colors cursor-pointer">Why Zero-Trust Architecture Matters for B2B Data Cleaning</h2>
-          <p class="text-muted-foreground mb-4">When you upload a CRM export or a CSV lead list to a random online tool, you are violating GDPR and exposing your company to massive risk. Here is how local processing solves this.</p>
-          <a href="#" class="text-sm font-semibold text-accent hover:underline">Read Full Article →</a>
-        </article>
+        {posts.map(post => (
+          <a href={post.href} class="block p-6 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-accent/50 transition-colors no-underline">
+            <p class="text-sm text-accent font-medium mb-2">{post.category} • {post.date}</p>
+            <h2 class="text-2xl font-bold text-white mb-3">{post.title}</h2>
+            <p class="text-muted-foreground mb-4">{post.description}</p>
+            <span class="text-sm font-semibold text-accent">Read Full Article →</span>
+          </a>
+        ))}
       </div>
     
     </div>

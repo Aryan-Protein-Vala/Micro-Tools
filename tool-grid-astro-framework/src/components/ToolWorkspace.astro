@@ -1,4 +1,6 @@
 ---
+import RelatedTools from './RelatedTools.astro';
+
 export interface Props {
   title: string;
   toolName: string;
@@ -101,5 +103,10 @@ const {
         </div>
       </aside>
     )}
+  </div>
+
+  <!-- Related Tools (Internal Linking for SEO) -->
+  <div class="px-4 pb-6">
+    <RelatedTools currentTool={toolName} />
   </div>
 </div>

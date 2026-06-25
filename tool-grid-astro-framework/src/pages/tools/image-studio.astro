@@ -1,10 +1,12 @@
 ---
+import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
 
 const title = 'Image Studio';
 const toolName = 'image-studio';
 ---
 
+<Layout title="Free Online Image Editor | Resize, Crop & Enhance Photos Instantly" description="Edit images directly in your browser — free, no signup, no uploads. Resize, crop, enhance, and apply filters to photos instantly. A powerful online photo editor with complete privacy." keywords="online image editor, free photo editor, resize image online, crop image online, image editor no upload, photo enhancer online, free image resizer, browser image editor, edit photos online free, image filter tool">
 <ToolWorkspace title={title} toolName={toolName}>
   <div class="space-y-6">
     <!-- Upload Area -->
@@ -44,3 +46,4 @@ const toolName = 'image-studio';
     </div>
   </div>
 </ToolWorkspace>
+</Layout>

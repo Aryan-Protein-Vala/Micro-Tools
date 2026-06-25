@@ -1,0 +1,46 @@
+---
+export interface Props {
+  currentTool: string;
+}
+
+const { currentTool } = Astro.props;
+
+const allTools = [
+  { name: 'QR Studio', href: '/tools/qr-studio', tags: ['productivity', 'generator'] },
+  { name: 'Background Remover', href: '/tools/bg-remover', tags: ['image', 'ai'] },
+  { name: 'CSV Cleaner', href: '/tools/csv-cleaner', tags: ['data', 'productivity'] },
+  { name: 'Image Studio', href: '/tools/image-studio', tags: ['image', 'editor'] },
+  { name: 'OCR Converter', href: '/tools/ocr-converter', tags: ['productivity', 'text'] },
+  { name: 'JSON Visualizer', href: '/tools/json-visualizer', tags: ['developer', 'data'] },
+  { name: 'Audio Converter', href: '/tools/audio-converter', tags: ['audio', 'converter'] },
+  { name: 'Video Compressor', href: '/tools/video-compressor', tags: ['video', 'converter'] },
+  { name: 'Word Cloud', href: '/tools/word-cloud', tags: ['text', 'visualization'] },
+  { name: 'URL Extractor', href: '/tools/url-extractor', tags: ['productivity', 'text'] },
+  { name: 'Code Editor', href: '/tools/code-editor', tags: ['developer', 'editor'] },
+  { name: 'Design Canvas', href: '/tools/design-canvas', tags: ['image', 'design'] },
+  { name: 'Image Vectorizer', href: '/tools/image-vectorizer', tags: ['image', 'converter'] },
+  { name: 'Mockup Studio', href: '/tools/mockup-studio', tags: ['design', 'generator'] },
+  { name: 'Clean Reader', href: '/tools/clean-reader', tags: ['productivity', 'text'] },
+  { name: 'Ad-Blocker Generator', href: '/tools/ad-blocker', tags: ['privacy', 'generator'] },
+  { name: 'ATS Resume Matcher', href: '/tools/ats-matcher', tags: ['productivity', 'career'] },
+  { name: 'Web Harmonium', href: '/tools/midi-studio', tags: ['audio', 'music'] },
+  { name: 'Digital Omnichord', href: '/tools/omnichord', tags: ['audio', 'music'] },
+];
+
+// Filter out current tool and pick 3 random related ones
+const otherTools = allTools.filter(t => t.href !== `/tools/${currentTool}`);
+const shuffled = otherTools.sort(() => 0.5 - Math.random());
+const related = shuffled.slice(0, 3);
+---
+
+<div class="mt-12 pt-8 border-t border-border">
+  <h3 class="text-sm font-bold text-white/70 uppercase tracking-wider mb-4">You Might Also Like</h3>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    {related.map(tool => (
+      <a href={tool.href} class="block p-4 rounded-lg border border-border bg-black/40 hover:bg-white/5 hover:border-white/20 transition-colors no-underline">
+        <p class="text-sm font-semibold text-white mb-1">{tool.name}</p>
+        <p class="text-xs text-muted-foreground">Free • No signup →</p>
+      </a>
+    ))}
+  </div>
+</div>
