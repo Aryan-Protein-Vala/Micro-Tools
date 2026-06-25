@@ -4,6 +4,7 @@ export interface Props {
   subtitle?: string;
   description?: string;
   cta?: string;
+  ctaLink?: string;
 }
 
 const {
@@ -11,6 +12,7 @@ const {
   subtitle = 'Premium Tools for Creators',
   description = 'A carefully curated collection of powerful tools designed for modern creators and developers.',
   cta = 'Explore Tools',
+  ctaLink = '/tools',
 } = Astro.props;
 ---
 
@@ -38,7 +40,7 @@ const {
 
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/tools" class="px-8 py-3 bg-accent text-background rounded-lg font-semibold hover:bg-muted-foreground transition-smooth hover:scale-105 inline-block">
+        <a href={ctaLink} class="px-8 py-3 bg-accent text-background rounded-lg font-semibold hover:bg-muted-foreground transition-smooth hover:scale-105 inline-block">
           {cta}
         </a>
         <a href="/about" class="px-8 py-3 border border-border text-foreground rounded-lg font-semibold hover:border-accent hover:bg-accent/5 transition-smooth inline-block">
