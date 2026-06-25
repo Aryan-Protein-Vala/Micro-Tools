@@ -1,5 +1,6 @@
 ---
 import RelatedTools from './RelatedTools.astro';
+import AdSlot from './AdSlot.astro';
 
 export interface Props {
   title: string;
@@ -60,13 +61,8 @@ const {
         </div>
 
         <!-- Ad Slot -->
-        <div class="bg-gradient-to-b from-muted/10 to-muted/5 rounded-lg border border-border p-6 flex items-center justify-center min-h-[240px]">
-          <div class="text-center">
-            <p class="text-xs text-muted-foreground mb-2">Premium Feature</p>
-            <p class="text-sm text-muted-foreground">
-              Upgrade for advanced options
-            </p>
-          </div>
+        <div class="mb-6">
+          <AdSlot />
         </div>
 
         <!-- FAQ -->
