@@ -4,7 +4,7 @@ export interface Props {
   description: string;
   icon?: string;
   href?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'tall' | 'lg';
   featured?: boolean;
 }
 
@@ -19,18 +19,19 @@ const {
 
 const sizeClasses = {
   sm: 'col-span-1 row-span-1',
-  md: 'col-span-1 md:col-span-2 row-span-1',
-  lg: 'col-span-1 md:col-span-2 md:row-span-2',
+  md: 'col-span-1 sm:col-span-2 row-span-1',
+  tall: 'col-span-1 row-span-2',
+  lg: 'col-span-1 sm:col-span-2 md:col-span-2 row-span-2',
 };
 ---
 
 <a
   href={href}
   class:list={[
-    'group relative overflow-hidden rounded-lg border border-border bg-black/40 p-6 transition-smooth hover:border-accent hover:bg-black/60',
+    'group relative overflow-hidden rounded-xl border border-border bg-black/40 p-6 transition-smooth hover:border-accent hover:bg-black/60',
     sizeClasses[size],
     {
-      'md:col-span-3 md:row-span-1': featured,
+      'md:col-span-2 md:row-span-2': featured,
     },
   ]}
 >

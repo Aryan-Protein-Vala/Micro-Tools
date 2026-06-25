@@ -3,6 +3,7 @@ let isInitialized = false;
 
 // Audio Nodes
 let synth;
+let padSynth; // Infinite Drone
 let masterFilter;
 let masterReverb;
 let kickSynth;
@@ -15,6 +16,7 @@ let selectedChord = null; // e.g., 'CMaj'
 let chordNotes = []; // Array of Tone.js note strings calculated across 3 octaves
 let activeStrumNotes = new Set();
 let rhythmActive = false;
+let playingDrone = false;
 
 // DOM Elements
 const initBtn = document.getElementById('init-btn');
@@ -50,6 +52,16 @@ async function initEngine() {
       envelope: { attack: 0.02, decay: 0.5, sustain: 0.1, release: 1.5 }
     });
     
+    // Pad Synth for Infinite Drone
+    padSynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "sine" }, // Warm sine wave for drone
+      envelope: { attack: 0.5, decay: 0, sustain: 1, release: 1.5 }
+    });
+    const padChorus = new Tone.Chorus(4, 2.5, 0.5).start();
+    padSynth.connect(padChorus);
+    padChorus.connect(masterFilter);
+    padSynth.volume.value = -10; // Keep the drone ambient
+
     synth.chain(masterFilter, masterReverb, Tone.Destination);
 
     // 2. Rhythm Setup (Kick & Hat)
@@ -84,9 +96,6 @@ async function initEngine() {
     initBtn.classList.replace('text-white/50', 'text-green-400');
     initBtn.classList.replace('border-[#27272a]', 'border-green-400/30');
 
-    // Default selection
-    if (chordButtons.length > 0) selectChord(chordButtons[1].dataset.chord, chordButtons[1]); // Default to C Maj
-
   } catch (err) {
     console.error('Failed to init Omnichord engine:', err);
     initBtn.textContent = 'Init Failed';
@@ -94,11 +103,15 @@ async function initEngine() {
 }
 
 // Chord Math
-const ROOT_OFFSETS = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9 };
+const ROOT_OFFSETS = { 'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11 };
 const QUALITY_INTERVALS = {
   'Maj': [0, 4, 7],
   'Min': [0, 3, 7],
-  '7th': [0, 4, 7, 10] // Dominant 7th
+  '7th': [0, 4, 7, 10],
+  'Maj7': [0, 4, 7, 11],
+  'Min7': [0, 3, 7, 10],
+  'Dim': [0, 3, 6],
+  'Aug': [0, 4, 8]
 };
 const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -122,6 +135,21 @@ function getChordNotes(root, quality) {
 function selectChord(chordId, btnEl) {
   if (!isInitialized) initEngine();
   
+  const root = chordId.replace(/(Maj7|Min7|Maj|Min|7th|Dim|Aug)/, '');
+  const quality = chordId.replace(root, '');
+  
+  if (selectedChord === chordId && playingDrone) {
+    // Toggle OFF Drone
+    if (padSynth) padSynth.releaseAll();
+    playingDrone = false;
+    btnEl.classList.remove('border-white/60', 'text-white', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]');
+    btnEl.classList.add('border-[#27272a]', 'text-white/40');
+    return;
+  }
+
+  // Release old drone
+  if (padSynth) padSynth.releaseAll();
+
   // UI Update
   chordButtons.forEach(btn => {
     btn.classList.remove('border-white/60', 'text-white', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]');
@@ -132,8 +160,7 @@ function selectChord(chordId, btnEl) {
   btnEl.classList.add('border-white/60', 'text-white', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]');
 
   selectedChord = chordId;
-  const root = chordId.replace(/(Maj|Min|7th)/, '');
-  const quality = chordId.replace(root, '');
+  playingDrone = true;
   
   chordNotes = getChordNotes(root, quality);
   // Sort notes by pitch
@@ -143,6 +170,18 @@ function selectChord(chordId, btnEl) {
     if (octA !== octB) return octA - octB;
     return NOTE_NAMES.indexOf(a.slice(0, -1)) - NOTE_NAMES.indexOf(b.slice(0, -1));
   });
+
+  // Play Infinite Drone (Octave 2 and 3)
+  const rootOffset = ROOT_OFFSETS[root];
+  const intervals = QUALITY_INTERVALS[quality];
+  let droneNotes = [];
+  intervals.forEach(interval => {
+    const midi = 3 * 12 + rootOffset + interval; // Base Octave 2
+    const noteName = NOTE_NAMES[midi % 12];
+    const noteOctave = Math.floor(midi / 12) - 1;
+    droneNotes.push(`${noteName}${noteOctave}`);
+  });
+  if (padSynth) padSynth.triggerAttack(droneNotes);
 }
 
 // Interaction
