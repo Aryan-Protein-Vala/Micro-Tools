@@ -57,41 +57,22 @@ const {
           <AdSlot />
         </div>
 
-        <!-- FAQ -->
-        <div class="bg-black/40 rounded-lg border border-border p-4 flex-1 overflow-auto">
-          <h3 class="text-sm font-bold text-foreground mb-4">FAQ</h3>
-          <div class="space-y-3">
-            <slot name="faq">
-              <details class="group">
-                <summary class="cursor-pointer text-sm font-medium text-foreground hover:text-accent transition-colors">
-                  How do I get started?
-                </summary>
-                <p class="mt-2 text-xs text-muted-foreground pl-4 border-l border-border">
-                  Begin by exploring the controls on the left. Each tool has its own interface.
-                </p>
-              </details>
-              <details class="group">
-                <summary class="cursor-pointer text-sm font-medium text-foreground hover:text-accent transition-colors">
-                  Can I save my work?
-                </summary>
-                <p class="mt-2 text-xs text-muted-foreground pl-4 border-l border-border">
-                  Yes, click the Save button to store your project in the cloud.
-                </p>
-              </details>
-              <details class="group">
-                <summary class="cursor-pointer text-sm font-medium text-foreground hover:text-accent transition-colors">
-                  How do I export?
-                </summary>
-                <p class="mt-2 text-xs text-muted-foreground pl-4 border-l border-border">
-                  Use the Export button to download your work in multiple formats.
-                </p>
-              </details>
-            </slot>
-          </div>
-        </div>
+
       </aside>
     )}
   </div>
+
+  <!-- Tool Specific FAQ -->
+  {Astro.slots.has('faq') && (
+    <div class="px-4 pb-6 max-w-4xl mx-auto w-full">
+      <div class="bg-black/40 rounded-lg border border-border p-6 lg:p-8">
+        <h2 class="text-xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <slot name="faq" />
+        </div>
+      </div>
+    </div>
+  )}
 
   <!-- Related Tools (Internal Linking for SEO) -->
   <div class="px-4 pb-6">
