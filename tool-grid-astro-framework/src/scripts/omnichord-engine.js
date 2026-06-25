@@ -52,10 +52,10 @@ async function initEngine() {
       envelope: { attack: 0.02, decay: 0.5, sustain: 0.1, release: 1.5 }
     });
     
-    // Pad Synth for Infinite Drone
+    // Pad Synth for Infinite Drone - Natural Organic Tone
     padSynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "sawtooth16" }, // Bright analog sound
-      envelope: { attack: 0.1, decay: 0.3, sustain: 0.6, release: 1 }
+      oscillator: { type: "triangle8", count: 3, spread: 20 }, // Warm, natural ensemble
+      envelope: { attack: 0.8, decay: 0.5, sustain: 0.7, release: 2 }
     });
     const padChorus = new Tone.Chorus(4, 2.5, 0.5).start();
     padSynth.connect(padChorus);
@@ -171,13 +171,13 @@ function selectChord(chordId, btnEl) {
     return NOTE_NAMES.indexOf(a.slice(0, -1)) - NOTE_NAMES.indexOf(b.slice(0, -1));
   });
 
-  // Play Infinite Drone (Maddham / Middle Octave 3 with Bass root in Octave 2)
+  // Play Infinite Drone (Maddham / Middle Octave 4 with Bass root in Octave 3)
   const rootOffset = ROOT_OFFSETS[root];
   const intervals = QUALITY_INTERVALS[quality];
-  let droneNotes = [`${NOTE_NAMES[rootOffset]}2`]; // Bass note in Octave 2
+  let droneNotes = [`${NOTE_NAMES[rootOffset]}3`]; // Bass note in Octave 3
 
   intervals.forEach(interval => {
-    const midi = 4 * 12 + rootOffset + interval; // Base Octave 3
+    const midi = 5 * 12 + rootOffset + interval; // Base Octave 4
     const noteName = NOTE_NAMES[midi % 12];
     const noteOctave = Math.floor(midi / 12) - 1;
     droneNotes.push(`${noteName}${noteOctave}`);
