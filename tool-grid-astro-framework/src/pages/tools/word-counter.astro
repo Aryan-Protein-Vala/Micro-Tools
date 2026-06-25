@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout 
+  title="Free Word Counter & Character Counter Online | Count Words Instantly" 
+  description="Count words, characters, sentences, and paragraphs instantly. Free online word counter and character counter with real-time stats, reading time estimate, and keyword density analysis. No signup required."
+  keywords="word counter, character counter, word count online, character count online, free word counter, count words in text, letter counter, sentence counter, paragraph counter, reading time calculator, keyword density checker"
+>
+  <ToolWorkspace title="Word & Character Counter" toolName="word-counter" hasContextPanel={false}>
+    <div class="space-y-6" id="word-counter-app">
+      <!-- Input Area -->
+      <div>
+        <textarea 
+          id="wc-input" 
+          class="w-full h-64 bg-black/40 border border-border rounded-lg p-4 text-foreground text-sm font-mono resize-y focus:outline-none focus:border-white/30 placeholder:text-muted-foreground"
+          placeholder="Start typing or paste your text here..."
+        ></textarea>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-words">0</p>
+          <p class="text-xs text-muted-foreground mt-1">Words</p>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-chars">0</p>
+          <p class="text-xs text-muted-foreground mt-1">Characters</p>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-chars-no-space">0</p>
+          <p class="text-xs text-muted-foreground mt-1">No Spaces</p>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-sentences">0</p>
+          <p class="text-xs text-muted-foreground mt-1">Sentences</p>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-paragraphs">0</p>
+          <p class="text-xs text-muted-foreground mt-1">Paragraphs</p>
+        </div>
+        <div class="bg-black/40 border border-border rounded-lg p-4 text-center">
+          <p class="text-2xl font-bold text-white" id="wc-reading">0m</p>
+          <p class="text-xs text-muted-foreground mt-1">Read Time</p>
+        </div>
+      </div>
+
+      <!-- Keyword Density -->
+      <div class="bg-black/40 border border-border rounded-lg p-4">
+        <h3 class="text-sm font-bold text-white mb-3">Top Keywords</h3>
+        <div id="wc-keywords" class="flex flex-wrap gap-2">
+          <p class="text-xs text-muted-foreground">Type above to see keyword density...</p>
+        </div>
+      </div>
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<script is:inline>
+  const input = document.getElementById('wc-input');
+  const words = document.getElementById('wc-words');
+  const chars = document.getElementById('wc-chars');
+  const charsNoSpace = document.getElementById('wc-chars-no-space');
+  const sentences = document.getElementById('wc-sentences');
+  const paragraphs = document.getElementById('wc-paragraphs');
+  const reading = document.getElementById('wc-reading');
+  const keywordsEl = document.getElementById('wc-keywords');
+
+  if (input) {
+    input.addEventListener('input', () => {
+      const text = input.value;
+      const trimmed = text.trim();
+      
+      // Words
+      const wordList = trimmed ? trimmed.split(/\s+/) : [];
+      words.textContent = wordList.length;
+      
+      // Characters
+      chars.textContent = text.length;
+      charsNoSpace.textContent = text.replace(/\s/g, '').length;
+      
+      // Sentences
+      const sentenceList = trimmed ? trimmed.split(/[.!?]+/).filter(s => s.trim()) : [];
+      sentences.textContent = sentenceList.length;
+      
+      // Paragraphs
+      const paraList = trimmed ? trimmed.split(/\n\s*\n/).filter(p => p.trim()) : [];
+      paragraphs.textContent = paraList.length || (trimmed ? 1 : 0);
+      
+      // Reading time (200 WPM average)
+      const mins = Math.ceil(wordList.length / 200);
+      reading.textContent = mins + 'm';
+      
+      // Keyword density (top 8)
+      if (wordList.length > 0) {
+        const freq = {};
+        const stopWords = new Set(['the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','shall','can','need','dare','ought','used','to','of','in','for','on','with','at','by','from','as','into','through','during','before','after','above','below','between','out','off','over','under','again','further','then','once','here','there','when','where','why','how','all','both','each','few','more','most','other','some','such','no','nor','not','only','own','same','so','than','too','very','just','because','but','and','or','yet','if','that','this','it','i','me','my','we','our','you','your','he','him','his','she','her','they','them','their','what','which','who','whom']);
+        wordList.forEach(w => {
+          const lower = w.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (lower.length > 2 && !stopWords.has(lower)) {
+            freq[lower] = (freq[lower] || 0) + 1;
+          }
+        });
+        const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+        if (sorted.length > 0) {
+          keywordsEl.innerHTML = sorted.map(([word, count]) => 
+            `<span class="px-3 py-1 bg-white/5 border border-border rounded-full text-xs text-white/70"><strong>${word}</strong> <span class="text-muted-foreground ml-1">×${count}</span></span>`
+          ).join('');
+        } else {
+          keywordsEl.innerHTML = '<p class="text-xs text-muted-foreground">No significant keywords yet...</p>';
+        }
+      } else {
+        keywordsEl.innerHTML = '<p class="text-xs text-muted-foreground">Type above to see keyword density...</p>';
+      }
+    });
+  }
+</script>

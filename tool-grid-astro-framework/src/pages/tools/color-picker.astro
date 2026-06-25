@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout 
+  title="Free Color Picker & Palette Generator Online | HEX, RGB, HSL Converter" 
+  description="Pick colors, generate beautiful palettes, and convert between HEX, RGB, and HSL instantly. Free online color picker with complementary, analogous, and triadic palette generation. Copy any color code with one click."
+  keywords="color picker, color palette generator, hex color picker, rgb to hex converter, color code finder, free color picker online, color scheme generator, hsl color picker, complementary colors, color converter online"
+>
+  <ToolWorkspace title="Color Picker & Palette" toolName="color-picker" hasContextPanel={false}>
+    <div class="max-w-3xl mx-auto space-y-6" id="color-app">
+      <!-- Color Picker -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-black/40 border border-border rounded-lg p-6">
+          <h3 class="text-sm font-bold text-white mb-4">Pick a Color</h3>
+          <div class="flex items-center gap-4 mb-4">
+            <input type="color" id="cp-picker" value="#6366f1" class="w-16 h-16 rounded-lg border border-border cursor-pointer bg-transparent" />
+            <div class="flex-1">
+              <input type="text" id="cp-hex" value="#6366f1" class="w-full px-3 py-2 bg-black/40 border border-border rounded-lg text-white font-mono text-sm focus:outline-none focus:border-white/30 uppercase" />
+            </div>
+          </div>
+          <!-- Sliders -->
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-muted-foreground flex justify-between"><span>Red</span><span id="cp-r-val">99</span></label>
+              <input type="range" id="cp-r" min="0" max="255" value="99" class="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer" />
+            </div>
+            <div>
+              <label class="text-xs text-muted-foreground flex justify-between"><span>Green</span><span id="cp-g-val">102</span></label>
+              <input type="range" id="cp-g" min="0" max="255" value="102" class="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer" />
+            </div>
+            <div>
+              <label class="text-xs text-muted-foreground flex justify-between"><span>Blue</span><span id="cp-b-val">241</span></label>
+              <input type="range" id="cp-b" min="0" max="255" value="241" class="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Values -->
+        <div class="bg-black/40 border border-border rounded-lg p-6 space-y-4">
+          <h3 class="text-sm font-bold text-white mb-4">Color Values</h3>
+          <div id="cp-preview" class="w-full h-24 rounded-lg border border-border" style="background: #6366f1"></div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2 border border-border/50">
+              <span class="text-xs text-muted-foreground">HEX</span>
+              <button class="cp-copy text-sm font-mono text-white cursor-pointer hover:text-accent transition-colors" data-format="hex">#6366f1</button>
+            </div>
+            <div class="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2 border border-border/50">
+              <span class="text-xs text-muted-foreground">RGB</span>
+              <button class="cp-copy text-sm font-mono text-white cursor-pointer hover:text-accent transition-colors" data-format="rgb">rgb(99, 102, 241)</button>
+            </div>
+            <div class="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2 border border-border/50">
+              <span class="text-xs text-muted-foreground">HSL</span>
+              <button class="cp-copy text-sm font-mono text-white cursor-pointer hover:text-accent transition-colors" data-format="hsl">hsl(239, 84%, 67%)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palette -->
+      <div class="bg-black/40 border border-border rounded-lg p-6">
+        <h3 class="text-sm font-bold text-white mb-4">Generated Palette</h3>
+        <div id="cp-palette" class="grid grid-cols-5 gap-2 h-24">
+          <!-- Filled by JS -->
+        </div>
+        <div id="cp-palette-labels" class="grid grid-cols-5 gap-2 mt-2">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<script is:inline>
+  const picker = document.getElementById('cp-picker');
+  const hexInput = document.getElementById('cp-hex');
+  const rSlider = document.getElementById('cp-r');
+  const gSlider = document.getElementById('cp-g');
+  const bSlider = document.getElementById('cp-b');
+  const rVal = document.getElementById('cp-r-val');
+  const gVal = document.getElementById('cp-g-val');
+  const bVal = document.getElementById('cp-b-val');
+  const preview = document.getElementById('cp-preview');
+  const palette = document.getElementById('cp-palette');
+  const paletteLabels = document.getElementById('cp-palette-labels');
+  const copyBtns = document.querySelectorAll('.cp-copy');
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return { r, g, b };
+  }
+
+  function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+    if (max === min) { h = s = 0; }
+    else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+        case g: h = ((b - r) / d + 2) / 6; break;
+        case b: h = ((r - g) / d + 4) / 6; break;
+      }
+    }
+    return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+  }
+
+  function hslToHex(h, s, l) {
+    s /= 100; l /= 100;
+    const a = s * Math.min(l, 1 - l);
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  function updateColor(hex) {
+    const { r, g, b } = hexToRgb(hex);
+    const { h, s, l } = rgbToHsl(r, g, b);
+
+    picker.value = hex;
+    hexInput.value = hex.toUpperCase();
+    rSlider.value = r; gSlider.value = g; bSlider.value = b;
+    rVal.textContent = r; gVal.textContent = g; bVal.textContent = b;
+    preview.style.background = hex;
+
+    // Update value buttons
+    copyBtns[0].textContent = hex.toUpperCase();
+    copyBtns[1].textContent = `rgb(${r}, ${g}, ${b})`;
+    copyBtns[2].textContent = `hsl(${h}, ${s}%, ${l}%)`;
+
+    // Generate analogous palette
+    const colors = [
+      hslToHex((h - 30 + 360) % 360, s, l),
+      hslToHex((h - 15 + 360) % 360, s, l),
+      hex,
+      hslToHex((h + 15) % 360, s, l),
+      hslToHex((h + 30) % 360, s, l),
+    ];
+    palette.innerHTML = colors.map(c => `<div class="rounded-lg border border-border/50 cursor-pointer hover:scale-105 transition-transform" style="background:${c}" data-color="${c}"></div>`).join('');
+    paletteLabels.innerHTML = colors.map(c => `<p class="text-[10px] font-mono text-center text-muted-foreground">${c.toUpperCase()}</p>`).join('');
+
+    // Click palette swatch to select
+    palette.querySelectorAll('div').forEach(el => {
+      el.addEventListener('click', () => updateColor(el.dataset.color));
+    });
+  }
+
+  picker.addEventListener('input', () => updateColor(picker.value));
+  hexInput.addEventListener('change', () => {
+    let v = hexInput.value.trim();
+    if (!v.startsWith('#')) v = '#' + v;
+    if (/^#[0-9a-f]{6}$/i.test(v)) updateColor(v);
+  });
+  [rSlider, gSlider, bSlider].forEach(s => {
+    s.addEventListener('input', () => {
+      const hex = rgbToHex(parseInt(rSlider.value), parseInt(gSlider.value), parseInt(bSlider.value));
+      updateColor(hex);
+    });
+  });
+
+  copyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(btn.textContent);
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = orig, 1000);
+    });
+  });
+
+  // Init
+  updateColor('#6366f1');
+</script>

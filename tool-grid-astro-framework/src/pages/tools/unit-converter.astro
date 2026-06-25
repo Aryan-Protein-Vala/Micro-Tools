@@ -1,0 +1,145 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+---
+
+<Layout 
+  title="Free Unit Converter Online | Length, Weight, Temperature & More" 
+  description="Convert between units instantly — length, weight, temperature, volume, speed, area, and more. Free online unit converter with real-time results. No signup, no ads, no tracking."
+  keywords="unit converter, convert units online, length converter, weight converter, temperature converter, km to miles, kg to lbs, celsius to fahrenheit, unit conversion calculator, free unit converter, metric to imperial"
+>
+  <ToolWorkspace title="Unit Converter" toolName="unit-converter" hasContextPanel={false}>
+    <div class="max-w-2xl mx-auto space-y-6" id="uc-app">
+      <!-- Category Selector -->
+      <div class="flex flex-wrap gap-2">
+        <button class="uc-cat active px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-white/10 text-white cursor-pointer transition-colors" data-cat="length">Length</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="weight">Weight</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="temperature">Temp</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="volume">Volume</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="speed">Speed</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="area">Area</button>
+        <button class="uc-cat px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-border bg-black/40 text-muted-foreground cursor-pointer hover:bg-white/5 transition-colors" data-cat="data">Data</button>
+      </div>
+
+      <!-- Converter -->
+      <div class="bg-black/40 border border-border rounded-lg p-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-muted-foreground mb-2 block">From</label>
+            <select id="uc-from" class="w-full px-3 py-2 bg-black/40 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-white/30 cursor-pointer"></select>
+            <input type="number" id="uc-input" value="1" class="w-full mt-2 px-3 py-3 bg-black/60 border border-border rounded-lg text-white text-xl font-mono focus:outline-none focus:border-white/30" />
+          </div>
+          <div>
+            <label class="text-xs text-muted-foreground mb-2 block">To</label>
+            <select id="uc-to" class="w-full px-3 py-2 bg-black/40 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-white/30 cursor-pointer"></select>
+            <div id="uc-output" class="w-full mt-2 px-3 py-3 bg-black/60 border border-border rounded-lg text-accent text-xl font-mono select-all">0</div>
+          </div>
+        </div>
+        <button id="uc-swap" class="w-full py-2 bg-white/5 hover:bg-white/10 text-white/70 text-sm font-bold rounded-lg transition-colors cursor-pointer">⇄ Swap Units</button>
+      </div>
+
+      <!-- Quick Reference -->
+      <div class="bg-black/40 border border-border rounded-lg p-6">
+        <h3 class="text-sm font-bold text-white mb-3">Quick Reference</h3>
+        <div id="uc-ref" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-muted-foreground font-mono"></div>
+      </div>
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<script is:inline>
+  const units = {
+    length: { Meter: 1, Kilometer: 1000, Centimeter: 0.01, Millimeter: 0.001, Mile: 1609.344, Yard: 0.9144, Foot: 0.3048, Inch: 0.0254 },
+    weight: { Kilogram: 1, Gram: 0.001, Milligram: 0.000001, Pound: 0.453592, Ounce: 0.0283495, Ton: 1000, Stone: 6.35029 },
+    temperature: { Celsius: 'C', Fahrenheit: 'F', Kelvin: 'K' },
+    volume: { Liter: 1, Milliliter: 0.001, Gallon: 3.78541, Quart: 0.946353, Cup: 0.236588, 'Fluid Oz': 0.0295735, Tablespoon: 0.0147868 },
+    speed: { 'km/h': 1, 'm/s': 3.6, 'mph': 1.60934, Knot: 1.852 },
+    area: { 'sq m': 1, 'sq km': 1000000, 'sq ft': 0.092903, 'sq mi': 2589988, Acre: 4046.86, Hectare: 10000 },
+    data: { Byte: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 },
+  };
+
+  let currentCat = 'length';
+  const fromSelect = document.getElementById('uc-from');
+  const toSelect = document.getElementById('uc-to');
+  const input = document.getElementById('uc-input');
+  const output = document.getElementById('uc-output');
+  const ref = document.getElementById('uc-ref');
+
+  function populateSelects() {
+    const unitKeys = Object.keys(units[currentCat]);
+    fromSelect.innerHTML = unitKeys.map((u, i) => `<option value="${u}" ${i === 0 ? 'selected' : ''}>${u}</option>`).join('');
+    toSelect.innerHTML = unitKeys.map((u, i) => `<option value="${u}" ${i === 1 ? 'selected' : ''}>${u}</option>`).join('');
+  }
+
+  function convert() {
+    const val = parseFloat(input.value) || 0;
+    const from = fromSelect.value;
+    const to = toSelect.value;
+
+    if (currentCat === 'temperature') {
+      let result;
+      if (from === 'Celsius' && to === 'Fahrenheit') result = val * 9/5 + 32;
+      else if (from === 'Celsius' && to === 'Kelvin') result = val + 273.15;
+      else if (from === 'Fahrenheit' && to === 'Celsius') result = (val - 32) * 5/9;
+      else if (from === 'Fahrenheit' && to === 'Kelvin') result = (val - 32) * 5/9 + 273.15;
+      else if (from === 'Kelvin' && to === 'Celsius') result = val - 273.15;
+      else if (from === 'Kelvin' && to === 'Fahrenheit') result = (val - 273.15) * 9/5 + 32;
+      else result = val;
+      output.textContent = parseFloat(result.toFixed(6));
+    } else {
+      const factorFrom = units[currentCat][from];
+      const factorTo = units[currentCat][to];
+      const result = val * factorFrom / factorTo;
+      output.textContent = parseFloat(result.toFixed(6));
+    }
+
+    // Quick reference
+    const unitKeys = Object.keys(units[currentCat]);
+    ref.innerHTML = unitKeys.filter(u => u !== from).map(u => {
+      let r;
+      if (currentCat === 'temperature') {
+        if (from === 'Celsius' && u === 'Fahrenheit') r = val * 9/5 + 32;
+        else if (from === 'Celsius' && u === 'Kelvin') r = val + 273.15;
+        else if (from === 'Fahrenheit' && u === 'Celsius') r = (val - 32) * 5/9;
+        else if (from === 'Fahrenheit' && u === 'Kelvin') r = (val - 32) * 5/9 + 273.15;
+        else if (from === 'Kelvin' && u === 'Celsius') r = val - 273.15;
+        else if (from === 'Kelvin' && u === 'Fahrenheit') r = (val - 273.15) * 9/5 + 32;
+        else r = val;
+      } else {
+        r = val * units[currentCat][from] / units[currentCat][u];
+      }
+      return `<div class="bg-black/40 rounded px-2 py-1">${parseFloat(r.toFixed(4))} ${u}</div>`;
+    }).join('');
+  }
+
+  // Category buttons
+  document.querySelectorAll('.uc-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.uc-cat').forEach(b => {
+        b.classList.remove('active', 'bg-white/10', 'text-white');
+        b.classList.add('bg-black/40', 'text-muted-foreground');
+      });
+      btn.classList.add('active', 'bg-white/10', 'text-white');
+      btn.classList.remove('bg-black/40', 'text-muted-foreground');
+      currentCat = btn.dataset.cat;
+      populateSelects();
+      convert();
+    });
+  });
+
+  // Swap
+  document.getElementById('uc-swap').addEventListener('click', () => {
+    const temp = fromSelect.value;
+    fromSelect.value = toSelect.value;
+    toSelect.value = temp;
+    convert();
+  });
+
+  input.addEventListener('input', convert);
+  fromSelect.addEventListener('change', convert);
+  toSelect.addEventListener('change', convert);
+
+  // Init
+  populateSelects();
+  convert();
+</script>
