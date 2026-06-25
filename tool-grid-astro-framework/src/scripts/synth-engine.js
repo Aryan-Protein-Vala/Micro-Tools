@@ -16,7 +16,7 @@ const midiStatusIndicator = document.getElementById('midi-status-indicator');
 const midiStatusText = document.getElementById('midi-status-text');
 
 // Modulators
-let currentOctave = 3;
+let currentOctave = 4;
 let transposeAmount = 0;
 let additionalReeds = 0;
 
@@ -40,6 +40,9 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
 const activeKeys = new Map(); // physical key string -> array of note names
 const keyElements = {}; // visual elements mapped by relativeIndex
 
+// Audio nodes
+let masterFilter = null;
+
 // Helper: MIDI number to Note (48 = C3)
 function midiToNote(midiNum) {
   const octave = Math.floor(midiNum / 12) - 1;
@@ -50,15 +53,11 @@ function midiToNote(midiNum) {
 function renderKeyboard() {
   keyboardContainer.innerHTML = '';
   
-  // We render from relativeIndex -5 (G) to +17 (F)
   const minIndex = -5;
   const maxIndex = 17;
-  
   let whiteKeyCount = 0;
 
   for (let i = minIndex; i <= maxIndex; i++) {
-    // Math to determine if it's a black key based on relative index to C
-    // normalized to positive C major scale index
     const normalized = (i % 12 + 12) % 12; 
     const isBlack = [1, 3, 6, 8, 10].includes(normalized);
     const keyLabel = REV_KEYMAP[i] || '';
@@ -72,8 +71,6 @@ function renderKeyboard() {
       keyEl.innerHTML = `<span class="text-white/50 text-xs font-mono select-none">${keyLabel}</span>`;
     } else {
       keyEl.className = 'w-12 h-full bg-[#1a1a1a] border-r border-white/5 last:border-r-0 rounded-b cursor-pointer transition-colors hover:bg-[#222] relative z-0 flex flex-col items-center justify-end pb-4';
-      
-      // Bottom label (C, D, E) for specific keys based on user image
       let noteLabel = '';
       if (normalized === 0) noteLabel = '<span class="text-blue-500 font-bold mt-2 select-none">C</span>';
       else if (normalized === 2) noteLabel = '<span class="text-blue-500 font-bold mt-2 select-none">D</span>';
@@ -87,12 +84,9 @@ function renderKeyboard() {
       whiteKeyCount++;
     }
 
-    // Interaction
     keyEl.addEventListener('mousedown', () => triggerKey(keyLabel));
     keyEl.addEventListener('mouseup', () => releaseKey(keyLabel));
-    keyEl.addEventListener('mouseleave', () => {
-      if(activeKeys.has(keyLabel)) releaseKey(keyLabel);
-    });
+    keyEl.addEventListener('mouseleave', () => { if(activeKeys.has(keyLabel)) releaseKey(keyLabel); });
     keyEl.addEventListener('touchstart', (e) => { e.preventDefault(); triggerKey(keyLabel); });
     keyEl.addEventListener('touchend', (e) => { e.preventDefault(); releaseKey(keyLabel); });
 
@@ -107,12 +101,17 @@ function renderKeyboard() {
 
 function applyInstrumentProfile(type) {
   if (!synth) return;
+  
+  // Default bypass filter
+  if (masterFilter) masterFilter.frequency.value = 20000;
+
   switch(type) {
     case 'harmonium':
       synth.set({
-        oscillator: { type: 'fatsawtooth' },
-        envelope: { attack: 0.1, decay: 0, sustain: 1, release: 0.4 }
+        oscillator: { type: 'fatsawtooth', count: 3, spread: 20 },
+        envelope: { attack: 0.1, decay: 0.1, sustain: 1, release: 0.4 }
       });
+      if (masterFilter) masterFilter.frequency.value = 1200; // Wooden, muffled tone
       break;
     case 'guitar':
       synth.set({
@@ -156,8 +155,11 @@ async function initEngine() {
     
     await Tone.start();
     
-    reverb = new Tone.Reverb({ decay: 2, preDelay: 0.01, wet: 0.2 }).toDestination();
-    synth = new Tone.PolySynth(Tone.Synth).connect(reverb);
+    masterFilter = new Tone.Filter(20000, "lowpass");
+    reverb = new Tone.Reverb({ decay: 2, preDelay: 0.01, wet: 0.2 });
+    
+    // Route: Synth -> Filter -> Reverb -> Destination
+    synth = new Tone.PolySynth(Tone.Synth).chain(masterFilter, reverb, Tone.Destination);
     
     applyInstrumentProfile(synthTypeSelect.value);
     Tone.Destination.volume.value = parseFloat(masterVolInput.value);
@@ -176,7 +178,7 @@ async function initEngine() {
 }
 
 function calculateNotes(relativeIndex) {
-  const baseMidi = (currentOctave + 1) * 12; // C3 = 48
+  const baseMidi = (currentOctave + 1) * 12; // C4 = 60
   const rootMidi = baseMidi + relativeIndex + transposeAmount;
   
   const notes = [rootMidi];
@@ -324,25 +326,30 @@ window.addEventListener('keyup', (e) => {
 
 synthTypeSelect.addEventListener('change', (e) => applyInstrumentProfile(e.target.value));
 
+// Modulators & Sliders
 masterVolInput.addEventListener('input', (e) => {
   const val = parseFloat(e.target.value);
   document.getElementById('val-vol').textContent = `${val} dB`;
   if (isInitialized) Tone.Destination.volume.value = val;
 });
 
-// Modulators
-const transLbl = document.getElementById('lbl-transpose');
-const transVal = document.getElementById('val-transpose');
-document.getElementById('btn-trans-down').onclick = () => { transposeAmount--; transLbl.innerText = transposeAmount; transVal.innerText = transposeAmount; };
-document.getElementById('btn-trans-up').onclick = () => { transposeAmount++; transLbl.innerText = transposeAmount; transVal.innerText = transposeAmount; };
+const transInput = document.getElementById('master-transpose');
+transInput.addEventListener('input', (e) => {
+  transposeAmount = parseInt(e.target.value, 10);
+  document.getElementById('val-transpose').textContent = `${transposeAmount} st`;
+});
 
-const octLbl = document.getElementById('lbl-octave');
-document.getElementById('btn-oct-down').onclick = () => { currentOctave = Math.max(1, currentOctave - 1); octLbl.innerText = currentOctave; };
-document.getElementById('btn-oct-up').onclick = () => { currentOctave = Math.min(7, currentOctave + 1); octLbl.innerText = currentOctave; };
+const octInput = document.getElementById('master-octave');
+octInput.addEventListener('input', (e) => {
+  currentOctave = parseInt(e.target.value, 10);
+  document.getElementById('val-octave').textContent = `${currentOctave}`;
+});
 
-const reedLbl = document.getElementById('lbl-reed');
-document.getElementById('btn-reed-down').onclick = () => { additionalReeds--; reedLbl.innerText = additionalReeds; };
-document.getElementById('btn-reed-up').onclick = () => { additionalReeds++; reedLbl.innerText = additionalReeds; };
+const reedInput = document.getElementById('master-reed');
+reedInput.addEventListener('input', (e) => {
+  additionalReeds = parseInt(e.target.value, 10);
+  document.getElementById('val-reed').textContent = `${additionalReeds}`;
+});
 
 // Start
 renderKeyboard();

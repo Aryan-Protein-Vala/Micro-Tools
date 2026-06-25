@@ -1,5 +1,6 @@
 ---
 // MidiWorkspace.astro
+import AdSlot from './AdSlot.astro';
 ---
 <div class="h-full flex flex-col lg:flex-row gap-6 pb-20">
   
@@ -56,62 +57,57 @@
       </div>
     </div>
 
-    <!-- Modulation Modules -->
-    <div class="flex-1 flex flex-col gap-4">
+    <!-- Engine Controls -->
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 flex-1">
+      <h3 class="text-sm font-semibold tracking-wider text-white/70 uppercase mb-6">Engine Controls</h3>
       
-      <!-- Transpose -->
-      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
-        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
-          Transpose - <span id="val-transpose">0</span>
+      <div class="space-y-6">
+        <!-- Transpose -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Transpose</label>
+            <span id="val-transpose" class="text-xs font-mono text-white/40">0 st</span>
+          </div>
+          <input type="range" id="master-transpose" min="-12" max="12" step="1" value="0" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
         </div>
-        <div class="flex items-center justify-between p-3 bg-gray-50">
-          <button id="btn-trans-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
-          <span id="lbl-transpose" class="font-mono text-gray-800 font-semibold">0</span>
-          <button id="btn-trans-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
-        </div>
-      </div>
 
-      <!-- Current Octave -->
-      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
-        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
-          Current Octave
-        </div>
-        <div class="flex items-center justify-between p-3 bg-gray-50">
-          <button id="btn-oct-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
-          <span id="lbl-octave" class="font-mono text-gray-800 font-semibold">3</span>
-          <button id="btn-oct-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
-        </div>
-      </div>
+        <div class="h-px w-full bg-white/5 my-4"></div>
 
-      <!-- Additional Reeds -->
-      <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
-        <div class="bg-slate-600 text-white text-center py-2 text-sm font-medium tracking-wide">
-          Additional Reeds
+        <!-- Current Octave -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Base Octave</label>
+            <span id="val-octave" class="text-xs font-mono text-white/40">4</span>
+          </div>
+          <input type="range" id="master-octave" min="1" max="7" step="1" value="4" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
         </div>
-        <div class="flex items-center justify-between p-3 bg-gray-50">
-          <button id="btn-reed-down" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">-</button>
-          <span id="lbl-reed" class="font-mono text-gray-800 font-semibold">0</span>
-          <button id="btn-reed-up" class="w-12 py-1.5 bg-gray-400 hover:bg-gray-500 text-white font-bold rounded shadow-sm transition-colors">+</button>
-        </div>
-      </div>
 
-      <!-- Master Volume -->
-      <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 mt-2">
-        <div class="flex justify-between mb-2">
-          <label class="text-xs text-white/60 uppercase font-semibold">Master Vol</label>
-          <span id="val-vol" class="text-xs font-mono text-white/40">-10 dB</span>
+        <div class="h-px w-full bg-white/5 my-4"></div>
+
+        <!-- Additional Reeds -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Extra Reeds</label>
+            <span id="val-reed" class="text-xs font-mono text-white/40">0</span>
+          </div>
+          <input type="range" id="master-reed" min="-2" max="2" step="1" value="0" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
         </div>
-        <input type="range" id="master-vol" min="-40" max="0" value="-10" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+
+        <div class="h-px w-full bg-white/5 my-4"></div>
+
+        <!-- Master Volume -->
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-xs text-white/60">Master Vol</label>
+            <span id="val-vol" class="text-xs font-mono text-white/40">-10 dB</span>
+          </div>
+          <input type="range" id="master-vol" min="-40" max="0" step="1" value="-10" class="w-full accent-white/80 h-1 bg-white/10 rounded-full appearance-none cursor-pointer" />
+        </div>
       </div>
     </div>
 
     <!-- AdSlot -->
-    <div class="bg-[#0a0a0a] border border-white/5 rounded-xl h-48 flex flex-col items-center justify-center text-center p-4 shadow-sm relative overflow-hidden group">
-      <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-      <span class="text-xs tracking-widest text-white/20 uppercase mb-2">Advertisement</span>
-      <p class="text-sm text-white/40">Support free tools by whitelisting us.</p>
-    </div>
-
+    <AdSlot variant="synth" />
   </div>
 </div>
 
