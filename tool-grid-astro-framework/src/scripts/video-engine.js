@@ -32,15 +32,19 @@ export async function initFFmpeg() {
   if (statusEl) statusEl.textContent = "Loading engine...";
 
   try {
-    // Fetch core JS as blob
-    const coreRes = await fetch('/ffmpeg/ffmpeg-core.js');
-    const coreBlob = new Blob([await coreRes.text()], { type: 'text/javascript' });
-    const coreURL = URL.createObjectURL(coreBlob);
+    const baseURL = window.location.origin + '/ffmpeg';
+    const { toBlobURL } = await import('@ffmpeg/util');
+
+    // Fetch core JS as blob using official util to avoid encoding corruption
+    const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+    
+    // Explicitly fetch the classWorker URL from local bypassing Vite resolution
+    const classWorkerURL = await toBlobURL(`${baseURL}/worker.js`, 'text/javascript');
 
     // Fetch and combine WASM chunks to bypass 25MB host limits
     const [part1, part2] = await Promise.all([
-      fetch('/ffmpeg/ffmpeg-core.wasm.partaa').then(r => r.arrayBuffer()),
-      fetch('/ffmpeg/ffmpeg-core.wasm.partab').then(r => r.arrayBuffer())
+      fetch(`${baseURL}/ffmpeg-core.wasm.partaa`).then(r => r.arrayBuffer()),
+      fetch(`${baseURL}/ffmpeg-core.wasm.partab`).then(r => r.arrayBuffer())
     ]);
     const fullWasm = new Uint8Array(part1.byteLength + part2.byteLength);
     fullWasm.set(new Uint8Array(part1), 0);
@@ -50,7 +54,8 @@ export async function initFFmpeg() {
 
     await ffmpeg.load({
       coreURL,
-      wasmURL
+      wasmURL,
+      classWorkerURL
     });
     isLoaded = true;
     if (statusEl) {
