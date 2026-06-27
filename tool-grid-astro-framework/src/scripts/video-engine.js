@@ -6,8 +6,18 @@ let currentFile = null;
 
 export async function initFFmpeg() {
   if (isLoaded) return;
-  const { FFmpeg } = await import('@ffmpeg/ffmpeg');
-  ffmpeg = new FFmpeg();
+  
+  // Dynamically load the UMD version to bypass Vite's module worker interception hooks
+  await new Promise((resolve, reject) => {
+    if (window.FFmpegWASM) return resolve();
+    const script = document.createElement('script');
+    script.src = '/ffmpeg/ffmpeg.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+  
+  ffmpeg = new window.FFmpegWASM.FFmpeg();
 
   // Listen to progress
   ffmpeg.on('progress', ({ progress, time }) => {
@@ -49,8 +59,8 @@ export async function initFFmpeg() {
     const wasmBlob = new Blob([fullWasm], { type: 'application/wasm' });
     const wasmURL = URL.createObjectURL(wasmBlob);
 
-    // Note: Do NOT override classWorkerURL. Let Vite's bundler resolve the Web Worker 
-    // internally from @ffmpeg/ffmpeg, otherwise it crashes on relative imports in the worker.
+    // Note: By using the UMD version, the worker is loaded as a classic worker (not {type: 'module'}),
+    // which completely bypasses Astro/Vite's installHook.js intercepts that break blob: URLs.
     await ffmpeg.load({
       coreURL,
       wasmURL

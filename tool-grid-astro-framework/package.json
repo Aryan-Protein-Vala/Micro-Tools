@@ -11,7 +11,6 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@ffmpeg/core": "^0.12.6",
-    "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@imgly/background-removal": "^1.7.0",
     "@mozilla/readability": "^0.6.0",
