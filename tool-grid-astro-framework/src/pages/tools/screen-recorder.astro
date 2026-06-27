@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Free HD Screen Recorder | No Time Limit, No Download"
+  description="Record your screen, browser tabs, or applications in 1080p/4K securely in your browser. No time limits, no watermarks, completely free."
+  keywords="Free Screen Recorder No Time Limit No Download, web screen recorder, zero install screen recorder, record screen online, free screen recording tool"
+>
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-balance">Local HD Web Screen Recorder</h1>
+      <p class="text-lg text-muted-foreground">Record unlimited high-definition video directly in your browser. Your recording never hits a server—it saves directly to your device.</p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      <!-- Recorder Controls -->
+      <div class="bg-black/40 border border-border rounded-xl p-8 text-center flex flex-col items-center justify-center">
+        
+        <!-- Video Preview -->
+        <div id="video-wrapper" class="w-full aspect-video bg-black rounded-lg border border-border/50 mb-6 relative overflow-hidden flex items-center justify-center">
+          <span id="preview-placeholder" class="text-muted-foreground flex flex-col items-center gap-2">
+            <svg class="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+            Ready to Record
+          </span>
+          <video id="video-preview" class="w-full h-full object-contain hidden" autoplay muted playsinline></video>
+          
+          <!-- Recording Indicator -->
+          <div id="recording-indicator" class="absolute top-4 right-4 bg-red-500/20 text-red-500 px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 hidden border border-red-500/50 backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span id="recording-timer">00:00</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <label class="flex items-center gap-2 px-4 py-2 border border-border rounded-lg bg-black/20 cursor-pointer hover:bg-black/40 transition-colors">
+            <input type="checkbox" id="record-audio" class="w-4 h-4 rounded border-border bg-black text-accent" checked />
+            <span class="text-sm font-medium">Record Audio (Mic/System)</span>
+          </label>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-4 justify-center w-full">
+          <button 
+            id="btn-start" 
+            class="px-8 py-4 bg-accent text-accent-foreground font-bold rounded-xl hover:bg-accent/90 transition-transform active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/20"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="8" stroke-width="2" fill="currentColor"></circle>
+            </svg>
+            Start Recording
+          </button>
+          
+          <button 
+            id="btn-stop" 
+            class="px-8 py-4 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-transform active:scale-95 flex items-center gap-2 hidden shadow-lg shadow-red-500/20"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" stroke-width="2" fill="currentColor"></rect>
+            </svg>
+            Stop Recording
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Panel -->
+      <div id="result-panel" class="bg-black/40 border border-border rounded-xl p-6 hidden">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-green-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Recording Saved Successfully!
+        </h3>
+        <p class="text-sm text-muted-foreground mb-6">Your video has been processed locally and is ready to download.</p>
+        <div class="flex flex-wrap gap-4">
+          <a 
+            id="btn-download" 
+            class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Download HD Video (WebM)
+          </a>
+          <button 
+            id="btn-new" 
+            class="px-6 py-3 bg-muted text-foreground font-medium rounded-lg hover:bg-muted/80 transition-colors"
+          >
+            Record Another
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/screen-recorder.js';
+  
+  document.addEventListener('DOMContentLoaded', setupUI);
+  document.addEventListener('astro:page-load', setupUI);
+</script>

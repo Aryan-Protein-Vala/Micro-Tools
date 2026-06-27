@@ -1,0 +1,88 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Free Resume Bullet Optimizer & Action Verb Generator"
+  description="Transform weak resume bullets into enterprise-grade achievement statements instantly. Free AI-powered resume bullet optimizer with no account required."
+  keywords="Free Resume Bullet Generator Tool, resume bullet optimizer, action verb generator, resume rewriter, improve resume bullets free"
+>
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-balance">AI-Powered Resume Bullet Optimizer</h1>
+      <p class="text-lg text-muted-foreground">Paste a weak bullet point and get 5 powerful, enterprise-grade variations in milliseconds. 100% free, runs locally in your browser.</p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      <div class="bg-black/40 border border-border rounded-xl p-6">
+        <label class="block text-sm font-medium text-muted-foreground mb-2" for="bullet-input">
+          Your Original Bullet Point
+        </label>
+        <textarea
+          id="bullet-input"
+          class="w-full h-28 bg-black/40 border border-border rounded-lg p-4 text-foreground placeholder-muted-foreground resize-none focus:outline-none focus:border-accent transition-colors text-sm"
+          placeholder='e.g. "I helped the team fix bugs and made the website faster" or "Worked on improving sales numbers"'
+        ></textarea>
+
+        <div class="mt-4 flex flex-wrap gap-3 items-center justify-between">
+          <div class="flex flex-wrap gap-2">
+            <label class="flex items-center gap-2 text-xs text-muted-foreground">
+              <span class="font-medium text-foreground">Industry:</span>
+            </label>
+            <select id="industry-select" class="bg-black/60 border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent">
+              <option value="tech">Tech / Engineering</option>
+              <option value="finance">Finance / Consulting</option>
+              <option value="marketing">Marketing / Sales</option>
+              <option value="ops">Operations / Management</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <button 
+            id="btn-optimize" 
+            class="px-8 py-3 bg-accent text-accent-foreground font-bold rounded-xl hover:bg-accent/90 transition-transform active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/20"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Optimize Bullets
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="results-container" class="hidden space-y-4">
+        <div class="flex items-center gap-2 mb-2">
+          <h3 class="text-lg font-bold">Optimized Variations</h3>
+          <span class="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded-full font-medium">5 Results</span>
+        </div>
+        <div id="results-list" class="space-y-3">
+          <!-- Injected by JS -->
+        </div>
+        <div class="mt-4 p-4 bg-muted/10 border border-border rounded-lg">
+          <p class="text-xs text-muted-foreground">
+            💡 <strong class="text-foreground">Pro Tip:</strong> Pick the version that best fits the job description. Use a different variation for each application to maximize keyword matching with ATS systems.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Examples -->
+      <div class="bg-black/20 border border-border rounded-xl p-5">
+        <h4 class="text-sm font-bold text-muted-foreground mb-3">Try these examples:</h4>
+        <div class="flex flex-wrap gap-2" id="examples">
+          <button class="example-btn text-xs px-3 py-1.5 bg-black/40 border border-border rounded-full hover:border-accent hover:text-accent transition-colors">Helped fix website bugs</button>
+          <button class="example-btn text-xs px-3 py-1.5 bg-black/40 border border-border rounded-full hover:border-accent hover:text-accent transition-colors">Worked on improving sales</button>
+          <button class="example-btn text-xs px-3 py-1.5 bg-black/40 border border-border rounded-full hover:border-accent hover:text-accent transition-colors">Made reports for management</button>
+          <button class="example-btn text-xs px-3 py-1.5 bg-black/40 border border-border rounded-full hover:border-accent hover:text-accent transition-colors">Looked after the database</button>
+          <button class="example-btn text-xs px-3 py-1.5 bg-black/40 border border-border rounded-full hover:border-accent hover:text-accent transition-colors">Helped customers with their issues</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/resume-optimizer.js';
+  document.addEventListener('DOMContentLoaded', setupUI);
+  document.addEventListener('astro:page-load', setupUI);
+</script>

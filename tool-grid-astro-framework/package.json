@@ -23,8 +23,10 @@
     "jszip": "^3.10.1",
     "lamejs": "^1.2.1",
     "papaparse": "^5.5.3",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.1.200",
     "qrcode": "^1.5.4",
+    "svgo": "^4.0.1",
     "tesseract.js": "^7.0.0",
     "turndown": "^7.2.4",
     "wordcloud": "^1.2.3"

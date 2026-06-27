@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Free Batch SVG Minifier & Optimizer | Zero Trust Vector Tool"
+  description="Optimize, minify, and strip metadata from SVG files securely in your browser. Batch process vector illustrations instantly with zero server uploads."
+  keywords="Free Batch SVG Minifier No Account, SVG optimizer, vector minifier, compress SVG, SVGO browser, free vector tools"
+>
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-balance">Premium Vector (SVG) Optimizer</h1>
+      <p class="text-lg text-muted-foreground">Minify paths, strip metadata, and compress SVG files by up to 80% instantly. 100% secure - all processing happens locally in your browser.</p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      <!-- Upload Zone -->
+      <div 
+        id="svg-dropzone" 
+        class="border-2 border-dashed border-border rounded-xl p-12 text-center bg-black/20 hover:bg-black/40 hover:border-accent transition-all cursor-pointer group"
+      >
+        <input type="file" id="svg-file-input" class="hidden" accept=".svg" multiple />
+        <div class="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Drop SVG files here</h3>
+        <p class="text-sm text-muted-foreground mb-4">or click to select up to 50 files</p>
+        <span class="inline-flex items-center justify-center px-4 py-2 bg-accent text-accent-foreground text-sm font-medium rounded-lg hover:bg-accent/90 transition-colors">
+          Select SVGs
+        </span>
+      </div>
+
+      <!-- Settings -->
+      <div id="settings-panel" class="bg-black/40 border border-border rounded-xl p-6 hidden">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          Optimization Settings
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label class="flex items-center gap-3 p-3 border border-border rounded-lg bg-black/20 hover:bg-black/40 cursor-pointer">
+            <input type="checkbox" id="opt-multipass" class="w-4 h-4 rounded border-border bg-black text-accent" checked />
+            <div class="flex-1">
+              <span class="text-sm font-medium block">Multipass</span>
+              <span class="text-xs text-muted-foreground">Run until fully optimized</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-border rounded-lg bg-black/20 hover:bg-black/40 cursor-pointer">
+            <input type="checkbox" id="opt-precision" class="w-4 h-4 rounded border-border bg-black text-accent" checked />
+            <div class="flex-1">
+              <span class="text-sm font-medium block">Reduce Precision</span>
+              <span class="text-xs text-muted-foreground">Round coordinates to 2 decimals</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Results Area -->
+      <div id="results-area" class="hidden space-y-6">
+        <div class="flex items-center justify-between p-4 bg-accent/10 border border-accent rounded-lg">
+          <div class="flex flex-col">
+            <span class="font-bold text-accent" id="stats-total-files">0 files processed</span>
+            <span class="text-sm text-muted-foreground"><span id="stats-original">0 KB</span> &rarr; <span id="stats-optimized">0 KB</span> (<span id="stats-saved" class="text-green-500 font-medium">0% saved</span>)</span>
+          </div>
+          <button 
+            id="btn-download-all" 
+            class="px-6 py-3 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Download ZIP
+          </button>
+        </div>
+
+        <div id="file-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Files injected here by JS -->
+        </div>
+        
+        <button 
+          id="btn-reset" 
+          class="w-full px-4 py-3 bg-muted text-foreground font-medium rounded-lg hover:bg-muted/80 transition-colors"
+        >
+          Optimize More SVGs
+        </button>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/svg-optimizer.js';
+  
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', setupUI);
+  // Support Astro view transitions
+  document.addEventListener('astro:page-load', setupUI);
+</script>

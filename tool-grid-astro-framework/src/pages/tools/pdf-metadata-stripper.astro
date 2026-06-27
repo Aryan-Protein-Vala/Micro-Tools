@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Free PDF Metadata Stripper & Sanitizer | Zero Trust PDF Tool"
+  description="Wipe author, creator, location logs, and editing history from corporate PDF files securely. Batch sanitize PDF documents instantly with zero server uploads."
+  keywords="Free PDF Metadata Stripper Secure, PDF metadata stripper, sanitize PDF, remove PDF properties, PDF metadata remover, corporate PDF cleanup"
+>
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-balance">Corporate PDF Metadata Stripper</h1>
+      <p class="text-lg text-muted-foreground">Remove hidden tracking parameters, editing history, author logs, and software signatures from multiple PDFs. 100% private - runs strictly in your browser.</p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      <!-- Upload Zone -->
+      <div 
+        id="pdf-dropzone" 
+        class="border-2 border-dashed border-border rounded-xl p-12 text-center bg-black/20 hover:bg-black/40 hover:border-accent transition-all cursor-pointer group"
+      >
+        <input type="file" id="pdf-file-input" class="hidden" accept=".pdf" multiple />
+        <div class="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Drop PDF files here</h3>
+        <p class="text-sm text-muted-foreground mb-4">or click to select files</p>
+        <span class="inline-flex items-center justify-center px-4 py-2 bg-accent text-accent-foreground text-sm font-medium rounded-lg hover:bg-accent/90 transition-colors">
+          Select PDFs
+        </span>
+      </div>
+
+      <!-- Results Area -->
+      <div id="results-area" class="hidden space-y-6">
+        <div class="flex items-center justify-between p-4 bg-accent/10 border border-accent rounded-lg">
+          <div class="flex flex-col">
+            <span class="font-bold text-accent" id="stats-total-files">0 files sanitized</span>
+            <span class="text-sm text-muted-foreground">All PDF document attributes and location logs cleared successfully.</span>
+          </div>
+          <button 
+            id="btn-download-all" 
+            class="px-6 py-3 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Download Sanitized (ZIP)
+          </button>
+        </div>
+
+        <div id="file-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Files injected here by JS -->
+        </div>
+        
+        <button 
+          id="btn-reset" 
+          class="w-full px-4 py-3 bg-muted text-foreground font-medium rounded-lg hover:bg-muted/80 transition-colors"
+        >
+          Sanitize More PDFs
+        </button>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/pdf-metadata-stripper.js';
+  document.addEventListener('DOMContentLoaded', setupUI);
+  document.addEventListener('astro:page-load', setupUI);
+</script>
