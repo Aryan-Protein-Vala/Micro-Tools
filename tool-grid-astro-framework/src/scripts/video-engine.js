@@ -32,9 +32,25 @@ export async function initFFmpeg() {
   if (statusEl) statusEl.textContent = "Loading engine...";
 
   try {
+    // Fetch core JS as blob
+    const coreRes = await fetch('/ffmpeg/ffmpeg-core.js');
+    const coreBlob = new Blob([await coreRes.text()], { type: 'text/javascript' });
+    const coreURL = URL.createObjectURL(coreBlob);
+
+    // Fetch and combine WASM chunks to bypass 25MB host limits
+    const [part1, part2] = await Promise.all([
+      fetch('/ffmpeg/ffmpeg-core.wasm.partaa').then(r => r.arrayBuffer()),
+      fetch('/ffmpeg/ffmpeg-core.wasm.partab').then(r => r.arrayBuffer())
+    ]);
+    const fullWasm = new Uint8Array(part1.byteLength + part2.byteLength);
+    fullWasm.set(new Uint8Array(part1), 0);
+    fullWasm.set(new Uint8Array(part2), part1.byteLength);
+    const wasmBlob = new Blob([fullWasm], { type: 'application/wasm' });
+    const wasmURL = URL.createObjectURL(wasmBlob);
+
     await ffmpeg.load({
-      coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-      wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+      coreURL,
+      wasmURL
     });
     isLoaded = true;
     if (statusEl) {
