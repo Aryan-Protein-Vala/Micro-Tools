@@ -102,10 +102,10 @@ const tool = {
 </ToolWorkspace>
 
 
-<!-- Dependency for ZIP compression -->
-<script is:inline src="https://unpkg.com/fflate@0.8.1/umd/index.js"></script>
+<script>
+  import * as fflate from 'fflate';
 
-<script is:inline>
+  function initCompressor() {
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
   const compressionPanel = document.getElementById('compression-panel');
@@ -113,6 +113,8 @@ const tool = {
   const fileInfo = document.getElementById('file-info');
   const compressBtn = document.getElementById('compress-btn');
   const clearBtn = document.getElementById('clear-btn');
+  
+  if (!dropZone) return; // Safeguard if not on this page
   const resultPanel = document.getElementById('result-panel');
   const downloadBtn = document.getElementById('download-btn');
   const resultInfo = document.getElementById('result-info');
@@ -323,15 +325,13 @@ const tool = {
   }
 
   async function zipFile(file) {
-    if (!window.fflate) throw new Error("fflate library not loaded");
-    
     return new Promise(async (resolve, reject) => {
       try {
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
         
-        // Use fflate to compress
-        const zipped = window.fflate.zipSync({
+        // Use local fflate to compress
+        const zipped = fflate.zipSync({
           [file.name]: uint8Array
         }, { level: 9 }); // max compression
         
@@ -341,6 +341,9 @@ const tool = {
       }
     });
   }
+}
+
+document.addEventListener('astro:page-load', initCompressor);
 
 </script>
 </Layout>

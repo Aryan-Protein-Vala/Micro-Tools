@@ -94,16 +94,15 @@ const tool = {
 </ToolWorkspace>
 
 
-<!-- Dependencies for PDF manipulation -->
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  import { jsPDF } from 'jspdf';
+  import * as pdfjsLib from 'pdfjs-dist';
+  
+  // Setup pdf.js worker using Vite's URL import
+  import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-<script is:inline>
-  // Setup pdf.js worker
-  if (window.pdfjsLib) {
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-  }
-
+  function initConverter() {
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
   const conversionPanel = document.getElementById('conversion-panel');
@@ -112,6 +111,8 @@ const tool = {
   const targetFormat = document.getElementById('target-format');
   const convertBtn = document.getElementById('convert-btn');
   const clearBtn = document.getElementById('clear-btn');
+  
+  if (!dropZone) return; // Safeguard if not on this page
   const resultPanel = document.getElementById('result-panel');
   const downloadBtn = document.getElementById('download-btn');
   const resultInfo = document.getElementById('result-info');
@@ -350,7 +351,6 @@ const tool = {
     const dataUrl = await fileToDataUrl(file);
     const img = await loadImage(dataUrl);
     
-    const { jsPDF } = window.jspdf;
     const orientation = img.width > img.height ? 'l' : 'p';
     const pdf = new jsPDF({
       orientation: orientation,
@@ -364,10 +364,8 @@ const tool = {
   }
 
   async function convertPdfToImage(file, mimeType) {
-    if (!window.pdfjsLib) throw new Error("PDF parser not loaded.");
-    
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const numPages = pdf.numPages;
     
     // Render each page to its own canvas
@@ -465,6 +463,9 @@ const tool = {
     
     return new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
   }
+}
+
+document.addEventListener('astro:page-load', initConverter);
 
 </script>
 </Layout>

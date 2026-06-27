@@ -7,6 +7,11 @@ export default defineConfig({
   integrations: [tailwind(), sitemap()],
   output: 'static',
   vite: {
+    build: {
+      rollupOptions: {
+        external: ['onnxruntime-web/webgpu', 'onnxruntime-web']
+      }
+    },
     server: {
       headers: {
         'Cross-Origin-Opener-Policy': 'same-origin',
