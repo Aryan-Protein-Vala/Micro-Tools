@@ -35,12 +35,9 @@ export async function initFFmpeg() {
     const baseURL = window.location.origin + '/ffmpeg';
     const { toBlobURL } = await import('@ffmpeg/util');
 
-    // Fetch core JS as blob using official util to avoid encoding corruption
+    // Fetch core JS as blob using official util to avoid encoding corruption (arrayBuffer)
     const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
     
-    // Explicitly fetch the classWorker URL from local bypassing Vite resolution
-    const classWorkerURL = await toBlobURL(`${baseURL}/worker.js`, 'text/javascript');
-
     // Fetch and combine WASM chunks to bypass 25MB host limits
     const [part1, part2] = await Promise.all([
       fetch(`${baseURL}/ffmpeg-core.wasm.partaa`).then(r => r.arrayBuffer()),
@@ -52,10 +49,11 @@ export async function initFFmpeg() {
     const wasmBlob = new Blob([fullWasm], { type: 'application/wasm' });
     const wasmURL = URL.createObjectURL(wasmBlob);
 
+    // Note: Do NOT override classWorkerURL. Let Vite's bundler resolve the Web Worker 
+    // internally from @ffmpeg/ffmpeg, otherwise it crashes on relative imports in the worker.
     await ffmpeg.load({
       coreURL,
-      wasmURL,
-      classWorkerURL
+      wasmURL
     });
     isLoaded = true;
     if (statusEl) {
