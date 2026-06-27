@@ -32,10 +32,9 @@ export async function initFFmpeg() {
   if (statusEl) statusEl.textContent = "Loading engine...";
 
   try {
-    // Load ffmpeg from unpkg to avoid local hosting issues
     await ffmpeg.load({
-      coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-      wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+      coreURL: '/ffmpeg/ffmpeg-core.js',
+      wasmURL: '/ffmpeg/ffmpeg-core.wasm'
     });
     isLoaded = true;
     if (statusEl) {

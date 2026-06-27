@@ -210,6 +210,7 @@ const tool = {
     } else {
       compressionType = 'zip';
       methodZip.classList.remove('hidden');
+      qualitySliderContainer.classList.remove('hidden');
     }
 
     dropZone.classList.add('hidden');
@@ -239,7 +240,8 @@ const tool = {
       } else if (compressionType === 'text') {
         resultBlob = await minifyText(currentFile);
       } else {
-        resultBlob = await zipFile(currentFile);
+        const level = Math.max(0, Math.min(9, Math.floor((100 - qualitySlider.value) / 10)));
+        resultBlob = await zipFile(currentFile, level);
         newName = currentFile.name + '.zip';
       }
 
@@ -324,7 +326,7 @@ const tool = {
     });
   }
 
-  async function zipFile(file) {
+  async function zipFile(file, level = 9) {
     return new Promise(async (resolve, reject) => {
       try {
         const arrayBuffer = await file.arrayBuffer();
@@ -333,7 +335,7 @@ const tool = {
         // Use local fflate to compress
         const zipped = fflate.zipSync({
           [file.name]: uint8Array
-        }, { level: 9 }); // max compression
+        }, { level: level }); // use user-selected compression level
         
         resolve(new Blob([zipped], { type: 'application/zip' }));
       } catch (e) {
