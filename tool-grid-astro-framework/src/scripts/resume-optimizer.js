@@ -134,7 +134,7 @@ export function setupUI() {
           <div class="flex-1 text-sm text-foreground leading-relaxed font-medium">
             ${v}
           </div>
-          <button class="copy-btn p-2 bg-muted hover:bg-accent hover:text-accent-foreground rounded text-xs transition-colors shrink-0 flex items-center gap-1" data-text="${v.replace(/"/g, '&quot;')}">
+          <button class="copy-btn p-2 bg-muted hover:bg-accent hover:text-background rounded text-xs transition-colors shrink-0 flex items-center gap-1" data-text="${v.replace(/"/g, '&quot;')}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
             Copy
           </button>
