@@ -92,7 +92,7 @@ const tool = {
     </div>
   </Fragment>
 </ToolWorkspace>
-</Layout>
+
 
 <!-- Dependencies for PDF manipulation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -368,20 +368,47 @@ const tool = {
     
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const numPages = pdf.numPages;
     
-    // Convert first page only for simplicity in a quick tool
-    const page = await pdf.getPage(1);
-    const viewport = page.getViewport({ scale: 2.0 }); // high res
+    // Render each page to its own canvas
+    const pageCanvases = [];
+    let totalHeight = 0;
+    let maxWidth = 0;
     
-    const canvas = document.createElement('canvas');
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
+    for (let i = 1; i <= numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 2.0 });
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      
+      const ctx = canvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      
+      pageCanvases.push(canvas);
+      totalHeight += viewport.height;
+      if (viewport.width > maxWidth) maxWidth = viewport.width;
+    }
     
-    const ctx = canvas.getContext('2d');
-    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    // Stitch all pages vertically into one tall canvas
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = maxWidth;
+    finalCanvas.height = totalHeight;
+    const finalCtx = finalCanvas.getContext('2d');
+    
+    // Fill white background
+    finalCtx.fillStyle = '#FFFFFF';
+    finalCtx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+    
+    let yOffset = 0;
+    for (const pageCanvas of pageCanvases) {
+      finalCtx.drawImage(pageCanvas, 0, yOffset);
+      yOffset += pageCanvas.height;
+    }
     
     return new Promise(resolve => {
-      canvas.toBlob(blob => resolve(blob), mimeType, 0.92);
+      finalCanvas.toBlob(blob => resolve(blob), mimeType, 0.92);
     });
   }
 
@@ -440,3 +467,4 @@ const tool = {
   }
 
 </script>
+</Layout>
