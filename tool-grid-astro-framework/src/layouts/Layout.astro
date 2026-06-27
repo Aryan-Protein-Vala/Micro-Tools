@@ -53,6 +53,7 @@ const schemaData = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="ToolGrid" />
+    <meta property="og:image" content={`${canonicalUrl === 'https://tool-grid-astro-framework.pages.dev' ? canonicalUrl : 'https://tool-grid-astro-framework.pages.dev'}/og-image.png`} />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
@@ -61,6 +62,7 @@ const schemaData = {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${canonicalUrl === 'https://tool-grid-astro-framework.pages.dev' ? canonicalUrl : 'https://tool-grid-astro-framework.pages.dev'}/og-image.png`} />
 
     <!-- SEO -->
     <meta name="robots" content="index, follow" />
