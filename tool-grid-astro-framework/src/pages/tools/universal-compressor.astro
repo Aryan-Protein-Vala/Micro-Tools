@@ -1,0 +1,345 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const tool = {
+  title: 'Universal File Compressor',
+  description: 'Shrink images, minify text, and ZIP files directly in your browser. Fast, free, and 100% private.',
+  icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>`
+};
+---
+
+<Layout 
+  title="Universal File Compressor | Free Online Tool" 
+  description="Shrink images, minify text, and ZIP files directly in your browser. Fast, free, and 100% private."
+  keywords="file compressor, compress images, minify json, zip files online, free compressor"
+>
+<ToolWorkspace
+  title="Universal File Compressor"
+  toolName="universal-compressor"
+  hasContextPanel={true}
+>
+  <div class="max-w-4xl mx-auto space-y-8">
+    <!-- Dropzone -->
+    <div id="drop-zone" class="border-2 border-dashed border-border rounded-xl p-12 text-center transition-colors hover:border-accent hover:bg-accent/5 cursor-pointer flex flex-col items-center justify-center min-h-[300px]">
+      <div class="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3 class="text-xl font-medium mb-2">Drag & Drop file to compress</h3>
+      <p class="text-sm text-muted-foreground mb-6">Supports Images (lossy compression), Text/JSON/CSV (minification), and any file (ZIP archiving)</p>
+      <input type="file" id="file-input" class="hidden" />
+      <button class="px-6 py-2 bg-accent text-background rounded-lg font-medium hover:bg-accent/90 transition-colors" onclick="document.getElementById('file-input').click()">
+        Select File
+      </button>
+    </div>
+
+    <!-- Compression Controls (Hidden initially) -->
+    <div id="compression-panel" class="hidden bg-card border border-border rounded-xl p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-medium" id="file-name">filename.jpg</h3>
+          <p class="text-sm text-muted-foreground" id="file-info">Image (2.4 MB)</p>
+        </div>
+        <button id="clear-btn" class="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-4" id="quality-slider-container">
+        <div class="flex justify-between">
+          <label class="text-sm font-medium text-muted-foreground">Compression Level</label>
+          <span class="text-sm font-mono text-accent" id="quality-val">High Quality (80%)</span>
+        </div>
+        <input type="range" id="quality-slider" min="10" max="100" step="10" value="80" class="w-full accent-accent h-2 bg-muted rounded-full appearance-none cursor-pointer" />
+        <p class="text-xs text-muted-foreground">Lower quality = smaller file size.</p>
+      </div>
+      
+      <div id="method-text" class="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg hidden">
+        This file will be minified (whitespace removed) to reduce size.
+      </div>
+      
+      <div id="method-zip" class="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg hidden">
+        This file format cannot be natively compressed, so we will archive it into a highly compressed .ZIP file.
+      </div>
+
+      <button id="compress-btn" class="w-full py-3 bg-accent text-background rounded-lg font-medium hover:bg-accent/90 transition-colors flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
+        Compress File
+      </button>
+
+      <!-- Progress/Result -->
+      <div id="result-panel" class="hidden mt-6 p-4 bg-muted/30 rounded-lg flex items-center justify-between border border-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <p class="font-medium" id="savings-text">Saved 40%!</p>
+            <p class="text-xs text-muted-foreground" id="result-info">New Size: 1.2 MB</p>
+          </div>
+        </div>
+        <a id="download-btn" class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors cursor-pointer inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <Fragment slot="faq">
+    <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+    <div class="space-y-4">
+      <div class="bg-card border border-border rounded-lg p-4">
+        <h4 class="font-medium mb-2">How does it compress my files?</h4>
+        <p class="text-sm text-muted-foreground">For images, we lower the rendering quality slightly to drastically reduce size. For data files (JSON/CSV/HTML), we strip unnecessary whitespace (minify). For everything else, we compress it into a ZIP archive.</p>
+      </div>
+      <div class="bg-card border border-border rounded-lg p-4">
+        <h4 class="font-medium mb-2">Is there a file size limit?</h4>
+        <p class="text-sm text-muted-foreground">Because processing happens 100% in your browser, the only limit is your device's memory. Extremely large files (2GB+) may cause the browser to crash.</p>
+      </div>
+    </div>
+  </Fragment>
+</ToolWorkspace>
+</Layout>
+
+<!-- Dependency for ZIP compression -->
+<script src="https://unpkg.com/fflate@0.8.1/umd/index.js"></script>
+
+<script>
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const compressionPanel = document.getElementById('compression-panel');
+  const fileName = document.getElementById('file-name');
+  const fileInfo = document.getElementById('file-info');
+  const compressBtn = document.getElementById('compress-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  const resultPanel = document.getElementById('result-panel');
+  const downloadBtn = document.getElementById('download-btn');
+  const resultInfo = document.getElementById('result-info');
+  const savingsText = document.getElementById('savings-text');
+
+  const qualitySliderContainer = document.getElementById('quality-slider-container');
+  const qualitySlider = document.getElementById('quality-slider');
+  const qualityVal = document.getElementById('quality-val');
+  
+  const methodText = document.getElementById('method-text');
+  const methodZip = document.getElementById('method-zip');
+
+  let currentFile = null;
+  let compressionType = 'zip'; // 'image', 'text', 'zip'
+
+  qualitySlider.addEventListener('input', (e) => {
+    qualityVal.textContent = e.target.value + '%';
+  });
+
+  // Drag and Drop
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, highlight, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight(e) {
+    dropZone.classList.add('border-accent', 'bg-accent/5');
+  }
+
+  function unhighlight(e) {
+    dropZone.classList.remove('border-accent', 'bg-accent/5');
+  }
+
+  dropZone.addEventListener('drop', handleDrop, false);
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      handleFile(this.files[0]);
+    }
+  });
+
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+    if (file) handleFile(file);
+  }
+
+  function formatBytes(bytes, decimals = 2) {
+    if (!+bytes) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  }
+
+  function handleFile(file) {
+    currentFile = file;
+    fileName.textContent = file.name;
+    fileInfo.textContent = `${file.type || 'Unknown'} (${formatBytes(file.size)})`;
+
+    // Reset UI
+    qualitySliderContainer.classList.add('hidden');
+    methodText.classList.add('hidden');
+    methodZip.classList.add('hidden');
+    resultPanel.classList.add('hidden');
+
+    const type = file.type;
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    if (type.startsWith('image/') && (ext === 'jpg' || ext === 'jpeg' || ext === 'webp')) {
+      compressionType = 'image';
+      qualitySliderContainer.classList.remove('hidden');
+    } else if (type.startsWith('image/') && ext === 'png') {
+      // PNG uses ZIP/DEFLATE, we can convert it to heavily compressed WEBP if they want, but let's stick to image processing
+      compressionType = 'image';
+      qualitySliderContainer.classList.remove('hidden');
+    } else if (type.startsWith('text/') || ext === 'json' || ext === 'css' || ext === 'js' || ext === 'html') {
+      compressionType = 'text';
+      methodText.classList.remove('hidden');
+    } else {
+      compressionType = 'zip';
+      methodZip.classList.remove('hidden');
+    }
+
+    dropZone.classList.add('hidden');
+    compressionPanel.classList.remove('hidden');
+  }
+
+  clearBtn.addEventListener('click', () => {
+    currentFile = null;
+    fileInput.value = '';
+    dropZone.classList.remove('hidden');
+    compressionPanel.classList.add('hidden');
+  });
+
+  compressBtn.addEventListener('click', async () => {
+    if (!currentFile) return;
+    
+    compressBtn.disabled = true;
+    compressBtn.innerHTML = 'Compressing...';
+
+    try {
+      let resultBlob = null;
+      let newName = currentFile.name;
+
+      if (compressionType === 'image') {
+        const quality = parseInt(qualitySlider.value) / 100;
+        resultBlob = await compressImage(currentFile, quality);
+      } else if (compressionType === 'text') {
+        resultBlob = await minifyText(currentFile);
+      } else {
+        resultBlob = await zipFile(currentFile);
+        newName = currentFile.name + '.zip';
+      }
+
+      if (resultBlob) {
+        const url = URL.createObjectURL(resultBlob);
+        
+        downloadBtn.href = url;
+        downloadBtn.download = newName;
+        
+        const originalSize = currentFile.size;
+        const newSize = resultBlob.size;
+        const savings = Math.max(0, ((originalSize - newSize) / originalSize) * 100);
+        
+        savingsText.textContent = savings > 0 ? `Saved ${savings.toFixed(1)}%!` : 'No size reduction possible.';
+        resultInfo.textContent = `Original: ${formatBytes(originalSize)} → Compressed: ${formatBytes(newSize)}`;
+        resultPanel.classList.remove('hidden');
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error during compression: " + e.message);
+    } finally {
+      compressBtn.disabled = false;
+      compressBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg> Compress File`;
+    }
+  });
+
+  // --- Compression Engines ---
+
+  function compressImage(file, quality) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          
+          let outputType = file.type;
+          // If PNG, converting to WEBP or JPEG yields much better lossy compression
+          if (outputType === 'image/png') {
+              outputType = 'image/webp';
+              // fill background in case of transparency
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob(blob => resolve(blob), outputType, quality);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function minifyText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        let text = e.target.result;
+        const ext = file.name.split('.').pop().toLowerCase();
+        
+        if (ext === 'json') {
+          try {
+            text = JSON.stringify(JSON.parse(text));
+          } catch (e) {
+            // fallback if invalid json
+          }
+        } else {
+          // generic whitespace removal
+          text = text.replace(/\\s+/g, ' ').replace(/>\\s+</g, '><').trim();
+        }
+        
+        resolve(new Blob([text], { type: file.type }));
+      };
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  }
+
+  async function zipFile(file) {
+    if (!window.fflate) throw new Error("fflate library not loaded");
+    
+    return new Promise(async (resolve, reject) => {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        // Use fflate to compress
+        const zipped = window.fflate.zipSync({
+          [file.name]: uint8Array
+        }, { level: 9 }); // max compression
+        
+        resolve(new Blob([zipped], { type: 'application/zip' }));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+</script>

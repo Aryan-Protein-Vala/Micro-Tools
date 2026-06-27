@@ -1,0 +1,442 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const tool = {
+  title: 'Universal File Converter',
+  description: 'Convert images, documents, and data files instantly. 100% private, no server uploads.',
+  icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`
+};
+---
+
+<Layout 
+  title="Universal File Converter | Free Online Tool" 
+  description="Convert images, documents, and data files instantly. 100% private, no server uploads."
+  keywords="file converter, convert images, pdf to image, image to pdf, json to csv, free converter"
+>
+<ToolWorkspace
+  title="Universal File Converter"
+  toolName="universal-converter"
+  hasContextPanel={true}
+>
+  <div class="max-w-4xl mx-auto space-y-8">
+    <!-- Dropzone -->
+    <div id="drop-zone" class="border-2 border-dashed border-border rounded-xl p-12 text-center transition-colors hover:border-accent hover:bg-accent/5 cursor-pointer flex flex-col items-center justify-center min-h-[300px]">
+      <div class="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3 class="text-xl font-medium mb-2">Drag & Drop file here</h3>
+      <p class="text-sm text-muted-foreground mb-6">Supports Images (JPG, PNG, WEBP), PDF, JSON, CSV</p>
+      <input type="file" id="file-input" class="hidden" />
+      <button class="px-6 py-2 bg-accent text-background rounded-lg font-medium hover:bg-accent/90 transition-colors" onclick="document.getElementById('file-input').click()">
+        Select File
+      </button>
+    </div>
+
+    <!-- Conversion Controls (Hidden initially) -->
+    <div id="conversion-panel" class="hidden bg-card border border-border rounded-xl p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-medium" id="file-name">filename.jpg</h3>
+          <p class="text-sm text-muted-foreground" id="file-info">Image (2.4 MB)</p>
+        </div>
+        <button id="clear-btn" class="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-muted-foreground">Convert to</label>
+          <select id="target-format" class="w-full bg-background border border-border rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+      </div>
+
+      <button id="convert-btn" class="w-full py-3 bg-accent text-background rounded-lg font-medium hover:bg-accent/90 transition-colors flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Convert File
+      </button>
+
+      <!-- Progress/Result -->
+      <div id="result-panel" class="hidden mt-6 p-4 bg-muted/30 rounded-lg flex items-center justify-between border border-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <p class="font-medium">Conversion Complete!</p>
+            <p class="text-xs text-muted-foreground" id="result-info">Ready to download</p>
+          </div>
+        </div>
+        <a id="download-btn" class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors cursor-pointer inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <Fragment slot="faq">
+    <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+    <div class="space-y-4">
+      <div class="bg-card border border-border rounded-lg p-4">
+        <h4 class="font-medium mb-2">Are my files uploaded to a server?</h4>
+        <p class="text-sm text-muted-foreground">No. This converter runs 100% in your browser. Your files never leave your device, ensuring complete privacy and security.</p>
+      </div>
+      <div class="bg-card border border-border rounded-lg p-4">
+        <h4 class="font-medium mb-2">What formats are supported?</h4>
+        <p class="text-sm text-muted-foreground">Currently we support converting Images (JPG, PNG, WEBP), generating images from PDFs, creating PDFs from images, and converting data formats (JSON, CSV).</p>
+      </div>
+    </div>
+  </Fragment>
+</ToolWorkspace>
+</Layout>
+
+<!-- Dependencies for PDF manipulation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  // Setup pdf.js worker
+  if (window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const conversionPanel = document.getElementById('conversion-panel');
+  const fileName = document.getElementById('file-name');
+  const fileInfo = document.getElementById('file-info');
+  const targetFormat = document.getElementById('target-format');
+  const convertBtn = document.getElementById('convert-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  const resultPanel = document.getElementById('result-panel');
+  const downloadBtn = document.getElementById('download-btn');
+  const resultInfo = document.getElementById('result-info');
+
+  let currentFile = null;
+
+  // Drag and Drop
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, highlight, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight(e) {
+    dropZone.classList.add('border-accent', 'bg-accent/5');
+  }
+
+  function unhighlight(e) {
+    dropZone.classList.remove('border-accent', 'bg-accent/5');
+  }
+
+  dropZone.addEventListener('drop', handleDrop, false);
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      handleFile(this.files[0]);
+    }
+  });
+
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+    if (file) handleFile(file);
+  }
+
+  function formatBytes(bytes, decimals = 2) {
+    if (!+bytes) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  }
+
+  function getPossibleTargets(file) {
+    const type = file.type;
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    if (type.startsWith('image/')) {
+      return [
+        { value: 'image/jpeg', label: 'JPG Image' },
+        { value: 'image/png', label: 'PNG Image' },
+        { value: 'image/webp', label: 'WEBP Image' },
+        { value: 'application/pdf', label: 'PDF Document' }
+      ];
+    }
+    
+    if (type === 'application/pdf' || ext === 'pdf') {
+      return [
+        { value: 'image/jpeg', label: 'JPG Image' },
+        { value: 'image/png', label: 'PNG Image' }
+      ];
+    }
+
+    if (type === 'application/json' || ext === 'json') {
+      return [
+        { value: 'text/csv', label: 'CSV Data' }
+      ];
+    }
+
+    if (type === 'text/csv' || ext === 'csv') {
+      return [
+        { value: 'application/json', label: 'JSON Data' }
+      ];
+    }
+
+    return [];
+  }
+
+  function handleFile(file) {
+    currentFile = file;
+    const targets = getPossibleTargets(file);
+    
+    if (targets.length === 0) {
+      alert("Sorry, we don't support converting this file type yet. Try an image, PDF, JSON, or CSV.");
+      return;
+    }
+
+    fileName.textContent = file.name;
+    fileInfo.textContent = `${file.type || 'Unknown'} (${formatBytes(file.size)})`;
+
+    targetFormat.innerHTML = '';
+    targets.forEach(t => {
+      if (t.value !== file.type) {
+        const option = document.createElement('option');
+        option.value = t.value;
+        option.textContent = t.label;
+        targetFormat.appendChild(option);
+      }
+    });
+
+    dropZone.classList.add('hidden');
+    conversionPanel.classList.remove('hidden');
+    resultPanel.classList.add('hidden');
+  }
+
+  clearBtn.addEventListener('click', () => {
+    currentFile = null;
+    fileInput.value = '';
+    dropZone.classList.remove('hidden');
+    conversionPanel.classList.add('hidden');
+  });
+
+  convertBtn.addEventListener('click', async () => {
+    if (!currentFile) return;
+    
+    const targetType = targetFormat.value;
+    const originalType = currentFile.type;
+    const ext = currentFile.name.split('.').pop().toLowerCase();
+    
+    convertBtn.disabled = true;
+    convertBtn.innerHTML = 'Converting...';
+
+    try {
+      let resultBlob = null;
+      let newExt = targetType.split('/')[1];
+      if (newExt === 'jpeg') newExt = 'jpg';
+
+      // 1. Image to Image
+      if (originalType.startsWith('image/') && targetType.startsWith('image/')) {
+        resultBlob = await convertImageToImage(currentFile, targetType);
+      }
+      // 2. Image to PDF
+      else if (originalType.startsWith('image/') && targetType === 'application/pdf') {
+        resultBlob = await convertImageToPdf(currentFile);
+        newExt = 'pdf';
+      }
+      // 3. PDF to Image (first page)
+      else if ((originalType === 'application/pdf' || ext === 'pdf') && targetType.startsWith('image/')) {
+        resultBlob = await convertPdfToImage(currentFile, targetType);
+      }
+      // 4. JSON to CSV
+      else if ((originalType === 'application/json' || ext === 'json') && targetType === 'text/csv') {
+        resultBlob = await convertJsonToCsv(currentFile);
+        newExt = 'csv';
+      }
+      // 5. CSV to JSON
+      else if ((originalType === 'text/csv' || ext === 'csv') && targetType === 'application/json') {
+        resultBlob = await convertCsvToJson(currentFile);
+        newExt = 'json';
+      } else {
+        throw new Error("Conversion not supported.");
+      }
+
+      if (resultBlob) {
+        const url = URL.createObjectURL(resultBlob);
+        const originalName = currentFile.name.substring(0, currentFile.name.lastIndexOf('.'));
+        
+        downloadBtn.href = url;
+        downloadBtn.download = `${originalName}-converted.${newExt}`;
+        
+        resultInfo.textContent = `Success! New size: ${formatBytes(resultBlob.size)}`;
+        resultPanel.classList.remove('hidden');
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error during conversion: " + e.message);
+    } finally {
+      convertBtn.disabled = false;
+      convertBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Convert File`;
+    }
+  });
+
+  // --- Conversion Engines ---
+
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+  
+  function fileToText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  }
+
+  function loadImage(dataUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+  }
+
+  async function convertImageToImage(file, mimeType) {
+    const dataUrl = await fileToDataUrl(file);
+    const img = await loadImage(dataUrl);
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    
+    // Fill white background for transparent to jpeg
+    if (mimeType === 'image/jpeg') {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(img, 0, 0);
+
+    return new Promise(resolve => {
+      canvas.toBlob(blob => resolve(blob), mimeType, 0.92);
+    });
+  }
+
+  async function convertImageToPdf(file) {
+    const dataUrl = await fileToDataUrl(file);
+    const img = await loadImage(dataUrl);
+    
+    const { jsPDF } = window.jspdf;
+    const orientation = img.width > img.height ? 'l' : 'p';
+    const pdf = new jsPDF({
+      orientation: orientation,
+      unit: 'px',
+      format: [img.width, img.height]
+    });
+    
+    pdf.addImage(dataUrl, file.type === 'image/png' ? 'PNG' : 'JPEG', 0, 0, img.width, img.height);
+    const pdfOutput = pdf.output('blob');
+    return pdfOutput;
+  }
+
+  async function convertPdfToImage(file, mimeType) {
+    if (!window.pdfjsLib) throw new Error("PDF parser not loaded.");
+    
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    
+    // Convert first page only for simplicity in a quick tool
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 2.0 }); // high res
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    
+    return new Promise(resolve => {
+      canvas.toBlob(blob => resolve(blob), mimeType, 0.92);
+    });
+  }
+
+  async function convertJsonToCsv(file) {
+    const text = await fileToText(file);
+    let json = JSON.parse(text);
+    if (!Array.isArray(json)) {
+      if (typeof json === 'object') {
+        json = [json];
+      } else {
+        throw new Error("JSON must be an object or array of objects.");
+      }
+    }
+    
+    if (json.length === 0) return new Blob([''], { type: 'text/csv' });
+    
+    const keys = Object.keys(json[0]);
+    const csvRows = [];
+    csvRows.push(keys.join(','));
+    
+    for (const row of json) {
+      const values = keys.map(k => {
+        let val = row[k] === null || row[k] === undefined ? '' : String(row[k]);
+        if (val.includes(',') || val.includes('"') || val.includes('\
+')) {
+          val = '"' + val.replace(/"/g, '""') + '"';
+        }
+        return val;
+      });
+      csvRows.push(values.join(','));
+    }
+    
+    return new Blob([csvRows.join('\
+')], { type: 'text/csv' });
+  }
+
+  async function convertCsvToJson(file) {
+    const text = await fileToText(file);
+    const lines = text.split('\
+').filter(l => l.trim().length > 0);
+    if (lines.length < 2) throw new Error("CSV is empty or missing headers.");
+    
+    const headers = lines[0].split(',').map(h => h.trim());
+    const result = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const obj = {};
+      const currentline = lines[i].split(',');
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentline[j] ? currentline[j].trim() : '';
+      }
+      result.push(obj);
+    }
+    
+    return new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+  }
+
+</script>
