@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Clean Reader completely free to use?",
+    answer: "Yes, our Clean Reader is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Clean Reader?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Clean Reader that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Web Article Reader & Markdown Extractor | Remove Ads from Articles" description="Extract clean, readable text from any website instantly. Free online article reader that strips ads, popups, and clutter. Convert web pages to clean Markdown — perfect for research, note-taking, and archiving." keywords="web article reader, extract text from website, clean reader online, remove ads from article, website to markdown converter, distraction free reader, readability tool online, article extractor, web page to text, clutter free reading">
+<Layout title="Free Web Article Reader & Markdown Extractor | Remove Ads from Articles" description="Extract clean, readable text from any website instantly. Free online article reader that strips ads, popups, and clutter. Convert web pages to clean Markdown — perfect for research, note-taking, and archiving." keywords="web article reader, extract text from website, clean reader online, remove ads from article, website to markdown converter, distraction free reader, readability tool online, article extractor, web page to text, clutter free reading"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
   <ToolWorkspace
     title="Clean Reader Extractor"
     description="Paste any article URL to instantly extract the core text as clean Markdown, bypassing popups and ads."
     icon="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20M8 7h8M8 11h8"
-  >
+   faqs={faqs}>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       
       <!-- Input Column -->

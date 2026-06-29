@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Mockup Studio completely free to use?",
+    answer: "Yes, our Mockup Studio is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Mockup Studio?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Mockup Studio that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Device Mockup Generator Online | iPhone, MacBook & Android Frames" description="Create stunning device mockups instantly — free, online, no signup. Wrap your app screenshots in realistic iPhone, MacBook, iPad, and Android frames. Export 4K mockups for presentations, portfolios, and social media." keywords="device mockup generator, free mockup generator, iphone mockup online, macbook mockup free, app screenshot mockup, device frame generator, mockup creator online, android phone mockup, ipad mockup generator, free mockup tool no watermark">
-  <ToolWorkspace title="Mockup Studio" toolName="mockup-studio" hasContextPanel={true}>
+<Layout title="Free Device Mockup Generator Online | iPhone, MacBook & Android Frames" description="Create stunning device mockups instantly — free, online, no signup. Wrap your app screenshots in realistic iPhone, MacBook, iPad, and Android frames. Export 4K mockups for presentations, portfolios, and social media." keywords="device mockup generator, free mockup generator, iphone mockup online, macbook mockup free, app screenshot mockup, device frame generator, mockup creator online, android phone mockup, ipad mockup generator, free mockup tool no watermark"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Mockup Studio" toolName="mockup-studio" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

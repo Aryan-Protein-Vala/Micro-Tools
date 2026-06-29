@@ -8,24 +8,47 @@ interface Props {
   description?: string;
   canonicalUrl?: string;
   keywords?: string;
+  schemaType?: string;
+  applicationCategory?: string;
+  faqs?: { question: string; answer: string }[];
 }
 
 const { 
   title = 'ToolGrid - Premium Web Tools', 
   description = 'A curated collection of highly secure, WASM-powered browser tools for creative professionals and developers. Completely free, no tracking.',
   canonicalUrl = Astro.url.pathname === '/' ? 'https://tool-grid-astro-framework.pages.dev' : `https://tool-grid-astro-framework.pages.dev${Astro.url.pathname}`,
-  keywords = 'free web tools, browser tools, privacy tools, developer tools'
+  keywords = 'free web tools, browser tools, privacy tools, developer tools',
+  schemaType = 'WebApplication',
+  applicationCategory = 'BrowserApplication',
+  faqs = []
 } = Astro.props;
 
-const schemaData = {
+const mainSchema = {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": schemaType,
   "name": title,
   "description": description,
   "url": canonicalUrl,
-  "applicationCategory": "BrowserApplication",
+  "applicationCategory": applicationCategory,
   "operatingSystem": "All"
 };
+
+const schemas = [mainSchema];
+
+if (faqs && faqs.length > 0) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  });
+}
 ---
 
 <!doctype html>
@@ -56,7 +79,9 @@ const schemaData = {
     <meta property="og:image" content={`${canonicalUrl === 'https://tool-grid-astro-framework.pages.dev' ? canonicalUrl : 'https://tool-grid-astro-framework.pages.dev'}/og-image.png`} />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    {schemas.map(schema => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

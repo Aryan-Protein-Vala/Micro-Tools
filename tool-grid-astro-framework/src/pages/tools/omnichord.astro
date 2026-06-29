@@ -1,12 +1,31 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import OmnichordWorkspace from '../../components/OmnichordWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Omnichord completely free to use?",
+    answer: "Yes, our Omnichord is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Omnichord?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Omnichord that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Digital Omnichord Online | Play Free Web Strum Plate & Autoharp" 
   description="Play the ultimate Digital Omnichord online. A free, zero-latency web strum plate with beautiful analog synth tones, infinite drones, auto-chords, and harp-like arpeggios right in your browser."
   keywords="omnichord online, web omnichord, digital omnichord, play omnichord free, online strum plate, virtual autoharp, web synthesizer, omnichord app, browser omnichord, infinite drone synth, auto-chord generator, play chords online"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 h-[calc(100vh-4rem)]">
     

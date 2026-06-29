@@ -7,12 +7,14 @@ export interface Props {
   toolName: string;
   children?: any;
   hasContextPanel?: boolean;
+  faqs?: { question: string; answer: string }[];
 }
 
 const {
   title,
   toolName,
   hasContextPanel = true,
+  faqs = [],
 } = Astro.props;
 ---
 
@@ -63,12 +65,26 @@ const {
   </div>
 
   <!-- Tool Specific FAQ -->
-  {Astro.slots.has('faq') && (
+  {(faqs.length > 0 || Astro.slots.has('faq')) && (
     <div class="px-4 pb-6 max-w-4xl mx-auto w-full">
       <div class="bg-black/40 rounded-lg border border-border p-6 lg:p-8">
         <h2 class="text-xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
         <div class="space-y-4">
-          <slot name="faq" />
+          {faqs.length > 0 ? (
+            faqs.map(faq => (
+              <details class="group bg-black/20 border border-border rounded-lg overflow-hidden cursor-pointer">
+                <summary class="px-4 py-3 font-semibold flex justify-between items-center bg-muted/10 hover:bg-muted/20 transition-smooth">
+                  {faq.question}
+                  <span class="transition-transform group-open:rotate-180">↓</span>
+                </summary>
+                <div class="px-4 py-3 text-muted-foreground text-sm border-t border-border bg-black/40">
+                  {faq.answer}
+                </div>
+              </details>
+            ))
+          ) : (
+            <slot name="faq" />
+          )}
         </div>
       </div>
     </div>

@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Ad Blocker completely free to use?",
+    answer: "Yes, our Ad Blocker is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Ad Blocker?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Ad Blocker that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Custom Ad Blocker Extension Generator | Block Ads & Trackers" description="Generate your own custom ad blocker browser extension instantly. Free ad blocker generator that blocks trackers, banners, popups, and YouTube ads. Create a privacy-focused Manifest V3 extension — no coding required." keywords="ad blocker generator, create ad blocker extension, custom ad blocker, free ad blocker, block youtube ads, browser extension generator, manifest v3 ad blocker, privacy extension, tracker blocker, popup blocker generator">
-  <ToolWorkspace title="Ad-Blocker Generator" toolName="ad-blocker" hasContextPanel={true}>
+<Layout title="Free Custom Ad Blocker Extension Generator | Block Ads & Trackers" description="Generate your own custom ad blocker browser extension instantly. Free ad blocker generator that blocks trackers, banners, popups, and YouTube ads. Create a privacy-focused Manifest V3 extension — no coding required." keywords="ad blocker generator, create ad blocker extension, custom ad blocker, free ad blocker, block youtube ads, browser extension generator, manifest v3 ad blocker, privacy extension, tracker blocker, popup blocker generator"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Ad-Blocker Generator" toolName="ad-blocker" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

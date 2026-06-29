@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Bg Remover completely free to use?",
+    answer: "Yes, our Bg Remover is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Bg Remover?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Bg Remover that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free AI Background Remover Online | Remove Image Background Instantly" description="Remove image backgrounds instantly with AI — free, no signup, no watermarks. Works 100% in your browser with no server uploads. HD quality background removal for photos, product images, and portraits." keywords="remove background from image, background remover online free, ai background remover, remove bg, transparent background maker, photo background eraser, remove image background, free background remover no watermark, product photo background removal, remove white background from image">
-  <ToolWorkspace title="Background Remover" toolName="bg-remover" hasContextPanel={true}>
+<Layout title="Free AI Background Remover Online | Remove Image Background Instantly" description="Remove image backgrounds instantly with AI — free, no signup, no watermarks. Works 100% in your browser with no server uploads. HD quality background removal for photos, product images, and portraits." keywords="remove background from image, background remover online free, ai background remover, remove bg, transparent background maker, photo background eraser, remove image background, free background remover no watermark, product photo background removal, remove white background from image"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Background Remover" toolName="bg-remover" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

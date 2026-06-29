@@ -1,12 +1,31 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import MidiWorkspace from '../../components/MidiWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Midi Studio completely free to use?",
+    answer: "Yes, our Midi Studio is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Midi Studio?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Midi Studio that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Play Web Harmonium & Piano Online | Free Zero-Latency MIDI Studio" 
   description="Play a realistic wooden web harmonium and virtual piano directly in your browser. A zero-latency online MIDI studio with natural acoustic sounds, QWERTY mapping, and instant MIDI keyboard support. Free, secure, and fast."
   keywords="web harmonium, online harmonium, play harmonium online, virtual piano, web synth, midi studio online, connect midi keyboard to browser, free web harmonium, natural wooden harmonium sound, browser piano, zero latency web synth, play piano online"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 h-[calc(100vh-4rem)]">
     

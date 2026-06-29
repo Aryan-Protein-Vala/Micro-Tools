@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Word Cloud completely free to use?",
+    answer: "Yes, our Word Cloud is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Word Cloud?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Word Cloud that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Word Cloud Generator Online | Create Beautiful Tag Clouds" description="Generate stunning word clouds from any text instantly. Free online word cloud generator with customizable colors, fonts, and shapes. Analyze keyword density and visualize text data — no signup required." keywords="word cloud generator, free word cloud, create word cloud online, tag cloud generator, word cloud maker, text visualization tool, keyword density analyzer, word frequency counter, word cloud from text, word cloud art generator">
+<Layout title="Free Word Cloud Generator Online | Create Beautiful Tag Clouds" description="Generate stunning word clouds from any text instantly. Free online word cloud generator with customizable colors, fonts, and shapes. Analyze keyword density and visualize text data — no signup required." keywords="word cloud generator, free word cloud, create word cloud online, tag cloud generator, word cloud maker, text visualization tool, keyword density analyzer, word frequency counter, word cloud from text, word cloud art generator"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
   <ToolWorkspace
     title="Word Cloud Analyzer"
     description="Analyze keyword density and generate stunning high-res word clouds directly in your browser."
     icon="M3 15C3 17.8 5.2 20 8 20H17C19.2 20 21 18.2 21 16C21 13.9 19.3 12.1 17.2 12C16.8 9.2 14.4 7 11.5 7C9.3 7 7.4 8.4 6.6 10.3C4.6 10.6 3 12.3 3 15Z"
-  >
+   faqs={faqs}>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       
       <!-- Input Column -->

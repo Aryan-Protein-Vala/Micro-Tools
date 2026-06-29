@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Ocr Converter completely free to use?",
+    answer: "Yes, our Ocr Converter is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Ocr Converter?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Ocr Converter that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online OCR — Convert Image to Text Instantly | No Upload Required" description="Extract text from images, screenshots, scanned PDFs, and documents instantly online. Free OCR tool powered by Tesseract.js — works 100% in your browser with no server uploads. Supports 100+ languages." keywords="ocr online free, image to text converter, extract text from image, photo to text, ocr converter online, free ocr tool, screenshot to text, scan document to text, image text extractor, convert image to text online free">
-  <ToolWorkspace title="Image-to-Text OCR" toolName="ocr-converter" hasContextPanel={true}>
+<Layout title="Free Online OCR — Convert Image to Text Instantly | No Upload Required" description="Extract text from images, screenshots, scanned PDFs, and documents instantly online. Free OCR tool powered by Tesseract.js — works 100% in your browser with no server uploads. Supports 100+ languages." keywords="ocr online free, image to text converter, extract text from image, photo to text, ocr converter online, free ocr tool, screenshot to text, scan document to text, image text extractor, convert image to text online free"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Image-to-Text OCR" toolName="ocr-converter" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

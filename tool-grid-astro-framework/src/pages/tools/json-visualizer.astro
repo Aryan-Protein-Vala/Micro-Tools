@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Json Visualizer completely free to use?",
+    answer: "Yes, our Json Visualizer is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Json Visualizer?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Json Visualizer that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free JSON Viewer & Formatter Online | Visualize JSON to Table" description="Visualize, format, and convert JSON data to clean readable tables instantly. Free online JSON viewer, formatter, and tree visualizer with CSV export. Perfect for API debugging and data analysis." keywords="json viewer online, json formatter, json to table converter, json visualizer, format json online, json pretty print, json tree viewer, api response viewer, json to csv converter, json beautifier online free">
-  <ToolWorkspace title="JSON Visualizer" toolName="json-visualizer" hasContextPanel={true}>
+<Layout title="Free JSON Viewer & Formatter Online | Visualize JSON to Table" description="Visualize, format, and convert JSON data to clean readable tables instantly. Free online JSON viewer, formatter, and tree visualizer with CSV export. Perfect for API debugging and data analysis." keywords="json viewer online, json formatter, json to table converter, json visualizer, format json online, json pretty print, json tree viewer, api response viewer, json to csv converter, json beautifier online free"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="JSON Visualizer" toolName="json-visualizer" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

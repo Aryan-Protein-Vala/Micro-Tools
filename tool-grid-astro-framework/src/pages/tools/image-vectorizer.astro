@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Image Vectorizer completely free to use?",
+    answer: "Yes, our Image Vectorizer is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Image Vectorizer?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Image Vectorizer that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Image to SVG Converter Online | Vectorize PNG & JPG to SVG" description="Convert raster images (PNG, JPG, BMP) to scalable vector graphics (SVG) instantly online. Free image vectorizer with batch support — no signup, no uploads to servers. Perfect for logos, icons, and illustrations." keywords="image to svg converter, vectorize image online, png to svg converter, jpg to svg, free image vectorizer, convert image to vector, raster to vector online, image trace to svg, logo vectorizer free, svg converter online">
-  <ToolWorkspace title="Image Vectorizer" toolName="image-vectorizer" hasContextPanel={true}>
+<Layout title="Free Image to SVG Converter Online | Vectorize PNG & JPG to SVG" description="Convert raster images (PNG, JPG, BMP) to scalable vector graphics (SVG) instantly online. Free image vectorizer with batch support — no signup, no uploads to servers. Perfect for logos, icons, and illustrations." keywords="image to svg converter, vectorize image online, png to svg converter, jpg to svg, free image vectorizer, convert image to vector, raster to vector online, image trace to svg, logo vectorizer free, svg converter online"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Image Vectorizer" toolName="image-vectorizer" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

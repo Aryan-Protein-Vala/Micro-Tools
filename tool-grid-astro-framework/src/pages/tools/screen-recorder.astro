@@ -1,11 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const faqs = [
+  {
+    question: "Is this Screen Recorder completely free to use?",
+    answer: "Yes, our Screen Recorder is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Screen Recorder?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Screen Recorder that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free HD Screen Recorder | No Time Limit, No Download"
   description="Record your screen, browser tabs, or applications in 1080p/4K securely in your browser. No time limits, no watermarks, completely free."
   keywords="Free Screen Recorder No Time Limit No Download, web screen recorder, zero install screen recorder, record screen online, free screen recording tool"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
   <main class="container mx-auto px-4 py-8 max-w-4xl">
     <div class="mb-12">

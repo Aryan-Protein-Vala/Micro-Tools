@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Video Compressor completely free to use?",
+    answer: "Yes, our Video Compressor is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Video Compressor?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Video Compressor that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online Video Compressor | Compress Large Videos Without Quality Loss" description="Compress large 4K videos instantly online — free, no watermarks, no file size limits. Reduce video file size for email, WhatsApp, Discord, and social media. Works entirely in your browser using FFmpeg WASM." keywords="video compressor online, compress video free, reduce video size, compress video for whatsapp, free video compressor no watermark, compress mp4 online, reduce video file size, video size reducer, compress large video files, video compressor without quality loss">
-  <ToolWorkspace title="Video Compressor" toolName="video-compressor" hasContextPanel={true}>
+<Layout title="Free Online Video Compressor | Compress Large Videos Without Quality Loss" description="Compress large 4K videos instantly online — free, no watermarks, no file size limits. Reduce video file size for email, WhatsApp, Discord, and social media. Works entirely in your browser using FFmpeg WASM." keywords="video compressor online, compress video free, reduce video size, compress video for whatsapp, free video compressor no watermark, compress mp4 online, reduce video file size, video size reducer, compress large video files, video compressor without quality loss"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Video Compressor" toolName="video-compressor" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

@@ -7,18 +7,37 @@ const tool = {
   description: 'Shrink images, minify text, and ZIP files directly in your browser. Fast, free, and 100% private.',
   icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>`
 };
+
+const faqs = [
+  {
+    question: "Is this Universal Compressor completely free to use?",
+    answer: "Yes, our Universal Compressor is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Universal Compressor?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Universal Compressor that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Universal File Compressor | Free Online Tool" 
   description="Shrink images, minify text, and ZIP files directly in your browser. Fast, free, and 100% private."
   keywords="file compressor, compress images, minify json, zip files online, free compressor"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
 <ToolWorkspace
   title="Universal File Compressor"
   toolName="universal-compressor"
   hasContextPanel={true}
->
+ faqs={faqs}>
   <div class="max-w-4xl mx-auto space-y-8">
     <!-- Dropzone -->
     <div id="drop-zone" class="border-2 border-dashed border-border rounded-xl p-12 text-center transition-colors hover:border-accent hover:bg-accent/5 cursor-pointer flex flex-col items-center justify-center min-h-[300px]">

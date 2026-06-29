@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Pomodoro Timer completely free to use?",
+    answer: "Yes, our Pomodoro Timer is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Pomodoro Timer?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Pomodoro Timer that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free Pomodoro Timer Online | Focus Timer & Productivity Tracker" 
   description="Boost your productivity with our free online Pomodoro timer. Customizable work sessions, short breaks, and long breaks with audio alerts. Track completed sessions and stay focused — no signup required."
   keywords="pomodoro timer, pomodoro timer online, free pomodoro, focus timer, productivity timer, study timer online, work timer, 25 minute timer, pomodoro technique, tomato timer, focus timer online free, concentration timer"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
-  <ToolWorkspace title="Pomodoro Timer" toolName="pomodoro-timer" hasContextPanel={true}>
+  <ToolWorkspace title="Pomodoro Timer" toolName="pomodoro-timer" hasContextPanel={true} faqs={faqs}>
     <div class="max-w-lg mx-auto space-y-6" id="pomo-app">
       <!-- Mode Tabs -->
       <div class="flex rounded-lg overflow-hidden border border-border">

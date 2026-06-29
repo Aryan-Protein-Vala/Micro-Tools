@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Word Counter completely free to use?",
+    answer: "Yes, our Word Counter is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Word Counter?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Word Counter that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free Word Counter & Character Counter Online | Count Words Instantly" 
   description="Count words, characters, sentences, and paragraphs instantly. Free online word counter and character counter with real-time stats, reading time estimate, and keyword density analysis. No signup required."
   keywords="word counter, character counter, word count online, character count online, free word counter, count words in text, letter counter, sentence counter, paragraph counter, reading time calculator, keyword density checker"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
-  <ToolWorkspace title="Word & Character Counter" toolName="word-counter" hasContextPanel={true}>
+  <ToolWorkspace title="Word & Character Counter" toolName="word-counter" hasContextPanel={true} faqs={faqs}>
     <div class="space-y-6" id="word-counter-app">
       <!-- Input Area -->
       <div>

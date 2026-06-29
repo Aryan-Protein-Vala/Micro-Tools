@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Unit Converter completely free to use?",
+    answer: "Yes, our Unit Converter is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Unit Converter?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Unit Converter that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free Unit Converter Online | Length, Weight, Temperature & More" 
   description="Convert between units instantly — length, weight, temperature, volume, speed, area, and more. Free online unit converter with real-time results. No signup, no ads, no tracking."
   keywords="unit converter, convert units online, length converter, weight converter, temperature converter, km to miles, kg to lbs, celsius to fahrenheit, unit conversion calculator, free unit converter, metric to imperial"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
-  <ToolWorkspace title="Unit Converter" toolName="unit-converter" hasContextPanel={true}>
+  <ToolWorkspace title="Unit Converter" toolName="unit-converter" hasContextPanel={true} faqs={faqs}>
     <div class="max-w-2xl mx-auto space-y-6" id="uc-app">
       <!-- Category Selector -->
       <div class="flex flex-wrap gap-2">

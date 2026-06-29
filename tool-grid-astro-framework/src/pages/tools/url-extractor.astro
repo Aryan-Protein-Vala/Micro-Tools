@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Url Extractor completely free to use?",
+    answer: "Yes, our Url Extractor is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Url Extractor?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Url Extractor that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Bulk URL Extractor Online | Extract Links from Text Instantly" description="Extract, clean, and organize URLs from any text, HTML, or CSV file instantly. Free online bulk URL extractor — pull all links from web pages, emails, or documents. No signup, no tracking." keywords="url extractor, extract links from text, bulk url extractor, link extractor online, extract urls from webpage, pull links from text, url scraper online, extract hyperlinks, link grabber tool, get all urls from text">
+<Layout title="Free Bulk URL Extractor Online | Extract Links from Text Instantly" description="Extract, clean, and organize URLs from any text, HTML, or CSV file instantly. Free online bulk URL extractor — pull all links from web pages, emails, or documents. No signup, no tracking." keywords="url extractor, extract links from text, bulk url extractor, link extractor online, extract urls from webpage, pull links from text, url scraper online, extract hyperlinks, link grabber tool, get all urls from text"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
   <ToolWorkspace
     title="Bulk URL Extractor"
     description="Extract, clean, and batch-open URLs from messy text blocks securely in your browser."
     icon="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
-  >
+   faqs={faqs}>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       
       <!-- Input Column -->

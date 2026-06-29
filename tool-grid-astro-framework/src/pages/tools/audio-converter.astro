@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Audio Converter completely free to use?",
+    answer: "Yes, our Audio Converter is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Audio Converter?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Audio Converter that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online Audio Converter | Convert WAV, OGG, Video to MP3" description="Convert audio files to MP3, WAV, and OGG formats instantly online. Free browser-based audio converter — no uploads, no software install. Convert video to audio, WAV to MP3, and more." keywords="audio converter online, convert wav to mp3, free audio converter, video to mp3 converter, ogg to mp3, online mp3 converter, convert audio files free, wav to mp3 online, audio format converter, extract audio from video online">
-  <ToolWorkspace title="Audio Converter" toolName="audio-converter" hasContextPanel={true}>
+<Layout title="Free Online Audio Converter | Convert WAV, OGG, Video to MP3" description="Convert audio files to MP3, WAV, and OGG formats instantly online. Free browser-based audio converter — no uploads, no software install. Convert video to audio, WAV to MP3, and more." keywords="audio converter online, convert wav to mp3, free audio converter, video to mp3 converter, ogg to mp3, online mp3 converter, convert audio files free, wav to mp3 online, audio format converter, extract audio from video online"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Audio Converter" toolName="audio-converter" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">

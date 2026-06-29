@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Color Picker completely free to use?",
+    answer: "Yes, our Color Picker is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Color Picker?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Color Picker that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free Color Picker & Palette Generator Online | HEX, RGB, HSL Converter" 
   description="Pick colors, generate beautiful palettes, and convert between HEX, RGB, and HSL instantly. Free online color picker with complementary, analogous, and triadic palette generation. Copy any color code with one click."
   keywords="color picker, color palette generator, hex color picker, rgb to hex converter, color code finder, free color picker online, color scheme generator, hsl color picker, complementary colors, color converter online"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
-  <ToolWorkspace title="Color Picker & Palette" toolName="color-picker" hasContextPanel={true}>
+  <ToolWorkspace title="Color Picker & Palette" toolName="color-picker" hasContextPanel={true} faqs={faqs}>
     <div class="max-w-3xl mx-auto space-y-6" id="color-app">
       <!-- Color Picker -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

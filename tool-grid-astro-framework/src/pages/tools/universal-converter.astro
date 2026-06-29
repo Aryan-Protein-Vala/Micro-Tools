@@ -7,18 +7,37 @@ const tool = {
   description: 'Convert images, documents, and data files instantly. 100% private, no server uploads.',
   icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`
 };
+
+const faqs = [
+  {
+    question: "Is this Universal Converter completely free to use?",
+    answer: "Yes, our Universal Converter is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Universal Converter?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Universal Converter that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Universal File Converter | Free Online Tool" 
   description="Convert images, documents, and data files instantly. 100% private, no server uploads."
   keywords="file converter, convert images, pdf to image, image to pdf, json to csv, free converter"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
 <ToolWorkspace
   title="Universal File Converter"
   toolName="universal-converter"
   hasContextPanel={true}
->
+ faqs={faqs}>
   <div class="max-w-4xl mx-auto space-y-8">
     <!-- Dropzone -->
     <div id="drop-zone" class="border-2 border-dashed border-border rounded-xl p-12 text-center transition-colors hover:border-accent hover:bg-accent/5 cursor-pointer flex flex-col items-center justify-center min-h-[300px]">

@@ -1,11 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const faqs = [
+  {
+    question: "Is this Resume Optimizer completely free to use?",
+    answer: "Yes, our Resume Optimizer is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Resume Optimizer?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Resume Optimizer that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free Resume Bullet Optimizer & Action Verb Generator"
   description="Transform weak resume bullets into enterprise-grade achievement statements instantly. Free AI-powered resume bullet optimizer with no account required."
   keywords="Free Resume Bullet Generator Tool, resume bullet optimizer, action verb generator, resume rewriter, improve resume bullets free"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
   <main class="container mx-auto px-4 py-8 max-w-4xl">
     <div class="mb-12">

@@ -1,11 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const faqs = [
+  {
+    question: "Is this Pdf Metadata Stripper completely free to use?",
+    answer: "Yes, our Pdf Metadata Stripper is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Pdf Metadata Stripper?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Pdf Metadata Stripper that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
 <Layout 
   title="Free PDF Metadata Stripper & Sanitizer | Zero Trust PDF Tool"
   description="Wipe author, creator, location logs, and editing history from corporate PDF files securely. Batch sanitize PDF documents instantly with zero server uploads."
   keywords="Free PDF Metadata Stripper Secure, PDF metadata stripper, sanitize PDF, remove PDF properties, PDF metadata remover, corporate PDF cleanup"
+
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
 >
   <main class="container mx-auto px-4 py-8 max-w-4xl">
     <div class="mb-12">

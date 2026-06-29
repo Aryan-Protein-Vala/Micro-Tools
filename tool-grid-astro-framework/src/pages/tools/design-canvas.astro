@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Design Canvas completely free to use?",
+    answer: "Yes, our Design Canvas is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Design Canvas?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Design Canvas that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online Design Canvas & Drawing Tool | Create Graphics Instantly" description="Design graphics, draw shapes, and create visual content directly in your browser. Free online design canvas with layers, shapes, and text tools. No signup, no downloads — start creating instantly." keywords="online design tool, free drawing tool, design canvas online, graphic design tool free, online drawing pad, create graphics online, free canva alternative, browser drawing app, shape maker online, visual design tool">
-<ToolWorkspace title="Design Canvas" toolName="design-canvas">
+<Layout title="Free Online Design Canvas & Drawing Tool | Create Graphics Instantly" description="Design graphics, draw shapes, and create visual content directly in your browser. Free online design canvas with layers, shapes, and text tools. No signup, no downloads — start creating instantly." keywords="online design tool, free drawing tool, design canvas online, graphic design tool free, online drawing pad, create graphics online, free canva alternative, browser drawing app, shape maker online, visual design tool"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+<ToolWorkspace title="Design Canvas" toolName="design-canvas" faqs={faqs}>
   <div class="space-y-6">
     <!-- Canvas Area -->
     <div class="w-full h-[500px] border border-border rounded-lg bg-muted/5 flex items-center justify-center">

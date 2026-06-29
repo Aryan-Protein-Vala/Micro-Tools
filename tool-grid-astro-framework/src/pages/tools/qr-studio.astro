@@ -1,14 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Qr Studio completely free to use?",
+    answer: "Yes, our Qr Studio is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Qr Studio?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Qr Studio that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free QR Code Generator & Scanner Online | No Signup Required" description="Generate and scan QR codes instantly in your browser. Free online QR code maker with no watermarks, no tracking, and no uploads. Create QR codes for URLs, text, WiFi, and more." keywords="free qr code generator, qr code generator online, create qr code free, qr code scanner online, qr code maker, generate qr code, scan qr code from image, wifi qr code generator, bulk qr code generator, no watermark qr code">
+<Layout title="Free QR Code Generator & Scanner Online | No Signup Required" description="Generate and scan QR codes instantly in your browser. Free online QR code maker with no watermarks, no tracking, and no uploads. Create QR codes for URLs, text, WiFi, and more." keywords="free qr code generator, qr code generator online, create qr code free, qr code scanner online, qr code maker, generate qr code, scan qr code from image, wifi qr code generator, bulk qr code generator, no watermark qr code"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
   <ToolWorkspace
     title="Zero-Trust QR Studio"
     description="Generate permanent QR codes or scan them securely without leaving your browser. 100% private, zero tracking."
     icon="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM13 13h1.5v1.5H13zM15 15h1.5v1.5H15zM17 13h1.5v1.5H17zM19 15h1.5v1.5H19z"
-  >
+   faqs={faqs}>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       
       <!-- Controls Column -->

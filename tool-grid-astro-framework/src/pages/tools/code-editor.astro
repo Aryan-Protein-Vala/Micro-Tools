@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Code Editor completely free to use?",
+    answer: "Yes, our Code Editor is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Code Editor?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Code Editor that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online Code Editor | Run JavaScript, Python, HTML & CSS" description="Write, edit, and run code directly in your browser. Free online code editor with syntax highlighting for JavaScript, TypeScript, Python, HTML, and CSS. No installation required." keywords="online code editor, free code editor, run javascript online, online ide, browser code editor, html css editor online, code playground, live code editor, javascript editor online, run code in browser">
-<ToolWorkspace title="Code Editor" toolName="code-editor">
+<Layout title="Free Online Code Editor | Run JavaScript, Python, HTML & CSS" description="Write, edit, and run code directly in your browser. Free online code editor with syntax highlighting for JavaScript, TypeScript, Python, HTML, and CSS. No installation required." keywords="online code editor, free code editor, run javascript online, online ide, browser code editor, html css editor online, code playground, live code editor, javascript editor online, run code in browser"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+<ToolWorkspace title="Code Editor" toolName="code-editor" faqs={faqs}>
   <div class="space-y-4">
     <!-- Language/File Selector -->
     <div class="flex gap-2 pb-4 border-b border-border">

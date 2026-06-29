@@ -4,10 +4,29 @@ import ToolWorkspace from '../../components/ToolWorkspace.astro';
 
 const title = 'Image Studio';
 const toolName = 'image-studio';
+
+const faqs = [
+  {
+    question: "Is this Image Studio completely free to use?",
+    answer: "Yes, our Image Studio is 100% free with no hidden limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using the Image Studio?",
+    answer: "Absolutely. We use a Zero-Trust architecture, meaning all processing happens locally inside your web browser. Your files are never uploaded to our servers, ensuring total privacy and security."
+  },
+  {
+    question: "Do I need to install any software?",
+    answer: "No installation is required! This is a web-based Image Studio that runs perfectly in any modern browser on both desktop and mobile devices."
+  }
+];
 ---
 
-<Layout title="Free Online Image Editor | Resize, Crop & Enhance Photos Instantly" description="Edit images directly in your browser — free, no signup, no uploads. Resize, crop, enhance, and apply filters to photos instantly. A powerful online photo editor with complete privacy." keywords="online image editor, free photo editor, resize image online, crop image online, image editor no upload, photo enhancer online, free image resizer, browser image editor, edit photos online free, image filter tool">
-<ToolWorkspace title={title} toolName={toolName}>
+<Layout title="Free Online Image Editor | Resize, Crop & Enhance Photos Instantly" description="Edit images directly in your browser — free, no signup, no uploads. Resize, crop, enhance, and apply filters to photos instantly. A powerful online photo editor with complete privacy." keywords="online image editor, free photo editor, resize image online, crop image online, image editor no upload, photo enhancer online, free image resizer, browser image editor, edit photos online free, image filter tool"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+<ToolWorkspace title={title} toolName={toolName} faqs={faqs}>
   <div class="space-y-6">
     <!-- Upload Area -->
     <div class="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-accent transition-colors cursor-pointer">

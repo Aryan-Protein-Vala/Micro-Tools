@@ -1,10 +1,32 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this ATS Resume Scanner really private?",
+    answer: "Yes. 100% of the keyword matching happens directly inside your web browser. We do not upload your resume or the job description to any server, meaning your sensitive data is completely secure and private."
+  },
+  {
+    question: "How does the ATS matcher calculate the score?",
+    answer: "Our engine uses a custom Levenshtein distance algorithm to find exact and fuzzy keyword matches between your resume and the job description, while filtering out common stop words. The score represents the percentage of critical job requirements found in your resume."
+  },
+  {
+    question: "Will this guarantee me an interview?",
+    answer: "While we can't guarantee an interview, optimizing your resume for applicant tracking systems (ATS) drastically increases the chance that a human recruiter will actually read it. Over 70% of resumes are filtered out by ATS before a human ever sees them."
+  }
+];
 ---
 
-<Layout title="Free ATS Resume Scanner & Keyword Checker | Beat Applicant Tracking Systems" description="Check your resume against job descriptions with our free ATS resume scanner. Find missing keywords, optimize your ATS score, and increase interview callbacks. 100% private — your resume never leaves your browser." keywords="ats resume checker, ats scanner free, resume keyword checker, ats resume score, applicant tracking system checker, resume optimization tool, ats friendly resume checker, resume keyword optimizer, job description keyword matcher, ats score checker free">
-  <ToolWorkspace title="ATS Resume Matcher" toolName="ats-matcher" hasContextPanel={true}>
+<Layout 
+  title="Free ATS Resume Scanner & Keyword Checker | Beat Applicant Tracking Systems" 
+  description="Check your resume against job descriptions with our free ATS resume scanner. Find missing keywords, optimize your ATS score, and increase interview callbacks. 100% private — your resume never leaves your browser." 
+  keywords="ats resume checker, ats scanner free, resume keyword checker, ats resume score, applicant tracking system checker, resume optimization tool, ats friendly resume checker, resume keyword optimizer, job description keyword matcher, ats score checker free"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="ATS Resume Matcher" toolName="ats-matcher" hasContextPanel={true} faqs={faqs}>
     
     <!-- Controls Slot -->
     <Fragment slot="controls">
