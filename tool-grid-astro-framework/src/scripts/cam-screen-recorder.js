@@ -2,7 +2,7 @@ let mediaRecorder = null;
 let recordedChunks = [];
 let timerInterval = null;
 let startTime = null;
-let animationFrameId = null;
+let renderWorker = null;
 
 let screenStream = null;
 let camStream = null;
@@ -147,6 +147,19 @@ export function setupUI() {
       canvas.height = ch;
       const ctx = canvas.getContext('2d');
 
+      const workerCode = `
+        let interval;
+        self.onmessage = function(e) {
+          if (e.data === 'start') {
+            interval = setInterval(() => self.postMessage('tick'), 1000/60);
+          } else if (e.data === 'stop') {
+            clearInterval(interval);
+          }
+        };
+      `;
+      const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+      renderWorker = new Worker(URL.createObjectURL(workerBlob));
+
       const drawLoop = () => {
         // Draw screen
         ctx.drawImage(screenVideo, 0, 0, cw, ch);
@@ -190,11 +203,10 @@ export function setupUI() {
           ctx.stroke();
           ctx.restore();
         }
-
-        animationFrameId = requestAnimationFrame(drawLoop);
       };
-      
-      drawLoop();
+
+      renderWorker.onmessage = () => drawLoop();
+      renderWorker.postMessage('start');
 
       // 5. Initialize MediaRecorder with mixed streams
       const canvasStream = canvas.captureStream(60);
@@ -222,7 +234,10 @@ export function setupUI() {
 
       mediaRecorder.onstop = () => {
         clearInterval(timerInterval);
-        cancelAnimationFrame(animationFrameId);
+        if (renderWorker) {
+          renderWorker.postMessage('stop');
+          renderWorker.terminate();
+        }
         audioCtx.close();
 
         const blob = new Blob(recordedChunks, { type: 'video/webm' });
