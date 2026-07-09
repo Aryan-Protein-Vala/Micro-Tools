@@ -1,0 +1,153 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolWorkspace from '../../components/ToolWorkspace.astro';
+
+const faqs = [
+  {
+    question: "Is this Screen & Webcam Recorder completely free to use?",
+    answer: "Yes, it is 100% free with no 5-minute recording limits, watermarks, or premium subscriptions required."
+  },
+  {
+    question: "Is my data secure when using this tool?",
+    answer: "Absolutely. We use a Zero-Trust architecture. Your screen and webcam feeds are composited and recorded locally inside your web browser. Your video files are never uploaded to our servers."
+  },
+  {
+    question: "Do I need to install a browser extension?",
+    answer: "No installation or extension is required! This is a native web application that runs perfectly in any modern browser using HTML5 Canvas and MediaRecorder APIs."
+  }
+];
+---
+
+<Layout 
+  title="Free Screen & Webcam Recorder | No Limits, Zero-Trust (Loom Alternative)"
+  description="Record your screen and webcam simultaneously with a draggable PiP overlay. Free, online, no watermarks, and no 5-minute limits. 100% local and secure."
+  keywords="Loom alternative free, screen and webcam recorder, record screen and face, picture in picture screen recorder, free browser screen recorder no watermark, zero trust screen recorder"
+  schemaType="SoftwareApplication"
+  applicationCategory="UtilitiesApplication"
+  faqs={faqs}
+>
+  <ToolWorkspace title="Screen & Webcam Recorder" toolName="cam-screen-recorder" hasContextPanel={true} faqs={faqs}>
+    
+    <!-- Controls Slot -->
+    <Fragment slot="controls">
+      <div class="space-y-4">
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 px-4 py-3 border border-border rounded-lg bg-black/20 cursor-pointer hover:bg-black/40 transition-colors">
+            <input type="checkbox" id="record-cam" class="w-4 h-4 rounded border-border bg-black text-accent" checked />
+            <div class="flex flex-col">
+              <span class="text-sm font-medium">Record Webcam (PiP)</span>
+              <span class="text-xs text-muted-foreground">Overlay your face on the recording</span>
+            </div>
+          </label>
+          
+          <label class="flex items-center gap-3 px-4 py-3 border border-border rounded-lg bg-black/20 cursor-pointer hover:bg-black/40 transition-colors">
+            <input type="checkbox" id="record-mic" class="w-4 h-4 rounded border-border bg-black text-accent" checked />
+            <div class="flex flex-col">
+              <span class="text-sm font-medium">Record Microphone</span>
+              <span class="text-xs text-muted-foreground">Capture your voice narration</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="pt-4 space-y-2 border-t border-border">
+          <button 
+            id="btn-start" 
+            class="w-full px-4 py-3 bg-accent text-background text-sm font-bold rounded-lg hover:bg-accent/90 transition-transform active:scale-95 flex items-center justify-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="8" stroke-width="2" fill="currentColor"></circle>
+            </svg>
+            Start Recording
+          </button>
+          
+          <button 
+            id="btn-stop" 
+            class="w-full px-4 py-3 bg-red-500 text-white text-sm font-bold rounded-lg hover:bg-red-600 transition-transform active:scale-95 hidden items-center justify-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" stroke-width="2" fill="currentColor"></rect>
+            </svg>
+            Stop Recording
+          </button>
+        </div>
+      </div>
+    </Fragment>
+
+    <!-- Main Stage -->
+    <div class="h-full flex flex-col gap-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-2">Record Screen & Face Simultaneously</h2>
+        <p class="text-muted-foreground text-sm">Drag your webcam circle anywhere on the screen. The final video will save exactly what you see.</p>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center">
+        <!-- Interactive Video Stage -->
+        <div id="video-wrapper" class="w-full aspect-video bg-[#0a0a0a] rounded-xl border border-border/50 relative overflow-hidden flex items-center justify-center shadow-2xl">
+          
+          <span id="preview-placeholder" class="text-muted-foreground flex flex-col items-center gap-3">
+            <svg class="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+            <span class="font-medium">Ready to Record</span>
+          </span>
+          
+          <!-- Screen Feed -->
+          <video id="screen-preview" class="w-full h-full object-contain hidden" autoplay muted playsinline></video>
+          
+          <!-- Draggable Webcam PiP -->
+          <div id="cam-preview-wrapper" class="absolute w-[20%] aspect-square rounded-full overflow-hidden border-2 border-white/50 shadow-2xl hidden cursor-move" style="top: 75%; left: 75%; transform: translate(-50%, -50%);">
+            <video id="cam-preview" class="w-full h-full object-cover" autoplay muted playsinline style="transform: scaleX(-1);"></video>
+            <!-- Drag indicator overlay -->
+            <div class="absolute inset-0 bg-black/0 hover:bg-black/20 flex items-center justify-center transition-colors pointer-events-none group">
+              <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9a2 2 0 100-4 2 2 0 000 4zm0 0v10m0-10L6 13m4-4l4 4"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Recording Indicator -->
+          <div id="recording-indicator" class="absolute top-4 right-4 bg-red-500/20 text-red-500 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 hidden border border-red-500/50 backdrop-blur-md z-10">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span id="recording-timer">00:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Panel -->
+      <div id="result-panel" class="bg-black/40 border border-border rounded-xl p-6 hidden">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-green-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Recording Composited Successfully!
+        </h3>
+        <p class="text-sm text-muted-foreground mb-6">Your video was stitched together locally at 60fps and is ready to download.</p>
+        <div class="flex flex-wrap gap-4">
+          <a 
+            id="btn-download" 
+            class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Download HD Video (WebM)
+          </a>
+          <button 
+            id="btn-new" 
+            class="px-6 py-3 bg-muted text-foreground font-medium rounded-lg hover:bg-muted/80 transition-colors"
+          >
+            Start New Recording
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </ToolWorkspace>
+</Layout>
+
+<script>
+  import { setupUI } from '../../scripts/cam-screen-recorder.js';
+  
+  document.addEventListener('DOMContentLoaded', setupUI);
+  document.addEventListener('astro:page-load', setupUI);
+</script>
