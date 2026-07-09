@@ -95,7 +95,7 @@ const faqs = [
           <video id="screen-preview" class="w-full h-full object-contain hidden" autoplay muted playsinline></video>
           
           <!-- Draggable Webcam PiP -->
-          <div id="cam-preview-wrapper" class="absolute w-[20%] aspect-square rounded-full overflow-hidden border-2 border-white/50 shadow-2xl hidden cursor-move" style="top: 75%; left: 75%; transform: translate(-50%, -50%);">
+          <div id="cam-preview-wrapper" class="absolute w-[20%] aspect-square rounded-full overflow-hidden border-2 border-white/50 shadow-2xl hidden cursor-move z-20" style="top: 65%; left: 65%;">
             <video id="cam-preview" class="w-full h-full object-cover" autoplay muted playsinline style="transform: scaleX(-1);"></video>
             <!-- Drag indicator overlay -->
             <div class="absolute inset-0 bg-black/0 hover:bg-black/20 flex items-center justify-center transition-colors pointer-events-none group">

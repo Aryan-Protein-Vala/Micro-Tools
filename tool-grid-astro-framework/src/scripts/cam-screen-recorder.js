@@ -87,7 +87,7 @@ export function setupUI() {
     try {
       // 1. Get Screen Stream
       screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } },
+        video: { width: { ideal: 2560 }, height: { ideal: 1440 }, frameRate: { ideal: 60 } },
         audio: true // System audio
       });
 
@@ -141,8 +141,8 @@ export function setupUI() {
 
       // 4. Set up Canvas Compositor
       const canvas = document.createElement('canvas');
-      const cw = screenVideo.videoWidth || 1920;
-      const ch = screenVideo.videoHeight || 1080;
+      const cw = screenVideo.videoWidth || 2560;
+      const ch = screenVideo.videoHeight || 1440;
       canvas.width = cw;
       canvas.height = ch;
       const ctx = canvas.getContext('2d');
@@ -227,7 +227,7 @@ export function setupUI() {
         ? 'video/webm;codecs=vp9' 
         : 'video/webm';
 
-      mediaRecorder = new MediaRecorder(combinedStream, { mimeType, videoBitsPerSecond: 5000000 });
+      mediaRecorder = new MediaRecorder(combinedStream, { mimeType, videoBitsPerSecond: 8000000 });
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) recordedChunks.push(e.data);
       };
